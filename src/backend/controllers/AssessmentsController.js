@@ -188,9 +188,93 @@ const AssessmentsController = {
           where: {
             teacher_id: parseInt(teacher_id),
             isDelete: isDelete === 'true'
-          }
+          },
+          include: [{
+            model: MetaAssessmentModel,
+            where: { isDelete: false },
+            include: [
+              { model: CourseModel, attributes: ['courseCode', 'courseName'] },
+              {
+                model: StudentModel,
+                attributes: ['studentCode', 'name', 'class_id'],
+                include: [{
+                  model: ClassModel,
+                  attributes: ['classNameShort']
+                }]
+              },
+              {
+                model: RubricModel,
+                where: {
+                  isDelete: false
+                },
+                include: [{
+                  model: SubjectModel
+                }]
+              }
+            ],
+  
+          },
+          {
+            model: TeacherModel,
+            where: {
+              isDelete: false
+            },
+          }]
         });
+        for (const assessment of assessments) {
+          const rubricId = assessment.MetaAssessment.Rubric?.rubric_id;
+        
+          if (!rubricId) continue; // Skip if rubric_id is not found
+        
+          // Fetch rubric items for the current rubric
+          const rubricItems = await RubricItemModel.findAll({
+            where: {
+              rubric_id: rubricId,
+              isDelete: false
+            },
+            include: [
+              {
+                model: CloModel,
+                attributes: ['clo_id', 'cloName', 'description']
+              },
+              {
+                model: ChapterModel,
+                attributes: ['chapter_id', 'chapterName', 'description']
+              },
+              {
+                model: PloModel,
+                attributes: ['plo_id', 'ploName', 'description']
+              }
+            ]
+          });
+        
+          // Get IDs of rubric items
+          const rubricsItemIds = rubricItems.map(item => item.rubricsItem_id);
+        
+          // Fetch assessment items related to the rubric items
+          const assessmentItems = await AssessmentItemModel.findAll({
+            where: {
+              rubricsItem_id: rubricsItemIds,
+              assessment_id: assessment.assessment_id
+            }
+          });
+        
+          // Attach assessment items to each rubric item
+          rubricItems.forEach(rubricItem => {
+            rubricItem.dataValues.AssessmentItems = assessmentItems.filter(
+              assessmentItem => assessmentItem.rubricsItem_id === rubricItem.rubricsItem_id
+            );
+          });
+        
+          // Merge rubric items into the assessment object
+          assessment.dataValues.MetaAssessment.Rubric.dataValues.RubricItems = rubricItems;
+        }
+        
 
+
+
+
+        
         const AssessmentIdMetas = assessments.map(assessment => assessment.meta_assessment_id);
         console.log('AssessmentIdMetas')
         console.log(AssessmentIdMetas)

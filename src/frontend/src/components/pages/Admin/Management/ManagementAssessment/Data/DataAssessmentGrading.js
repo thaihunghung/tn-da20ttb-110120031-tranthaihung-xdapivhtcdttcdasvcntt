@@ -5,6 +5,8 @@ import { axiosAdmin } from "../../../../../../service/AxiosAdmin";
 export const fetchAssessmentDataGrading = async (teacher_id, descriptionURL, searchTerm = "") => {
   try {
     const response = await axiosAdmin.get(`/assessment?teacher_id=${teacher_id}&generalDescription=${descriptionURL}&isDelete=false`);
+   // console.log("response.data");
+    //console.log(response.data);
     const updatedPoData = response?.data?.map((Assessment) => {
       // Kiểm tra null cho student_id và totalScore là number
       const student_id = Assessment?.Student?.student_id !== null ? Assessment?.Student?.student_id : 0;
@@ -38,6 +40,7 @@ export const fetchAssessmentDataGrading = async (teacher_id, descriptionURL, sea
       return {
         id: Assessment?.assessment?.assessment_id || 0,
         meta_assessment_id: Assessment?.meta_assessment_id || 0,
+        Assessment: Assessment?.assessment,
         generalDescription: generalDescription,
         description: Assessment?.description || '',
         teacher_id: Assessment?.teacher_id,

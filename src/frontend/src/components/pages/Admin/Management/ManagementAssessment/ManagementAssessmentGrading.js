@@ -32,6 +32,8 @@ import CustomUpload from '../../CustomUpload/CustomUpload';
 import { UseDescriptionFromURL, UseNavigate, UseTeacherAuth, UseTeacherId } from '../../../../../hooks';
 import { handleReplaceCharacters } from '../../Utils/handleReplaceCharacters';
 import ModalUpdateDisc from './Modal/ModalUpdateDisc';
+import ModalOpenPdfOneStudent from './Modal/ModalOpenPdfOneStudent';
+import ModalOpenPdfMutiStudent from './Modal/ModalOpenPdfMutiStudent';
 
 const statusColorMap = {
   active: 'success',
@@ -48,6 +50,10 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
   const handleNavigate = UseNavigate();
 
   const [CurrentTeacher, setCurrentTeacher] = useState(false);
+  const [AllAssessment, setAllAssessment] = useState({});
+  const [AllMutiAssessment, setAllMutiAssessment] = useState({});
+
+
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [assessments, setAssessment] = useState([]);
@@ -89,12 +95,14 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
   const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
   const [sortDescriptor, setSortDescriptor] = useState({ column: 'age', direction: 'ascending', });
 
+  const [isAddModalOpenOnePDF, setIsAddModalOpenOnePDF] = useState(false);
+  const [isAddModalOpenMutiPDF, setIsAddModalOpenMutiPDF] = useState(false);
 
 
   const loadStudentAllCourse = async (Couse_id) => {
     try {
       const response = await fetchStudentDataByCourseId(Couse_id);
-      console.log("loadStudentAllCourse", response);
+     // console.log("loadStudentAllCourse", response);
       setStudentAll(response);
 
     } catch (error) {
@@ -110,6 +118,9 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
       setClasses(Classes);
       setRubricArray(RubricArray);
       setCourseArray(CourseArray);
+      if(parseInt(metaAssessment[0]?.teacher_id)===parseInt(teacher_id)){
+        setCurrentTeacher(true)
+      }
     } catch (error) {
       console.error("Error loading assessment data:", error);
     }
@@ -131,7 +142,7 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
       }
     }
     handleVisibilityChange();
-    console.log(window.innerWidth)
+    //console.log(window.innerWidth)
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -167,8 +178,8 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
       const filtered = StudentAll.filter(student =>
         !assessments.some(assessment => assessment.student.student_id === student.student_id)
       );
-      console.log("filtered")
-      console.log(filtered)
+     // console.log("filtered")
+      //console.log(filtered)
       setFilteredStudents(filtered);
     }
   }, [StudentAll, assessments]);
@@ -202,9 +213,9 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
   }, [assessments]);
 
   useEffect(() => {
-    console.log("assessments?.teacher_id")
-    console.log(assessments[0]?.teacher_id)
-    console.log(teacher_id)
+    // console.log("assessments?.teacher_id")
+    // console.log(assessments[0]?.teacher_id)
+    // console.log(teacher_id)
     if(parseInt(assessments[0]?.teacher_id)===parseInt(teacher_id)){
       setCurrentTeacher(true)
     }
@@ -445,6 +456,21 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
                 </Button>
               </Tooltip>
             )}
+            <Tooltip content={action.totalScore === 0? 'Chấm điểm trước':"In Điểm"}>
+              <Button
+                isIconOnly
+                variant="light"
+                radius="full"
+                size="sm"
+                className='bg-[#FEFEFE]'
+                disabled={action.totalScore === 0}
+                onClick={() => { 
+                  handleAddPDFOneStudent(assessment?.Assessment) 
+                }}
+              >
+                <i className="fa-regular fa-file-pdf text-xl text-[#020401]"></i>
+              </Button>
+            </Tooltip>
             <Tooltip content="Xoá">
               <Button
                 isIconOnly
@@ -470,6 +496,11 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
   //////////////////////////////////////////////////////////////////////////
   ////   handle
   //////////////////////////////////////////////////////////////////////////
+  const handleAddPDFOneStudent = (Assessment) => {
+    setAllAssessment(Assessment)
+    //setDataRubricItems(DataRubricItems)
+    setIsAddModalOpenOnePDF(true);
+  };
   const handleTakeSelectedItems = () => {
     const selectedItems = assessments.filter((item) => selectedKeys.has(item.id.toString()));
     //console.log('Get Selected Items', selectedItems);
@@ -488,7 +519,7 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
     return null;
   };
   const handleFormSubmit = async () => {
-    console.log("description", editRubric);
+    //console.log("description", editRubric);
 
     if (!editRubric.student_id || editRubric.student_id.length === 0) {
       message.error('Vui lòng chọn sinh viên tạo mới');
@@ -517,14 +548,14 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
       });
       const responses = await Promise.all(promises);
       const metaAssessmentIds = responses.map(response => response.data.meta_assessment_id);
-      console.log("metaAssessmentIds", metaAssessmentIds)
+     // console.log("metaAssessmentIds", metaAssessmentIds)
       // Gửi yêu cầu GET đến '/assessments' để lấy danh sách teacher_id
       const getTeacherIDAssessment = axiosAdmin.get(`/assessment?generalDescription=${editRubric.generalDescription}&isDelete=false`);
 
       // Chờ kết quả từ GET yêu cầu
       const teacherData = await getTeacherIDAssessment;
       const teacherIds = teacherData.data.teacherIds;
-      console.log("teacherIds", teacherIds)
+     // console.log("teacherIds", teacherIds)
       // Tạo và gửi tất cả các yêu cầu POST đến '/assessment'
       const postData = metaAssessmentIds.flatMap(meta_assessment_id =>
         teacherIds.map(teacher_id => ({
@@ -550,7 +581,7 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
   };
 
   const handleAddClick = () => {
-    console.log(editRubric);
+    //console.log(editRubric);
     setIsEditModalOpen(true);
   };
 
@@ -593,10 +624,16 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
     return null;
   };
 
-  const getDescriptionsByIds = (assessments, ids) => {
+  const handleGetDescriptionsByIds = (assessments, ids) => {
     return assessments
       .filter(assessment => ids.includes(assessment.id)) 
       .map(assessment => assessment?.description || 'N/A'); 
+  };
+
+  const handleGetAllAssessment = (assessments, ids) => {
+    return assessments
+      .filter(assessment => ids.includes(assessment.id)) 
+      .map(assessment => assessment?.Assessment || {}); 
   };
 
   const allDescriptionsMatch = (descriptions) => {
@@ -635,7 +672,7 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
 
      
 
-      const descriptions = getDescriptionsByIds(assessments, ids);
+      const descriptions = handleGetDescriptionsByIds(assessments, ids);
 
       // Kiểm tra nếu tất cả các mô tả đều giống nhau
       if (!allDescriptionsMatch(descriptions)) {
@@ -656,6 +693,82 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
       // console.log(disc);
       const url = filterStatus === 0 ? `/admin/management-grading/${disc}/couse/${Couse_id}/rubric/${rubric_id}?student-code=${studentCodesString}&&disc=${descriptionURL}&&FilterScore=0` : `/admin/management-grading/${disc}/couse/${Couse_id}/rubric/${rubric_id}?student-code=${studentCodesString}&&disc=${descriptionURL}`
       handleNavigate(url);
+    }, 100);
+  };
+
+  const handleDPFGroup = () => {
+    setTimeout(() => {
+      const selectedItems = handleTakeSelectedItems();
+      //console.log('Selected Items after timeout:', selectedItems);
+      if (selectedItems.length === 0) {
+        message.error('Chọn sinh viên để tải PDF');
+        return;
+      }
+      if (selectedItems.length > 3) {
+        message.error('Tối đa 3 sinh viên');
+        setSelectedKeys(new Set())
+        return;
+      }
+
+      const ids = selectedItems.map(item => item.id);     
+
+      const descriptions = handleGetDescriptionsByIds(assessments, ids);
+      if (!allDescriptionsMatch(descriptions)) {
+        message.error('Các đề tài không khớp với nhau.');
+        return;
+      }
+
+
+      const transformAssessmentData = (assessments) => {
+        return assessments.map(assessment => {
+            const { MetaAssessment, teacher } = assessment;
+            const { Rubric, Student } = MetaAssessment;
+    
+            return {
+                description: MetaAssessment.description,
+                subject: {
+                    subjectName: Rubric.subject.subjectName,
+                    subjectCode: Rubric.subject.subjectCode
+                },
+                students: {
+                    name: Student.name,
+                    studentCode: Student.studentCode
+                },
+                RubricItems: Rubric.RubricItems.map(rubricItem => ({
+                    rubricsItem_id: rubricItem.rubricsItem_id,
+                    description: rubricItem.description,
+                    maxScore: rubricItem.maxScore,
+                    CLO: rubricItem.CLO,
+                    AssessmentItems: rubricItem.AssessmentItems[0]
+                })),
+                totalScore: assessment.totalScore,
+                teacher: teacher.name
+            };
+        });
+    };
+    
+    const alldata = transformAssessmentData(handleGetAllAssessment(assessments, ids));
+    
+    const fiterAlldata = {
+      description: alldata[0]?.description || '',
+      students: alldata?.map(item => item?.students) || [],
+      subject: alldata[0]?.subject || {},
+      teacher: alldata[0]?.teacher || '',
+      data1: alldata[0]?.RubricItems || [],
+      data2: alldata[1]?.RubricItems || [],
+      data3: alldata[2]?.RubricItems || [],
+      totalScore: alldata.map(item => item?.totalScore) || [],
+  };
+  
+    
+   
+
+      console.log(fiterAlldata)
+  
+
+      setAllMutiAssessment(fiterAlldata)
+     setIsAddModalOpenMutiPDF(true)
+
     }, 100);
   };
   const handleDownloadTemplateExcel = async () => {
@@ -717,6 +830,18 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
               endContent={<PlusIcon />}
             >
               Chấm theo nhóm
+            </Button>
+            <Button
+              className='bg-[#FF9908] '
+              onClick={() => {
+                //const selectedItems = handleTakeSelectedItems();
+                //console.log('Selected Items:', selectedItems);
+                //console.log('Selected Keys:', Array.from(selectedKeys));
+                handleDPFGroup();
+              }}
+              endContent={<PlusIcon />}
+            >
+              PDF nhóm
             </Button>
             <Button
               className='bg-[#AF84DD] '
@@ -827,6 +952,21 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
 
         </div>
       </div>
+      <ModalOpenPdfOneStudent
+        isOpen={isAddModalOpenOnePDF}
+        onOpenChange={setIsAddModalOpenOnePDF}
+        AllAssessment={AllAssessment}
+        //DataRubric={DataRubricPDF}
+        //DataRubricItems={DataRubricItems}
+      />
+       <ModalOpenPdfMutiStudent
+        isOpen={isAddModalOpenMutiPDF}
+        onOpenChange={setIsAddModalOpenMutiPDF} 
+        AllMutiAssessment={AllMutiAssessment}
+        //DataRubric={DataRubricPDF}
+        //DataRubricItems={DataRubricItems}
+      />
+       
 
       <ConfirmAction
         onOpenChange={onOpenChange}

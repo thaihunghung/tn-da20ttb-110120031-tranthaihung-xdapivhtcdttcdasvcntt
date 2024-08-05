@@ -1,0 +1,23 @@
+.container {
+  page-break-inside: auto;
+  border: 1px solid #ccc;
+}
+
+/* CSS cho phần tử header */
+.header {
+  background-color: #f0f0f0;
+  padding: 10px;
+  font-weight: bold;
+}
+
+/* CSS cho phần tử content */
+.content {
+  padding: 10px;
+}
+
+/* CSS cho phần tử footer */
+.footer {
+  background-color: #f0f0f0;
+  padding: 10px;
+  font-style: italic;
+}

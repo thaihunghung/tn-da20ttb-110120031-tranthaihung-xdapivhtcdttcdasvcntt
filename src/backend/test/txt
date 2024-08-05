@@ -1,0 +1,27 @@
+const json2csv = require('json2csv').parse;
+
+// Đối tượng JSON chứa dữ liệu cho hai "bảng"
+const jsonData = {
+  "People": [
+    {"Name": "John", "Age": 30, "City": "New York"},
+    {"Name": "Alice", "Age": 25, "City": "Los Angeles"}
+  ],
+  "Products": [
+    {"Product": "Apple", "Price": 1.99, "Quantity": 10},
+    {"Product": "Banana", "Price": 0.99, "Quantity": 20}
+  ]
+};
+
+// Chuyển đổi dữ liệu của "People" thành CSV
+const peopleCsv = json2csv(jsonData.People);
+
+// Ghi dữ liệu của "People" vào file CSV
+fs.writeFileSync('people.csv', peopleCsv, 'utf8');
+console.log('People CSV file created successfully');
+
+// Chuyển đổi dữ liệu của "Products" thành CSV
+const productsCsv = json2csv(jsonData.Products);
+
+// Ghi dữ liệu của "Products" vào file CSV
+fs.writeFileSync('products.csv', productsCsv, 'utf8');
+console.log('Products CSV file created successfully');

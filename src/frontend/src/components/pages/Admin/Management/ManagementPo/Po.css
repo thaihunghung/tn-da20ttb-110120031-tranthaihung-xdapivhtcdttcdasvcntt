@@ -1,0 +1,8 @@
+.ant-collapse-content-box {
+    padding: 0 !important;
+}
+
+.table-po .ant-table-thead .ant-table-cell {
+    background-color: #475569 !important;
+    color: #fefefe;
+}

@@ -1,0 +1,53 @@
+/* 
+#FEFEFE - white
+#FF8077 - pink
+#AF84DD - violet
+#FF9908 - yellow
+#020401 - black
+
+ */
+ .ant-table {
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.ant-table-thead > tr > th {
+  background-color: #FF8077 !important;
+  color: #fff !important; /* White text */
+  font-weight: bold !important; /* Bold text */
+  text-align: center !important; /* Center-align text */
+}
+
+.ant-table-tbody > tr > td {
+  text-align: center; /* Center-align text */
+}
+
+.ant-steps-item{
+  padding-bottom: 120px;
+}
+
+.ant-table-column-title{
+  font-size: 16px !important;
+}
+
+.ant-table-row {
+  transition: background-color 0.3s !important;
+}
+
+.ant-table-cell input[type="checkbox"] {
+  accent-color: #AF84DD ;
+}
+
+.ant-table-cell{
+ border: #AF84DD ;
+}
+
+.Quick__Option {
+  position: sticky !important;
+  top: 0;
+  background-color: white;
+  z-index: 50;
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #d1d5db;
+}

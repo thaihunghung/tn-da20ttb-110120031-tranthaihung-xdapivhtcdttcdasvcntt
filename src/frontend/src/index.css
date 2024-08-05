@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+  font-family: 'Almarai', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(202, 202, 202);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(168, 168, 168);
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* CKeditor */
+figcaption {
+  text-align: center;
+  font-size: 13px;
+  background-color: rgb(237, 237, 237);
+  padding: 5px 0;
+  font-style: italic;
+  padding: 5px 20px;
+}

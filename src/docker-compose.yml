@@ -1,0 +1,48 @@
+version: '1'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: Hunghung123@
+      MYSQL_DATABASE: TVU
+      MYSQL_USER: AdminTVU
+      MYSQL_PASSWORD: CongNgheThongTin-DA20TTB
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysqldata:/var/lib/mysql
+    restart: always
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - "8081:80"
+    restart: always
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "1509:1509"
+    depends_on:
+      - mysql
+    environment:
+      - DATABASE_URL=mysql://AdminTVU:CongNgheThongTin-DA20TTB@mysql:3306/TVU
+    restart: always
+    
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+
+volumes:
+  mysqldata:

@@ -1,0 +1,16 @@
+.Client {
+    display        : flex;
+    flex-direction : column;
+    justify-content: space-between;
+    /* min-height  : 2000px; */
+}
+
+.Admin_tab-active {
+    /* background-color: rgb(71 85 105); */
+    /* border: 4px solid #FF8077; */
+    background-color: rgb(238 242 255);
+    color           : rgb(99 102 241) !important;
+    border-left     :  6px solid rgb(99 102 241) !important;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+}

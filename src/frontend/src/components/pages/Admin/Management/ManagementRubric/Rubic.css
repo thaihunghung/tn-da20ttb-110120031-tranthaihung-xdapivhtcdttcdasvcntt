@@ -1,0 +1,46 @@
+.rdw-option-wrapper[title="Subscript"] {
+  display: none !important;
+}
+.rdw-option-wrapper[title="Strikethrough"] {
+  display: none !important;
+}
+.rdw-option-wrapper[title="Monospace"] {
+  display: none !important;
+}
+.rdw-option-wrapper[title="Superscript"] {
+  display: none !important;
+}
+
+.rdw-text-align-wrapper {
+  display: none !important;
+}
+.rdw-color-picker {
+  display: none !important;
+}
+.rdw-link-wrapper {
+  display: none !important;
+}
+.rdw-embedded-wrapper{
+  display: none !important;
+}
+.rdw-block-wrapper {
+  display: none !important;
+}
+.rdw-fontfamily-wrapper {
+  display: none !important;
+}
+.rdw-fontsize-wrapper {
+  display: none !important;
+}
+.rdw-colorpicker-wrapper {
+  display: none !important;
+}
+.rdw-emoji-wrapper {
+  display: none !important;
+}
+.rdw-image-wrapper {
+  display: none !important;
+}
+.rdw-remove-wrapper {
+  display: none !important;
+}

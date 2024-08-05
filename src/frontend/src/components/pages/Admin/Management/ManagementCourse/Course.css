@@ -1,0 +1,23 @@
+.ant-card-head {
+  font-weight: 700 !important;
+  color      : #ff9908 !important;
+  white-space: normal !important;
+}
+
+.truncate-2-lines {
+  display           : -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow          : hidden !important;
+  text-overflow     : ellipsis !important;
+  white-space       : nowrap !important;
+}
+
+.ant-card-meta-avatar {
+  padding-inline-end: 0 !important;
+}
+
+.ant-card-meta-title {
+  padding: 0 !important;
+  margin-top: 0 !important;
+}

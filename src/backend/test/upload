@@ -1,0 +1,25 @@
+
+const uploadDirectory = path.join(__dirname, 'uploads');
+
+// Thiết lập lưu trữ multer
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadDirectory);
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+
+
+// Khởi tạo multer với cấu hình lưu trữ
+const upload = multer({ storage: storage });
+
+// Định nghĩa endpoint để xử lý yêu cầu tải lên tệp
+app.post('/upload', upload.single('file'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'File is missing.' });
+  }
+  // Trả về đường dẫn của tệp đã tải lên
+  res.json({ filePath: req.file.path });
+});

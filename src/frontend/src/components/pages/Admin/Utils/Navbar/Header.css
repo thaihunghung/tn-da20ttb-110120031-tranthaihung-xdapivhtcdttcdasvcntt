@@ -1,0 +1,12 @@
+.Header-mobile-right {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  padding: 10px;
+  cursor: pointer;
+
+}
+
+.fa-bars {
+  font-size: 24px;
+}

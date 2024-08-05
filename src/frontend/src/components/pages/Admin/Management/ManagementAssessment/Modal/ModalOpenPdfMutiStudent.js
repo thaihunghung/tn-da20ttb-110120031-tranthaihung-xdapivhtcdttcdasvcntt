@@ -194,24 +194,45 @@ const ModalOpenPdfMutiStudent = ({
                                                 <span>HỌC PHẦN {AllMutiAssessment?.subject?.subjectName?.toUpperCase()}</span>
                                             </div>
                                             <div className="text-center text-base">(Mã HP: {AllMutiAssessment?.subject?.subjectCode})</div>
-                                            <div className="w-full text-left text-base">Nhóm<span className="text-lg">: .........</span> Chủ đề: ...........................................................................................................................................................................................</div>
-                                            <div className="w-full text-left text-base">+ Họ và tên SV1<span className="text-lg">: ....................................................................................</span> MSSV: ....................................................................................</div>
-                                            <div className="w-full text-left text-base">+ Họ và tên SV2<span className="text-lg">: ....................................................................................</span> MSSV: ....................................................................................</div>
-                                            <div className="w-full text-left text-base">+ Họ và tên SV3<span className="text-lg">: ....................................................................................</span> MSSV: ....................................................................................</div>
+                                            <div className="w-full text-left text-base p-2 italic"> Chủ đề: <br />
+                                                <span className="uppercase font-bold text-lg">
+                                                    {AllMutiAssessment?.description}
+                                                </span>
+                                            </div>
+                                            <div className="w-full flex flex-col gap-4 p-4">
+    {AllMutiAssessment?.students.map((student, index) => (
+        <div key={index} className="flex flex-col gap-2 p-4 border border-black rounded-lg">
+            <div className="flex items-center gap-2">
+                <span className="w-[80px] font-semibold text-black">SV{index + 1}:</span>
+                <span className="text-lg font-medium text-black">{student?.name}</span>
+            </div>
+            <div className="flex items-center gap-2">
+                <span className="w-[80px] font-semibold text-black">MSSV:</span>
+                <span className="text-lg font-medium text-black">{student?.studentCode}</span>
+            </div>
+        </div>
+    ))}
+</div>
+
                                         </div>
                                         <table className='border-collapse border border-black w-full min-w-[16cm] text-base mt-5 font-times'>
                                             <thead>
                                                 <tr className="border border-b-0 border-black h-[20px]">
                                                     <th className="border border-black w-[20%]">CLO</th>
                                                     <th className="border border-black w-[50%]">Nội dung báo cáo</th>
-                                                    <th className="border border-black w-[50px] text-wrap p-0">
+                                                    <th className="border border-black w-[20px] text-wrap p-0">
                                                         <div className="flex flex-col items-center">
                                                             <span>Điểm</span>
                                                         </div>
                                                     </th>
                                                     <th className="border border-black w-[20px]">SV1</th>
-                                                    <th className="border border-black w-[20px]">SV2</th>
-                                                    <th className="border border-r-[1px] border-black w-[20px]">SV3</th>
+
+                                                    {checkData2 && (
+                                                        <th className="border border-black w-[20px]">SV2</th>
+                                                    )}
+                                                    {checkData3 && (
+                                                        <th className="border border-r-[1px] border-black w-[20px]">SV3</th>
+                                                    )}
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -222,37 +243,30 @@ const ModalOpenPdfMutiStudent = ({
                                                             <td className="border border-black text-justify p-2">
                                                                 <span dangerouslySetInnerHTML={{ __html: item?.description }} />
                                                             </td>
-                                                            <td className="border border-r-0 border-black text-center p-0 w-[10px]">
+                                                            <td className="border border-r-0 border-black text-center">
                                                                 <div className="w-full text-center text-base overflow-hidden text-ellipsis whitespace-nowrap">
                                                                     {item?.maxScore}
                                                                 </div>
                                                             </td>
                                                             <td className="border border-black">
                                                                 <div className="w-full text-center text-base overflow-hidden text-ellipsis whitespace-nowrap">
-
-
-                                                                    {item?.score2 !== undefined ? item?.score2 : 'N/A'}
-
-                                                                </div>
-                                                            </td>
-                                                            <td className="border border-black">
-                                                                <div className="w-full text-center text-base overflow-hidden text-ellipsis whitespace-nowrap">
-
-                                                                    {item?.score3 !== undefined ? item?.score3 : 'N/A'}
-
-                                                                </div>
-                                                            </td>
-                                                            <td className="border border-black border-r-[1px]">
-                                                                <div className="w-full text-center text-base overflow-hidden text-ellipsis whitespace-nowrap">
-
                                                                     {item.score1}
-
                                                                 </div>
                                                             </td>
-
-
-
-
+                                                            {checkData2 && (
+                                                                <td className="border border-black">
+                                                                    <div className="w-full text-center text-base overflow-hidden text-ellipsis whitespace-nowrap">
+                                                                        {item?.score2 !== undefined ? item?.score2 : 'N/A'}
+                                                                    </div>
+                                                                </td>
+                                                            )}
+                                                            {checkData3 && (
+                                                                <td className="border border-black border-r-[1px]">
+                                                                    <div className="w-full text-center text-base overflow-hidden text-ellipsis whitespace-nowrap">
+                                                                        {item?.score3 !== undefined ? item?.score3 : 'N/A'}
+                                                                    </div>
+                                                                </td>
+                                                            )}
                                                         </tr>
                                                     ))
                                                 ) : (
@@ -261,32 +275,54 @@ const ModalOpenPdfMutiStudent = ({
                                                     </tr>
                                                 )}
                                             </tbody>
-
-
                                             <tfoot>
                                                 <tr className="h-[20px]">
                                                     <td className="border border-black border-r-0"></td>
                                                     <td className="border border-black border-x-0"></td>
                                                     <td className="border border-black border-x-0 w-[10px]"></td>
-
-
                                                     <td className={`border border-black border-x-0 `}></td>
-
-                                                    <td className={`border border-black border-x-0 `}></td>
-                                                    <td className="border border-black  border-l-0 border-r-[1px]"></td>
+                                                    {checkData2 && (
+                                                        <td className={`border border-black border-x-0 ${checkData3 ? '' : 'w-[20px]'}`}></td>
+                                                    )}
+                                                    {checkData3 && (
+                                                        <td className="border border-black border-l-0 border-r-[1px]"></td>
+                                                    )}
                                                 </tr>
                                             </tfoot>
                                         </table>
-                                        <div className="w-full min-w-[16cm] pl-[2cm] pr-[1cm] text-base font-times" style={{ pageBreakInside: 'avoid' }}>
-                                            <div className="w-full flex mt-[50px] justify-end pl-[2cm] pr-[1cm]">
-                                                <div className="w-[50%] mr-[20px]">
+                                        <div className="w-full min-w-[16cm] pl-[2cm] pr-[1cm] gap-2 text-base font-times flex items-center" style={{ pageBreakInside: 'avoid' }}>
+                                            <div className="flex-1 flex mt-4 border border-black rounded-lg">
+                                                <div className="w-full gap-2 p-4 flex flex-col justify-center items-center text-lg">
+                                                    <div className="w-full  border-b border-black pb-2 mb-2">
+                                                        <span className="font-bold text-lg">Tổng điểm:</span>
+                                                    </div>
+                                                    <div className="w-full h-[100px] flex justify-between items-stretch ">
+                                                        {AllMutiAssessment?.students.map((student, index) => (
+                                                            <div key={index} className="flex-1 flex flex-col items-center">
+                                                                <div className="font-bold text-base text-center h-[60%]">
+                                                                    {student.name}
+                                                                </div>
+                                                                <div className="font-bold text-lg text-center h-[40%]">
+                                                                    {AllMutiAssessment?.totalScore[index]}
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex-1 flex mt-[20px] justify-end">
+                                                <div className="w-full mr-[20px]">
                                                     <div className="w-full text-center">
                                                         Trà Vinh,<span className="italic"> ngày ... tháng ... năm ... </span>
                                                     </div>
                                                     <div className="w-full text-center font-bold">
                                                         GV CHẤM BÁO CÁO
                                                     </div>
-                                                    <div className="w-full text-center">
+                                                    <div className="w-full text-center mt-10 font-bold">
+                                                        {
+                                                            AllMutiAssessment?.teacher
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>

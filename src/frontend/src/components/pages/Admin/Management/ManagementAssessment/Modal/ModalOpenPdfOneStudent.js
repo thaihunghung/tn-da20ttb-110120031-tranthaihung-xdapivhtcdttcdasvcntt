@@ -175,14 +175,18 @@ const ModalOpenPdfOneStudent = ({
                                                     {AllAssessment?.MetaAssessment?.description}
                                                 </span>
                                             </div>
-                                            <div className="w-full text-left text-base p-2">
-                                                <div>
-                                                    <span>+ Họ và tên SV:</span><span>{' '}{AllAssessment?.MetaAssessment?.Student?.name}</span>
+                                            <div className="w-full flex flex-col gap-4 p-4">
+                                                <div className="flex flex-col gap-2 p-4 border border-black rounded-lg">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="w-[80px] font-semibold text-black">SV:</span>
+                                                        <span className="text-lg font-medium text-black">{AllAssessment?.MetaAssessment?.Student?.name}</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="w-[80px] font-semibold text-black">MSSV:</span>
+                                                        <span className="text-lg font-medium text-black">{AllAssessment?.MetaAssessment?.Student?.studentCode}</span>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <span>+ MSSV: </span> <span>{' '}{AllAssessment?.MetaAssessment?.Student?.studentCode}</span>
-                                                </div>
-                                             </div>
+                                            </div>
                                         </div>
                                         <table className='border-collapse border border-black w-full min-w-[16cm] text-base mt-5 font-times'>
                                             <thead>
@@ -227,16 +231,22 @@ const ModalOpenPdfOneStudent = ({
                                             </tfoot>
                                         </table>
                                         <div className="w-full min-w-[16cm] pl-[2cm] pr-[1cm] gap-2 text-base font-times flex items-center" style={{ pageBreakInside: 'avoid' }}>
-                                            <div className="flex-1 flex mt-[20px] border border-black">
-                                                <div className="w-full mr-[20px] p-10 gap-2 flex justify-center items-center text-lg">
-                                                    
-                                                    <span className="font-bold">
-                                                        Tổng điểm:
-                                                    </span>
-                                                        <span className="font-bold">
-                                                            {AllAssessment?.totalScore}
-                                                        </span>
+                                            <div className="flex-1 flex mt-4 border border-black rounded-lg">
+                                                <div className="w-full gap-2 p-4 flex flex-col justify-center items-center text-lg">
+                                                    <div className="w-full  border-b border-black pb-2 mb-2">
+                                                        <span className="font-bold text-lg">Tổng điểm:</span>
+                                                    </div>
+                                                    <div className="w-full h-[100px] flex justify-between items-stretch ">
 
+                                                        <div className="flex-1 flex flex-col items-center">
+                                                            <div className="font-bold text-base text-center h-[60%]">
+                                                                {AllAssessment?.MetaAssessment?.Student?.name}
+                                                            </div>
+                                                            <div className="font-bold text-lg text-center h-[40%]">
+                                                                {AllAssessment?.totalScore}
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div className="flex-1 flex mt-[20px] justify-end">

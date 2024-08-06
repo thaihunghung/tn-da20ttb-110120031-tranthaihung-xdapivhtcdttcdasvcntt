@@ -51,6 +51,7 @@ function ModalAllot({ isOpen, onOpenChange, generalDescription, loadData}) {
       try {
         const {meta_assessment_ids} = await fetchDataGetMetaIdByGeneralDescription(generalDescription);
         setMetaAssessment(meta_assessment_ids);
+        console.log(meta_assessment_ids)
       } catch (error) {
         console.error("Error fetching data by general description:", error);
       }
@@ -105,13 +106,15 @@ function ModalAllot({ isOpen, onOpenChange, generalDescription, loadData}) {
   };
   const handleSave = async (teacherId, metaAssessments) => {
     try {
-      const requests = metaAssessments.map(assessment => {
+      const requests = metaAssessments.map(meta_assessment_id => {
         const data = {
-          meta_assessment_id: assessment.meta_assessment_id,
+          meta_assessment_id: meta_assessment_id,
           teacher_id: teacherId
         };
         console.log("data", data);
         return axiosAdmin.post('/assessment', { data });
+
+        
       });
   
       // Wait for all requests to complete
@@ -131,7 +134,12 @@ function ModalAllot({ isOpen, onOpenChange, generalDescription, loadData}) {
       message.error("Chưa chọn thêm giáo viên");
       return;
     }
-  
+    console.log("assignedIds");
+    console.log(assignedIds);
+
+    console.log("MetaAssessment");
+    console.log(MetaAssessment);
+    
     // Add teacher_id to the list if not already included
     if (teacher_id && !assignedIds.includes(parseInt(teacher_id))) {
       assignedIds.push(parseInt(teacher_id));
@@ -149,6 +157,11 @@ function ModalAllot({ isOpen, onOpenChange, generalDescription, loadData}) {
       console.error("Error in handleAssign:", error);
       message.error("Lỗi khi phân công");
     }
+
+
+
+
+
   };
   const handleDelete = () => {
     if (currentTeacher.name) {

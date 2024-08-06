@@ -377,7 +377,6 @@ const FormMultipleGrading = ({ setCollapsedNav }) => {
   }
   const Save = async (dataSaveAssessment, Score) => {
     try {
-      message.success('di')
       const data = { totalScore: Score }
 
       await axiosAdmin.patch(`/assessment/${dataSaveAssessment[0].assessment_id}/totalScore`, { data: data })

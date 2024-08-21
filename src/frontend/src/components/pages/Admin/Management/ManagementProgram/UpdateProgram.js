@@ -69,7 +69,7 @@ const UpdateProgram = (nav) => {
                 return;
             }
             const data = { programName: nameP, description: convertedContent };
-            const response = await axiosAdmin.put('/program/1', { data: data });
+            const response = await axiosAdmin.put('/program/IT', { data: data });
             if (response.status === 200) {
                 message.success('Program updated successfully');
             } else {

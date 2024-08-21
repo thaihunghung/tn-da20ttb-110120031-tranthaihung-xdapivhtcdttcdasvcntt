@@ -36,10 +36,10 @@ const ManagePo = (nav) => {
 
     const columns = [
         {
-            title: "Tên PO",
+            title: "Tên mục tiêu",
             dataIndex: "name",
             render: (record) => (
-                <div className="text-sm">
+                <div className="text-sm min-w-[90px]">
                     <p className="font-medium">{record}</p>
                 </div>
             ),
@@ -48,15 +48,15 @@ const ManagePo = (nav) => {
             title: "Mô tả",
             dataIndex: "description",
             render: (record) => (
-                <div className="text-sm">
+                <div className="text-sm min-w-[220px]">
                     <p className="font-medium">{record}</p>
                 </div>
             ),
         },
         {
             title: (
-                <div className="flex items-center justify-center w-full">
-                    <span>Form</span>
+                <div className="flex items-center justify-center w-full min-w-[150px] max-w-[200px]">
+                    <span>Thao tác</span>
                 </div>
             ),
             dataIndex: "action",
@@ -310,7 +310,7 @@ const ManagePo = (nav) => {
                             endContent={<PlusIcon />}
                             onClick={handleAddClick}
                         >
-                            New
+                            Tạo mới
                         </Button>
                         <Button
                             className='bg-[#FF8077] '
@@ -318,7 +318,7 @@ const ManagePo = (nav) => {
                             onClick={onOpen}
                             disabled={selectedRowKeys.length === 0}
                         >
-                            Deletes
+                            Ẩn nhiều
                         </Button>
                         <Button
                             endContent={<PlusIcon />}
@@ -326,7 +326,7 @@ const ManagePo = (nav) => {
                                 `/admin/management-po/store`
                             )}
                         >
-                            Store
+                            Kho lưu trữ
                         </Button>
                     </div>
                 </div>
@@ -335,7 +335,7 @@ const ManagePo = (nav) => {
                 <div className="text-2xl w-[300px] sm:w-full leading-8 italic font-bold text-[#FF9908] text-wrap flex-1 text-justify">{programData.program_id + ': ' + programData.programName}</div>
             </div>
             <div className="pl-5">
-                <h1 className="text-xl font-bold text-[#6366F1] text-left">Danh sách PO</h1>
+                <h1 className="text-xl font-bold text-[#6366F1] text-left">Danh sách mục tiêu chương trình</h1>
             </div>
             <div className="w-full my-5 px-5">
                 {selectedRowKeys.length !== 0 && (

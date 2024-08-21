@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const assessmentsController = require('../controllers/AssessmentsController');
+const { ensureAuthenticated } = require('../middlewares/authMiddleware');
 
 /**
  * @openapi
@@ -829,23 +830,16 @@ const assessmentsController = require('../controllers/AssessmentsController');
 
 
 //cập nhật mới 
-router.get('/assessment/checkTeacher', assessmentsController.checkTeacherInAssessment);
-
-
-router.get('/assessment', assessmentsController.getAssessments);
-
-
-router.patch('/assessment/:id/totalScore', assessmentsController.updateStotalScore);
-router.get('/assessment/:id', assessmentsController.getByID);
-router.get('/assessment/:id/items', assessmentsController.GetitemsByID);
-router.post('/assessment', assessmentsController.create);
-
-router.put('/assessment/:id', assessmentsController.update);
-router.delete('/assessment/:id', assessmentsController.delete);
-
-router.delete('/assessments/multiple', assessmentsController.deleteMultiple);
-
-router.delete('/assessment/teacher/:teacherId', assessmentsController.deleteByTeacherId);
+router.get('/assessment/checkTeacher', ensureAuthenticated, assessmentsController.checkTeacherInAssessment);
+router.get('/assessment', ensureAuthenticated, assessmentsController.getAssessments);
+router.patch('/assessment/:id/totalScore', ensureAuthenticated, assessmentsController.updateStotalScore);
+router.get('/assessment/:id', ensureAuthenticated, assessmentsController.getByID);
+router.get('/assessment/:id/items', ensureAuthenticated, assessmentsController.GetitemsByID);
+router.post('/assessment', ensureAuthenticated, assessmentsController.create);
+router.put('/assessment/:id', ensureAuthenticated, assessmentsController.update);
+router.delete('/assessment/:id', ensureAuthenticated, assessmentsController.delete);
+router.delete('/assessments/multiple', ensureAuthenticated, assessmentsController.deleteMultiple);
+router.delete('/assessment/teacher/:teacherId', ensureAuthenticated, assessmentsController.deleteByTeacherId);
 
 
 

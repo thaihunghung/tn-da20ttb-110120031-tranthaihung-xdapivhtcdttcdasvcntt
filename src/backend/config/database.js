@@ -1,10 +1,9 @@
 const { Sequelize } = require('sequelize');
+
 const dotenv = require('dotenv');
 
-// Load environment variables from .env file
 dotenv.config();
 
-// Create a new Sequelize instance using the environment variables
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
@@ -15,15 +14,15 @@ const sequelize = new Sequelize(
   }
 );
 
-async function testConnection() {
+async function Connection() {
   try {
     await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
+    console.log('Kết nối thành công.');
   } catch (error) {
-    console.error('Unable to connect to the database:', error);
+    console.error(
+      'Kết nối thất bại', error
+    );
   }
 }
-
-testConnection();
-
+Connection();
 module.exports = sequelize;

@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const programController = require('../controllers/ProgramsController');
+const checkPermission = require('../middlewares/permissionMiddleware');
+const { ensureAuthenticated } = require('../middlewares/authMiddleware');
 /**
  * @openapi
  * tags:
@@ -229,16 +231,14 @@ const programController = require('../controllers/ProgramsController');
  */
 
 
-router.get('/programs', programController.index);
-router.post('/program', programController.create);
-router.get('/program/:id', programController.getByID);
-router.put('/program/:id', programController.update);
-router.delete('/program/:id', programController.delete);
-router.get('/program/isDelete/true', programController.isDeleteTotrue);
-router.get('/program/isDelete/false', programController.isDeleteTofalse);
-router.put('/program/isDelete/:id', programController.toggleIsDelete);
-
-
-router.get('/program/templates/post', programController.getFormPost);
+router.get('/programs', ensureAuthenticated, programController.index);
+router.post('/program', ensureAuthenticated, checkPermission(3), programController.create);
+router.get('/program/:id', ensureAuthenticated, programController.getByID);
+router.put('/program/:id', ensureAuthenticated, checkPermission(3), programController.update);
+router.delete('/program/:id', ensureAuthenticated, checkPermission(3), programController.delete);
+router.get('/program/isDelete/true', ensureAuthenticated, programController.isDeleteTotrue);
+router.get('/program/isDelete/false', ensureAuthenticated, programController.isDeleteTofalse);
+router.put('/program/isDelete/:id', ensureAuthenticated, checkPermission(3), programController.toggleIsDelete);
+router.get('/program/templates/post', ensureAuthenticated, checkPermission(3), programController.getFormPost);
 
 module.exports = router;

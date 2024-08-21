@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const PO_PLO = require('../controllers/Po_PloController');
-
+const checkPermission = require('../middlewares/permissionMiddleware');
+const { ensureAuthenticated } = require('../middlewares/authMiddleware');
 
 /**
  * @openapi
@@ -179,8 +180,8 @@ const PO_PLO = require('../controllers/Po_PloController');
  *                   example: "error"
  */
 
-router.get('/po-plo', PO_PLO.getAll);
-router.post('/po-plo', PO_PLO.SavePoPlo);
-router.delete('/po-plo', PO_PLO.DeletePoPlo);
+router.get('/po-plo', ensureAuthenticated, PO_PLO.getAll);
+router.post('/po-plo', ensureAuthenticated, checkPermission(3), PO_PLO.SavePoPlo);
+router.delete('/po-plo', ensureAuthenticated, checkPermission(3), PO_PLO.DeletePoPlo);
 
 module.exports = router;

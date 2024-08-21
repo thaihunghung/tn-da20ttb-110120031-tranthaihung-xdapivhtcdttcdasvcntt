@@ -103,11 +103,11 @@ function Nav(props) {
     { text: "Tổng quan", link: "/admin", icon: <i className={`text-[FF8077] fa-solid fa-house mr-${collapsedNav ? "0" : "3"} w-4`}></i> },
     { text: "Chấm điểm", link: "/admin/management-grading/list", icon: <i className={`fa-solid fa-feather-pointed mr-${collapsedNav ? "0" : "3"} w-4`}></i> },
     {
-      text: "Programs",
+      text: "Chương trình",
       icon: <i className={`fa-solid fa-gear mr-${collapsedNav ? "0" : "3"} w-4`}></i>,
       submenu: [
         {
-          text: (<><i className="fa-solid fa-minus mr-3"></i>Program</>),
+          text: (<><i className="fa-solid fa-minus mr-3"></i>Chương trình</>),
           link: "/admin/management-program/description",
           active: [
             "/admin/management-program/update",
@@ -116,7 +116,7 @@ function Nav(props) {
           ],
         },
         {
-          text: (<><i className="fa-solid fa-minus mr-3"></i>PO</>),
+          text: (<><i className="fa-solid fa-minus mr-3"></i>Mục tiêu CT</>),
           link: "/admin/management-po/list",
           active: [
             "/admin/management-po/store",
@@ -127,7 +127,7 @@ function Nav(props) {
           ]
         },
         {
-          text: (<><i className="fa-solid fa-minus mr-3"></i>PLO</>),
+          text: (<><i className="fa-solid fa-minus mr-3"></i>CDR CT</>),
           link: "/admin/management-plo/list",
           active: [
             "/admin/management-plo/store",
@@ -147,7 +147,7 @@ function Nav(props) {
       ]
     },
     {
-      text: "Subjects",
+      text: "Học phần",
       icon: <i className={`fa-solid fa-star mr-${collapsedNav ? "0" : "3"} w-4`}></i>,
       link: "/admin/management-subject/list"
     },

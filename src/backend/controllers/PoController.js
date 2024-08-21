@@ -158,12 +158,12 @@ const PoController = {
 
   getFormPost: async (req, res) => {
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('PoModel');
+    const worksheet = workbook.addWorksheet('PO');
 
     worksheet.columns = [
-      { header: 'Mã chương trình', key: 'program_id', width: 20 },
-      { header: 'Tên PoModel', key: 'poName', width: 20 },
-      { header: 'Mô tả', key: 'description', width: 30 },
+      { header: 'Tên mục tiêu chương trình', key: 'poName', width: 20 },
+      { header: 'Mô tả', key: 'description', width: 65 },
+      { header: 'Mã chương trình', key: 'program_id', width: 20 }
     ];
 
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -187,7 +187,7 @@ const PoController = {
       }
 
       const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet('PoModel');
+      const worksheet = workbook.addWorksheet('PO');
 
       worksheet.columns = [
         { header: 'Mã po (int)', key: 'po_id', width: 20 },
@@ -247,7 +247,7 @@ const PoController = {
       return res.status(500).json({ message: 'Error reading the uploaded file' });
     }
 
-    const worksheet = workbook.getWorksheet('PoModel');
+    const worksheet = workbook.getWorksheet('PO');
     const jsonData = [];
 
     worksheet.eachRow((row, rowNumber) => {
@@ -287,7 +287,7 @@ const PoController = {
       return res.status(500).json({ message: 'Error reading the uploaded file' });
     }
 
-    const worksheet = workbook.getWorksheet('PoModel');
+    const worksheet = workbook.getWorksheet('PO');
     const updateData = [];
     worksheet.eachRow((row, rowNumber) => {
       if (rowNumber > 1) {

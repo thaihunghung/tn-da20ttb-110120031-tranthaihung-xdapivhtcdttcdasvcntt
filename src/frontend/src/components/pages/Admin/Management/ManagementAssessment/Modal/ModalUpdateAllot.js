@@ -61,12 +61,12 @@ function ModalUpdateAllot({ isOpen, onOpenChange, generalDescription, loadData }
         try {
           const { meta_assessment_ids, assessments } = await fetchDataGetMetaIdByGeneralDescription(generalDescription);
           setMetaAssessment(meta_assessment_ids);
-          
+
           const filteredAssessments = assessments.filter(
             assessment => assessment.teacher_id !== parseInt(teacher_id)
           );
-console.log("filteredAssessments", filteredAssessments)
-setAssessment(filteredAssessments);
+          console.log("filteredAssessments", filteredAssessments)
+          setAssessment(filteredAssessments);
           const uniqueTeacherIds = [...new Set(filteredAssessments.map(assessment => assessment.teacher_id))];
 
           const uniqueTeachers = uniqueTeacherIds.map(id => {

@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const PLO = require('../controllers/PloController');
-
+const checkPermission = require('../middlewares/permissionMiddleware');
+const { ensureAuthenticated } = require('../middlewares/authMiddleware');
 
 /**
  * @openapi
@@ -285,20 +286,17 @@ const PLO = require('../controllers/PloController');
  *         description: Internal server error
  */
 
-router.get('/plos', PLO.index);
-router.post('/plo', PLO.create);
-router.get('/plo/:id', PLO.getByID);
-router.put('/plo/:id', PLO.update);
-router.delete('/plo/:id', PLO.delete);
-router.delete('/plos/multiple', PLO.deleteMultiple);
-router.get('/plos/isDelete/true', PLO.isDeleteTotrue);
-router.get('/plos/isDelete/false', PLO.isDeleteTofalse);
-router.put('/plos/softDelete', PLO.softDeleteMultiple);
-router.put('/plo/:id/softDelete', PLO.toggleSoftDeleteById);
-
-
-
-router.get('/plo/templates/post', PLO.getFormPost);
-router.post('/plo/templates/update', PLO.getFormUpdate);
+router.get('/plos', ensureAuthenticated, PLO.index);
+router.post('/plo', ensureAuthenticated, checkPermission(3), PLO.create);
+router.get('/plo/:id', ensureAuthenticated, PLO.getByID);
+router.put('/plo/:id', ensureAuthenticated, checkPermission(3), PLO.update);
+router.delete('/plo/:id', ensureAuthenticated, checkPermission(3), PLO.delete);
+router.delete('/plos/multiple', ensureAuthenticated, checkPermission(3), PLO.deleteMultiple);
+router.get('/plos/isDelete/true', ensureAuthenticated, PLO.isDeleteTotrue);
+router.get('/plos/isDelete/false', ensureAuthenticated, PLO.isDeleteTofalse);
+router.put('/plos/softDelete', ensureAuthenticated, checkPermission(3), PLO.softDeleteMultiple);
+router.put('/plo/:id/softDelete', ensureAuthenticated, checkPermission(3), PLO.toggleSoftDeleteById);
+router.get('/plo/templates/post', ensureAuthenticated, PLO.getFormPost);
+router.post('/plo/templates/update', ensureAuthenticated, checkPermission(3), PLO.getFormUpdate);
 
 module.exports = router;

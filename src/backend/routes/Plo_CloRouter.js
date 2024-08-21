@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const PLO_CLO = require('../controllers/Plo_CloController');
+const { ensureAuthenticated } = require('../middlewares/authMiddleware');
 /**
  * @openapi
  * tags:
@@ -215,9 +216,9 @@ const PLO_CLO = require('../controllers/Plo_CloController');
 
 
 
-router.get('/plo-clo', PLO_CLO.index);
-router.post('/plo-clo', PLO_CLO.SaveCloPlo);
-router.delete('/plo-clo', PLO_CLO.DeleteCloPlo);
+router.get('/plo-clo', ensureAuthenticated, PLO_CLO.index);
+router.post('/plo-clo', ensureAuthenticated, PLO_CLO.SaveCloPlo);
+router.delete('/plo-clo', ensureAuthenticated, PLO_CLO.DeleteCloPlo);
 
 
 // router.post('/plo-clo/id_clos', PLO_CLO.GetPloCloByCloIds);

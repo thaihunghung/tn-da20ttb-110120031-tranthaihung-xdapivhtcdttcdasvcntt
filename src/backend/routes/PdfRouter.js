@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const puppeteer = require('puppeteer');
 const path = require('path');
+const { ensureAuthenticated } = require('../middlewares/authMiddleware');
 
-router.post('/pdf', async (req, res) => {
+router.post('/pdf', ensureAuthenticated, async (req, res) => {
   const { html, landscape } = req.body;
   try {
     const browser = await puppeteer.launch();

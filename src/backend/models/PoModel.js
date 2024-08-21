@@ -36,4 +36,5 @@ const PoModel = sequelize.define('PO', {
   tableName: 'pos'
 });
 PoModel.belongsTo(ProgramModel, { foreignKey: 'program_id' });
+
 module.exports = PoModel;

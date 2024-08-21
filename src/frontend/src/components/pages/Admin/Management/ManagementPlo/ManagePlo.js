@@ -41,10 +41,10 @@ const ManagePlo = (nav) => {
 
     const columns = [
         {
-            title: "Tên PLO",
+            title: "Mã CDR CT",
             dataIndex: "name",
             render: (record) => (
-                <div className="text-sm">
+                <div className="text-sm min-w-[80px]">
                     <p className="font-medium">{record}</p>
                 </div>
             ),
@@ -53,15 +53,15 @@ const ManagePlo = (nav) => {
             title: "Mô tả",
             dataIndex: "description",
             render: (record) => (
-                <div className="text-sm">
+                <div className="text-sm min-w-[220px]">
                     <p className="font-medium">{record}</p>
                 </div>
             ),
         },
         {
             title: (
-                <div className="flex items-center justify-center w-full">
-                    <span>Form</span>
+                <div className="flex items-center justify-center w-full min-w-[150px] max-w-[200px]">
+                    <span>Thao tác</span>
                 </div>
             ),
             dataIndex: "action",
@@ -165,48 +165,7 @@ const ManagePlo = (nav) => {
         }
     };
 
-    const handleDownloadPo = async () => {
-        try {
-            if (selectedRowKeys.length === 0) {
-                alert('Please select at least one po ID');
-                return;
-            }
-            const data = {
-                id: selectedRowKeys
-            }
 
-            const response = await axiosAdmin.post('/plo/templates/update', { data: data }, {
-                responseType: 'blob'
-            });
-
-            if (response && response.data) {
-                const url = window.URL.createObjectURL(response.data);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'plo_update.xlsx';
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-
-                setCurrent(1);
-            }
-        } catch (error) {
-            console.error('Error downloading file:', error);
-        }
-    };
-    const props = {
-        onRemove: (file) => {
-            const index = fileList.indexOf(file);
-            const newFileList = fileList.slice();
-            newFileList.splice(index, 1);
-            setFileList(newFileList);
-        },
-        beforeUpload: (file) => {
-            setFileList([...fileList, file]);
-            return false;
-        },
-        fileList,
-    };
     const [programData, setProgramData] = useState({});
 
     const allProgramNotIsDelete = async () => {
@@ -353,7 +312,7 @@ const ManagePlo = (nav) => {
                             endContent={<PlusIcon />}
                             onClick={handleAddClick}
                         >
-                            New
+                            Tạo mới
                         </Button>
                         <Button
                             className='bg-[#FF8077] '
@@ -361,7 +320,7 @@ const ManagePlo = (nav) => {
                             onClick={onOpen}
                             disabled={selectedRowKeys.length === 0}
                         >
-                            Deletes
+                            Ẩn nhiều
                         </Button>
                         <Button
                             endContent={<PlusIcon />}
@@ -369,7 +328,7 @@ const ManagePlo = (nav) => {
                                 `/admin/management-plo/store`
                             )}
                         >
-                            Store
+                            Kho lưu trữ
                         </Button>
                     </div>
                 </div>
@@ -378,14 +337,14 @@ const ManagePlo = (nav) => {
                 <div className="text-2xl w-[300px] sm:w-full leading-8 italic font-bold text-[#FF9908] text-wrap flex-1 text-justify">{programData.program_id + ': ' + programData.programName}</div>
             </div>
             <div className="pl-5">
-                <h1 className="text-xl font-bold text-[#6366F1] text-left">Danh sách PO</h1>
+                <h1 className="text-xl font-bold text-[#6366F1] text-left">Danh sách chuẩn đầu ra CT</h1>
             </div>
             <div className="w-full my-5 px-5">
                 {selectedRowKeys.length !== 0 && (
                     <div className="Quick__Option flex justify-between items-center sticky top-2 bg-[white] z-50 w-full p-4 py-3 border-1 border-slate-300">
                         <p className="text-sm font-medium">
                             <i className="fa-solid fa-circle-check mr-3 text-emerald-500"></i>{" "}
-                            Đã chọn {selectedRow.length} plo
+                            Đã chọn {selectedRow.length} CDR
                         </p>
                         <div className="flex items-center gap-2">
 

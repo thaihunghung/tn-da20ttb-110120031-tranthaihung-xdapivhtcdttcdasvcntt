@@ -1,6 +1,7 @@
 const express = require('express');
 const RubricController = require('../controllers/RubricController');
 const router = express.Router();
+const { ensureAuthenticated } = require('../middlewares/authMiddleware');
 
 /**
  * @openapi
@@ -719,19 +720,18 @@ const router = express.Router();
  *         description: Server error
  */
 
-router.get('/rubrics', RubricController.index);
-router.post('/rubric', RubricController.create);
-router.get('/rubric/:id', RubricController.getByID);
-router.put('/rubric/:id', RubricController.update);
-router.get('/rubrics/isDelete/true', RubricController.isDeleteTotrue);
-router.get('/rubrics/isDelete/false', RubricController.isDeleteTofalse);
-router.get('/rubric/:id/items', RubricController.getItemsByRubricId);
-router.get('/rubrics/checkScore', RubricController.getRubricsForCheckScore);
-router.put('/rubrics/softDelete', RubricController.softDeleteMultiple);
-router.put('/rubric/:id/softDelete', RubricController.toggleSoftDeleteById);
-
-router.delete('/rubric/:id', RubricController.delete);
-router.delete('/rubrics/multiple', RubricController.deleteMultiple);
+router.get('/rubrics', ensureAuthenticated, RubricController.index);
+router.post('/rubric', ensureAuthenticated, RubricController.create);
+router.get('/rubric/:id', ensureAuthenticated, RubricController.getByID);
+router.put('/rubric/:id', ensureAuthenticated, RubricController.update);
+router.get('/rubrics/isDelete/true', ensureAuthenticated, RubricController.isDeleteTotrue);
+router.get('/rubrics/isDelete/false', ensureAuthenticated, RubricController.isDeleteTofalse);
+router.get('/rubric/:id/items', ensureAuthenticated, RubricController.getItemsByRubricId);
+router.get('/rubrics/checkScore', ensureAuthenticated, RubricController.getRubricsForCheckScore);
+router.put('/rubrics/softDelete', ensureAuthenticated, RubricController.softDeleteMultiple);
+router.put('/rubric/:id/softDelete', ensureAuthenticated, RubricController.toggleSoftDeleteById);
+router.delete('/rubric/:id', ensureAuthenticated, RubricController.delete);
+router.delete('/rubrics/multiple', ensureAuthenticated, RubricController.deleteMultiple);
 
 
 // router.get('/rubric/:rubric_id/items/isDelete/false', RubricController.GetItemsRubricsByIdRubrics);

@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const CLO_CHAPTER = require('../controllers/Clo_ChapterController');
+const { ensureAuthenticated } = require('../middlewares/authMiddleware');
+
 /**
  * @openapi
  * tags:
@@ -166,10 +168,9 @@ const CLO_CHAPTER = require('../controllers/Clo_ChapterController');
  *                   example: Internal server error
  */
 
-router.get('/clo-chapter', CLO_CHAPTER.getCloChapter);
-
-router.post('/clo-chapter', CLO_CHAPTER.SaveCloChapter);
-router.delete('/clo-chapter', CLO_CHAPTER.DeleteCloChapter);
+router.get('/clo-chapter', ensureAuthenticated, CLO_CHAPTER.getCloChapter);
+router.post('/clo-chapter', ensureAuthenticated, CLO_CHAPTER.SaveCloChapter);
+router.delete('/clo-chapter', ensureAuthenticated, CLO_CHAPTER.DeleteCloChapter);
 
 
 // router.get('/clo-chapter/clo/:clo_id/find-chapter', CLO_CHAPTER.GetChapterCloByCloId);

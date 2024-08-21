@@ -19,16 +19,6 @@ const ProgramModel = sequelize.define('Program', {
     type: DataTypes.TINYINT(1),
     defaultValue: 0
   },
-  createdAt: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-  },
-  updatedAt: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-  }
 }, {
   timestamps: true,
   createdAt: 'createdAt',

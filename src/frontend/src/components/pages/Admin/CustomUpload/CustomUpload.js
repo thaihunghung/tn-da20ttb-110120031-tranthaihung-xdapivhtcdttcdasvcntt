@@ -42,7 +42,7 @@ const CustomUpload = ({ endpoint, setCurrent, fileList, setFileList, method, Loa
 
   
   return (
-    <div className='text-xl w-full flex flex-col items-center'>
+    <div className='text-xl w-full flex flex-col items-center mt-4'>
       <Button
         type="primary"
         onClick={handleUpload}
@@ -50,7 +50,7 @@ const CustomUpload = ({ endpoint, setCurrent, fileList, setFileList, method, Loa
         loading={uploading}
         className='w-full p-5 flex justify-center items-center rounded-lg'
       >
-        <span className='w-full'>{uploading ? 'Uploading' : 'Start Upload'}</span>
+        <span className='w-full'>{uploading ? 'Đang tải lên' : 'Bắt đầu tải lên'}</span>
       </Button>
     </div>
   );

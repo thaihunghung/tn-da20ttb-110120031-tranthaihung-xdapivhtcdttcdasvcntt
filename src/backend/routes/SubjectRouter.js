@@ -735,18 +735,18 @@ const router = express.Router();
 
 
 router.get('/subjects',ensureAuthenticated, SubjectController.getSubjects);
-router.get('/subject/:id', SubjectController.getByID);
-router.get('/subject/:id/rubrics', SubjectController.getRubricsBySubjectId);
-router.put('/subject/:id', SubjectController.update);
-router.delete('/subject/:id', SubjectController.delete);
+router.get('/subject/:id', ensureAuthenticated, SubjectController.getByID);
+router.get('/subject/:id/rubrics', ensureAuthenticated, SubjectController.getRubricsBySubjectId);
+router.put('/subject/:id', ensureAuthenticated, SubjectController.update);
+router.delete('/subject/:id', ensureAuthenticated, SubjectController.delete);
 router.post('/subject', ensureAuthenticated, SubjectController.create);
-router.get('/subjects/isDelete/false', SubjectController.isDeleteTofalse);
-router.get('/subjects/isDelete/true', SubjectController.isDeleteTotrue);
-router.delete('/subjects/multiple', SubjectController.deleteMultiple);
-router.put('/subjects/softDelete', SubjectController.softDeleteMultiple);
-router.put('/subject/:id/softDelete', SubjectController.toggleSoftDeleteById);
-router.get('/subject/templates/post', SubjectController.getFormPost);
-router.post('/subject/templates/update', SubjectController.getFormUpdate);
+router.get('/subjects/isDelete/false', ensureAuthenticated, SubjectController.isDeleteTofalse);
+router.get('/subjects/isDelete/true', ensureAuthenticated, SubjectController.isDeleteTotrue);
+router.delete('/subjects/multiple', ensureAuthenticated, SubjectController.deleteMultiple);
+router.put('/subjects/softDelete', ensureAuthenticated, SubjectController.softDeleteMultiple);
+router.put('/subject/:id/softDelete', ensureAuthenticated, SubjectController.toggleSoftDeleteById);
+router.get('/subject/templates/post', ensureAuthenticated, SubjectController.getFormPost);
+router.post('/subject/templates/update', ensureAuthenticated, SubjectController.getFormUpdate);
 
 // router.get('/subjects', SubjectController.index);
 // router.get('/subjects/teacher/:teacher_id', SubjectController.isDeleteTofalseByteacher);

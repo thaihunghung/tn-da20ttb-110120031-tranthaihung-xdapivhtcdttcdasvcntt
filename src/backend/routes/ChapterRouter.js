@@ -1,6 +1,7 @@
 const express = require('express');
 const ChapterController = require('../controllers/ChapterController');
 const router = express.Router();
+const { ensureAuthenticated } = require('../middlewares/authMiddleware');
 
 /**
  * @openapi
@@ -360,20 +361,18 @@ const router = express.Router();
  *         - chapter_name
  */
 
-router.get('/chapters', ChapterController.index);
-router.post('/chapter', ChapterController.create);
-router.get('/chapter/:id', ChapterController.getByID);
-router.put('/chapter/:id', ChapterController.update);
-router.delete('/chapter/:id', ChapterController.delete);
-
-router.delete('/chapters/multiple', ChapterController.deleteMultiple);
-router.get('/chapters/isDelete/true', ChapterController.isDeleteTotrue);
-router.get('/chapters/isDelete/false', ChapterController.isDeleteTofalse);
-router.put('/chapters/softDelete', ChapterController.softDeleteMultiple);
-router.put('/chapter/:id/softDelete', ChapterController.toggleSoftDeleteById);
-
-router.get('/chapter/templates/post', ChapterController.getFormPost);
-router.post('/chapter/templates/update', ChapterController.getFormUpdate);
+router.get('/chapters', ensureAuthenticated, ChapterController.index);
+router.post('/chapter', ensureAuthenticated, ChapterController.create);
+router.get('/chapter/:id', ensureAuthenticated, ChapterController.getByID);
+router.put('/chapter/:id', ensureAuthenticated, ChapterController.update);
+router.delete('/chapter/:id', ensureAuthenticated, ChapterController.delete);
+router.delete('/chapters/multiple', ensureAuthenticated, ChapterController.deleteMultiple);
+router.get('/chapters/isDelete/true', ensureAuthenticated, ChapterController.isDeleteTotrue);
+router.get('/chapters/isDelete/false', ensureAuthenticated, ChapterController.isDeleteTofalse);
+router.put('/chapters/softDelete', ensureAuthenticated, ChapterController.softDeleteMultiple);
+router.put('/chapter/:id/softDelete', ensureAuthenticated, ChapterController.toggleSoftDeleteById);
+router.get('/chapter/templates/post', ensureAuthenticated, ChapterController.getFormPost);
+router.post('/chapter/templates/update', ensureAuthenticated, ChapterController.getFormUpdate);
 
 
 // router.get('/chapter/subject/:subject_id', ChapterController.GetChapterBySubjectId);

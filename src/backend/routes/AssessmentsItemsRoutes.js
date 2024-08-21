@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const assessmentItemsController = require('../controllers/AssessmentItemsController');
+const { ensureAuthenticated } = require('../middlewares/authMiddleware');
 
 /**
  * @openapi
@@ -10,8 +11,8 @@ const assessmentItemsController = require('../controllers/AssessmentItemsControl
  */
 
 
-router.post('/assessment-item', assessmentItemsController.create);
-router.put('/assessment-item/:id', assessmentItemsController.update);
+router.post('/assessment-item', ensureAuthenticated, assessmentItemsController.create);
+router.put('/assessment-item/:id', ensureAuthenticated, assessmentItemsController.update);
 
 
 

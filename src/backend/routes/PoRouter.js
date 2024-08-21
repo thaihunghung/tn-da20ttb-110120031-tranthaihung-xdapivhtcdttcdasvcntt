@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const PO = require('../controllers/PoController');
-
+const checkPermission = require('../middlewares/permissionMiddleware');
+const { ensureAuthenticated } = require('../middlewares/authMiddleware');
 /**
  * @openapi
  * tags:
@@ -351,18 +352,18 @@ const PO = require('../controllers/PoController');
  *                   example: "Server error"
  */
 
-router.get('/pos', PO.index);
-router.post('/po', PO.create);
-router.get('/po/:id', PO.getByID);
-router.put('/po/:id', PO.update);
-router.delete('/po/:id', PO.delete);
-router.delete('/pos/multiple', PO.deleteMultiple);
-router.get('/pos/isDelete/true', PO.isDeleteToTrue);
-router.get('/pos/isDelete/false', PO.isDeleteToFalse);
-router.put('/pos/softDelete', PO.softDeleteMultiple);
-router.put('/po/:id/softDelete', PO.toggleSoftDeleteById);
+router.get('/pos',ensureAuthenticated, PO.index);
+router.post('/po', ensureAuthenticated, checkPermission(3), PO.create);
+router.get('/po/:id', ensureAuthenticated, PO.getByID);
+router.put('/po/:id', ensureAuthenticated, checkPermission(3), PO.update);
+router.delete('/po/:id', ensureAuthenticated, checkPermission(3), PO.delete);
+router.delete('/pos/multiple', ensureAuthenticated, checkPermission(3), PO.deleteMultiple);
+router.get('/pos/isDelete/true', ensureAuthenticated, PO.isDeleteToTrue);
+router.get('/pos/isDelete/false', ensureAuthenticated, PO.isDeleteToFalse);
+router.put('/pos/softDelete', ensureAuthenticated, checkPermission(3), PO.softDeleteMultiple);
+router.put('/po/:id/softDelete', ensureAuthenticated, checkPermission(3), PO.toggleSoftDeleteById);
+router.get('/po/templates/post', ensureAuthenticated, PO.getFormPost);
+router.post('/po/templates/update', ensureAuthenticated, checkPermission(3), PO.getFormUpdate);
 
-router.get('/po/templates/post', PO.getFormPost);
-router.post('/po/templates/update', PO.getFormUpdate);
 module.exports = router;
 

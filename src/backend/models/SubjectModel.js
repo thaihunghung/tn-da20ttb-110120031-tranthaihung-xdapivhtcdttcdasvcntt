@@ -49,16 +49,6 @@ const SubjectModel = sequelize.define('subject', {
     type: DataTypes.TINYINT,
     defaultValue: 0
   },
-  createdAt: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-  },
-  updatedAt: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-  }
 }, {
   timestamps: true,
   createdAt: 'createdAt',

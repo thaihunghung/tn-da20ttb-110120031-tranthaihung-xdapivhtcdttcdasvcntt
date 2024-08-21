@@ -338,10 +338,10 @@ const Subject = (nav) => {
                   color="primary" variant="ghost" className='hidden sm:block'
                   onClick={() => navigate(`/admin/management-subject/${subject.clos.id}/clo/update`)}
                 >
-                  update
+                  Cập nhật
                 </Button>
 
-                <Tooltip title="update">
+                <Tooltip title="Cập nhật">
                   <Button
                     isIconOnly
                     variant="light"
@@ -362,10 +362,10 @@ const Subject = (nav) => {
                   color="primary" variant="ghost" className='hidden sm:block'
                   onClick={() => navigate(`/admin/management-subject/${subject.clos.id}/clo/create`)}
                 >
-                  new
+                  Tạo mới
                 </Button>
 
-                <Tooltip title="add">
+                <Tooltip title="Tạo mới">
                   <Button
                     isIconOnly
                     variant="light"
@@ -392,11 +392,11 @@ const Subject = (nav) => {
                   onClick={() => navigate(`/admin/management-subject/${subject.chapters.id}/chapter/update`)}
                   disabled={!subject.chapters.checkCLo}
                 >
-                  update
+                  Cập nhật
                 </Button>
 
 
-                <Tooltip title="update">
+                <Tooltip title="Cập nhật">
                   <Button
                     isIconOnly
                     variant="light"
@@ -418,10 +418,10 @@ const Subject = (nav) => {
                   onClick={() => navigate(`/admin/management-subject/${subject.chapters.id}/chapter/create`)}
                   disabled={!subject.chapters.checkCLo}
                 >
-                  new
+                  Tạo mới
                 </Button>
 
-                <Tooltip title="add">
+                <Tooltip title="Tạo mới">
                   <Button
                     isIconOnly
                     variant="light"
@@ -513,13 +513,13 @@ const Subject = (nav) => {
     return (
       <div className="flex flex-col gap-4">
         <div className='block sm:hidden'>
-          <h1 className="text-2xl pb-2 font-bold text-[#6366F1]">Danh sách Subject</h1>
+          <h1 className="text-2xl pb-2 font-bold text-[#6366F1]">Danh sách Học phần</h1>
         </div>
         <div className="flex justify-between gap-3 items-end">
           <Input
             isClearable
             classNames={{ base: 'w-full sm:max-w-[44%]', inputWrapper: 'border-1' }}
-            placeholder="Search by name..."
+            placeholder="Tìm kiếm theo tên..."
             size="sm"
             startContent={<SearchIcon className="text-default-300" />}
             value={filterValue}
@@ -556,10 +556,10 @@ const Subject = (nav) => {
         </div>
         <div className="w-full flex  sm:items-center sm:justify-between">
           <p className="text-small text-default-400 min-w-[100px]">
-            <span className="text-default-500">{Subjects.length}</span> subject(s)
+            <span className="text-default-500">{Subjects.length}</span> Học phần(s)
           </p>
           <div className="w-fit sm:w-auto flex items-center gap-2 ">
-            <p className="text-small text-default-400">Rows per page:</p>
+            <p className="text-small text-default-400">Số dòng mỗi trang:</p>
             <select
               className="w-fit sm:w-auto rounded-lg border-default-200 bg-default-100 text-small transition-opacity focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               onChange={onRowsPerPageChange}
@@ -579,7 +579,7 @@ const Subject = (nav) => {
     return (
       <div className="py-2 px-2 flex justify-between items-center">
         <p className="text-small">
-          {selectedKeys === 'all' ? 'All items selected' : `${selectedKeys.size} of ${Subjects.length} selected`}
+          {selectedKeys === 'all' ? 'Đã chọn tất cả các mục' : `${selectedKeys.size} trong số ${Subjects.length} mục đã chọn`}
         </p>
         <Pagination
           showControls
@@ -599,7 +599,7 @@ const Subject = (nav) => {
       <div className='w-full flex justify-between'>
         <div className='h-full my-auto p-5 hidden sm:block'>
           <div>
-            <h1 className="text-2xl pb-2 font-bold text-[#6366F1]">Danh sách Subject</h1>
+            <h1 className="text-2xl pb-2 font-bold text-[#6366F1]">Danh sách Học phần</h1>
           </div>
           <BackButton />
         </div>
@@ -610,7 +610,7 @@ const Subject = (nav) => {
               endContent={<PlusIcon />}
               onClick={handleAddClick}
             >
-              New
+              Tạo mới
             </Button>
             <Button
               className='bg-[#FF8077] '
@@ -618,7 +618,7 @@ const Subject = (nav) => {
               onClick={onOpen}
               disabled={selectedKeys.size === 0}
             >
-              Deletes
+              Ẩn nhiều
             </Button>
             <Button
               endContent={<PlusIcon />}
@@ -626,14 +626,14 @@ const Subject = (nav) => {
                 `/admin/management-subject/store`
               )}
             >
-              Store
+              Kho lưu trữ
             </Button>
           </div>
           <div className='flex gap-2 h-fit justify-center sm:justify-start flex-wrap items-center'>
             <Dropdown>
               <DropdownTrigger className="sm:flex">
                 <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
-                  Columns
+                Cột
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -654,7 +654,7 @@ const Subject = (nav) => {
             <Dropdown>
               <DropdownTrigger className="sm:flex">
                 <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
-                  Filter type
+                Lọc theo loại
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -668,7 +668,7 @@ const Subject = (nav) => {
                   setStatusFilter(selectedKey);
                 }}
               >
-                <DropdownItem key="all" className="capitalize">All type</DropdownItem>
+                <DropdownItem key="all" className="capitalize">Tất cả loại</DropdownItem>
                 {statusOptions.map((option) => (
                   <DropdownItem key={option.id} className="capitalize">
                     {option.name}
@@ -681,7 +681,7 @@ const Subject = (nav) => {
             <Dropdown>
               <DropdownTrigger className="sm:flex">
                 <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
-                  Filter Date
+                Lọc theo ngày
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -695,8 +695,8 @@ const Subject = (nav) => {
                   setDateFilter(selectedKey);
                 }}
               >
-                <DropdownItem key="newest" className="capitalize">Newest</DropdownItem>
-                <DropdownItem key="oldest" className="capitalize">Oldest</DropdownItem>
+                <DropdownItem key="newest" className="capitalize">Mới nhất</DropdownItem>
+                <DropdownItem key="oldest" className="capitalize">Cũ nhất</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>

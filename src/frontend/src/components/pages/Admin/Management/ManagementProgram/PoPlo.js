@@ -100,21 +100,24 @@ const PoPlo = (nav) => {
     }, []);
 
     return (
-        <div className="flex w-full flex-col justify-center leading-8 pt-5 bg-[#f5f5f5]-500">
+        <div className="flex w-full flex-col justify-center leading-8 p-5 bg-[#f5f5f5]-500">
              <div className='w-full flex justify-between'>
                 <div className='h-full my-auto p-5 hidden sm:block'>
                     <BackButton />
                 </div>
-                <div className='w-full sm:w-fit bg-[white] border-slate-300 rounded-xl border-2 p-2 justify-center items-center flex gap-4 flex-col'>
-                    <div className='flex justify-end w-full flex-wrap items-center gap-1'>
+                <div className='w-full sm:w-fit bg-[white] border-slate-300 rounded-xl border-2 p-2 justify-center items-center flex gap-4 flex-col min-w-[320px]'>
+                    <div className='flex  justify-between sm:justify-end w-full flex-wrap items-center gap-1 '>
+                        <div className="pl-5 mt-2 block sm:hidden">
+                            <h1 className="text-2xl font-bold text-[#6366F1] text-justify">Ánh xạ PO và PLO</h1>
+                        </div>
                         <Button color="primary" onClick={handleSaveOrDelete}>
-                            Save
+                            Lưu
                         </Button>
                     </div>
                 </div>
             </div>
-            <div className="pl-5 mt-2">
-                <h1 className="text-2xl font-bold text-[#6366F1] text-left">Map Po Plo</h1>
+            <div className="pl-5 mt-2 hidden sm:block">
+                <h1 className="text-2xl font-bold text-[#6366F1] text-left">Ánh xạ PO và PLO</h1>
             </div>
             <div className="w-full  mt-5 ">
                 <table className="table-auto w-full border-collapse border rounded-2xl">

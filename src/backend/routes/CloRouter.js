@@ -1,7 +1,7 @@
 const express = require('express');
 const CloController = require('../controllers/CloController');
 const router = express.Router();
-
+const { ensureAuthenticated } = require('../middlewares/authMiddleware');
 /**
  * @openapi
  * tags:
@@ -284,23 +284,18 @@ const router = express.Router();
  *         description: Internal server error
  */
 
-router.get('/clos', CloController.index);
-router.post('/clo', CloController.create);
-router.get('/clo/:id', CloController.getByID);
-router.put('/clo/:id', CloController.update);
-router.delete('/clo/:id', CloController.delete);
-
-
-
-router.delete('/clos/multiple', CloController.deleteMultiple);
-router.put('/clo/:id/softDelete', CloController.toggleSoftDeleteById);
-router.get('/clos/isDelete/true', CloController.isDeleteTotrue);
-router.get('/clos/isDelete/false', CloController.isDeleteTofalse);
-router.put('/clos/softDelete', CloController.softDeleteMultiple);
-
-
-router.get('/clo/templates/post', CloController.getFormPost);
-router.post('/clo/templates/update', CloController.getFormUpdate);
+router.get('/clos', ensureAuthenticated, CloController.index);
+router.post('/clo', ensureAuthenticated, CloController.create);
+router.get('/clo/:id', ensureAuthenticated, CloController.getByID);
+router.put('/clo/:id', ensureAuthenticated, CloController.update);
+router.delete('/clo/:id', ensureAuthenticated, CloController.delete);
+router.delete('/clos/multiple', ensureAuthenticated, CloController.deleteMultiple);
+router.put('/clo/:id/softDelete', ensureAuthenticated, CloController.toggleSoftDeleteById);
+router.get('/clos/isDelete/true', ensureAuthenticated, CloController.isDeleteTotrue);
+router.get('/clos/isDelete/false', ensureAuthenticated, CloController.isDeleteTofalse);
+router.put('/clos/softDelete', ensureAuthenticated, CloController.softDeleteMultiple);
+router.get('/clo/templates/post', ensureAuthenticated, CloController.getFormPost);
+router.post('/clo/templates/update', ensureAuthenticated, CloController.getFormUpdate);
 
 
 // router.get('/clo/subject/:id', CloController.GetCloBySubjectId);

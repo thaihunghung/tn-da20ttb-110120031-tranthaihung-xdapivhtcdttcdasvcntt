@@ -68,25 +68,28 @@ const ManagePlo = (nav) => {
             render: (action) => (
                 <div className="flex items-center justify-center w-full gap-2">
                     <Tooltip title="Chỉnh sửa">
-                        <Button
+                        {/* <Button
                             isIconOnly
                             variant="light"
                             radius="full"
-                            size="sm" className="bg-[#AF84DD]"
                             onClick={() => { handleEditClick(action.PLO) }}
                         >
                             <i className="fa-solid fa-pen text-xl text-[#020401]"></i>
+                        </Button> */}
+
+                        <Button isIconOnly  className="bg-[#fefefe] shadow-sm border-1 border-default"
+                            onClick={() => { handleEditClick(action.PLO) }}
+                        >
+                        <i className="fa-solid fa-pen text-xl  sm:text-lg"></i>
                         </Button>
                     </Tooltip>
                     <Tooltip title="Xoá">
                         <Button
-                            isIconOnly
-                            variant="light"
-                            radius="full"
-                            size="sm" className="bg-[#FF8077]"
+                           isIconOnly
+                            className="bg-[#fefefe] shadow-sm border-1 border-default"
                             onClick={() => { onOpen(); setDeleteId(action._id); }}
                         >
-                            <i className="fa-solid fa-trash-can text-xl text-[#020401]"></i>
+                            <i className="fa-solid fa-trash-can text-xl sm:text-lg"></i>
                         </Button>
                     </Tooltip>
                 </div>
@@ -261,7 +264,7 @@ const ManagePlo = (nav) => {
 
 
     return (
-        <div className="flex w-full flex-col justify-center leading-8 pt-5 bg-[#f5f5f5]-500">
+        <div className="flex w-full flex-col justify-center leading-8 pt-5">
             <ConfirmAction
                 onOpenChange={onOpenChange}
                 isOpen={isOpen}
@@ -337,7 +340,7 @@ const ManagePlo = (nav) => {
                 <div className="text-2xl w-[300px] sm:w-full leading-8 italic font-bold text-[#FF9908] text-wrap flex-1 text-justify">{programData.program_id + ': ' + programData.programName}</div>
             </div>
             <div className="pl-5">
-                <h1 className="text-xl font-bold text-[#6366F1] text-left">Danh sách chuẩn đầu ra CT</h1>
+                <h1 className="text-xl font-bold text-[#475569] text-left">Danh sách chuẩn đầu ra CT</h1>
             </div>
             <div className="w-full my-5 px-5">
                 {selectedRowKeys.length !== 0 && (
@@ -379,7 +382,7 @@ const ManagePlo = (nav) => {
                     </div>
                 )}
                 <div className="w-full overflow-auto">
-                    <Table className="table-po min-w-[400px] sm:min-w-[400px] lg:min-w-full xl:min-w-full text-[#fefefe]"
+                    <Table className="table-po  min-w-[400px] sm:min-w-[400px] lg:min-w-full xl:min-w-full text-[#fefefe]"
                         bordered
                         loading={loading}
                         rowSelection={{

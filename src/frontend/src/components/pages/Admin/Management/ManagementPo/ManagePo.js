@@ -64,10 +64,7 @@ const ManagePo = (nav) => {
                 <div className="flex items-center justify-center w-full gap-2">
                     <Tooltip title="Chỉnh sửa">
                         <Button
-                            isIconOnly
-                            variant="light"
-                            radius="full"
-                            size="sm" className="bg-[#AF84DD]"
+                           isIconOnly  className="bg-[#fefefe] shadow-sm border-1 border-default"
                             onClick={() => { handleEditClick(action.PO) }}
                         >
                             <i className="fa-solid fa-pen text-xl text-[#020401]"></i>
@@ -75,10 +72,7 @@ const ManagePo = (nav) => {
                     </Tooltip>
                     <Tooltip title="Xoá">
                         <Button
-                            isIconOnly
-                            variant="light"
-                            radius="full"
-                            size="sm" className="bg-[#FF8077]"
+                         isIconOnly  className="bg-[#fefefe] shadow-sm border-1 border-default"
                             onClick={() => { onOpen(); setDeleteId(action._id); }}
                         >
                             <i className="fa-solid fa-trash-can text-xl text-[#020401]"></i>

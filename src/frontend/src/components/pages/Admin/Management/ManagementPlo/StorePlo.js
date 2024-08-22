@@ -190,7 +190,7 @@ const StorePlo = (nav) => {
     }, []);
 
     return (
-        <div className="flex w-full flex-col justify-center leading-8 pt-5 bg-[#f5f5f5]-500">
+        <div className="flex w-full flex-col justify-center leading-8 pt-5">
             <ConfirmAction
                 onOpenChange={onOpenChange}
                 isOpen={isOpen}

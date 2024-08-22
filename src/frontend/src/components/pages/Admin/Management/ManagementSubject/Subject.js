@@ -32,12 +32,6 @@ import ModalUpdateSubject from './ModalUpdateSubject';
 import ModalAddSubject from './ModalAddSubject';
 import { PlusIcon } from '../../../../../public/PlusIcon';
 
-const statusColorMap = {
-  active: 'success',
-  paused: 'danger',
-  vacation: 'warning',
-};
-
 const INITIAL_VISIBLE_COLUMNS = ['name', 'subjectCode', 'Clo', 'Chapter', 'action'];
 const COMPACT_VISIBLE_COLUMNS = ['name', 'Clo', 'Chapter', 'action'];
 
@@ -313,44 +307,45 @@ const Subject = (nav) => {
     switch (columnKey) {
       case 'id':
         return (
-          <div className="flex flex-col w-fit">
+          <div className="flex justify-start items-center">
             <p className="text-bold text-small capitalize">{cellValue}</p>
           </div>
         );
       case 'name':
         return (
-          <div className="flex flex-col min-w-[150px] justify-center items-center">
+          <div className="flex min-w-[150px] justify-start items-center">
             <p className="text-bold text-small capitalize">{cellValue}</p>
           </div>
         );
-      case 'Code':
+      case 'subjectCode':
         return (
-          <div className="flex flex-col w-fit justify-center items-center">
-            <p className="text-bold text-small text-center">{cellValue}</p>
+          <div className="flex w-fit justify-start items-center">
+            <p className="text-bold text-small text-justify">{cellValue}</p>
           </div>
         );
       case 'Clo':
         return (
-          <div className='w-fit'>
+          <div className='flex w-fit justify-start items-center'>
             {subject.clos.check ? (
               <>
                 <Button
-                  color="primary" variant="ghost" className='hidden sm:block'
+
+                  className="bg-[#fefefe] shadow-sm border-1 border-[#AF84DD] hidden sm:block"
                   onClick={() => navigate(`/admin/management-subject/${subject.clos.id}/clo/update`)}
                 >
-                  Cập nhật
+                  <span >
+                    Cập nhật
+                  </span>
+
                 </Button>
 
                 <Tooltip title="Cập nhật">
                   <Button
                     isIconOnly
-                    variant="light"
-                    radius="full"
-                    size="sm"
-                    className="bg-[#AF84DD] block sm:hidden"
+                    className="bg-[#fefefe] shadow-sm border-1 border-[#AF84DD] block sm:hidden"
                     onClick={() => navigate(`/admin/management-subject/${subject.clos.id}/clo/update`)}
                   >
-                    <i className="fa-solid fa-pen"></i>
+                    <i className="fa-solid fa-bars"></i>
                   </Button>
                 </Tooltip>
               </>
@@ -359,7 +354,7 @@ const Subject = (nav) => {
 
               <>
                 <Button
-                  color="primary" variant="ghost" className='hidden sm:block'
+                  className="bg-[#fefefe] shadow-sm border-1 border-[#AF84DD] hidden sm:block"
                   onClick={() => navigate(`/admin/management-subject/${subject.clos.id}/clo/create`)}
                 >
                   Tạo mới
@@ -368,13 +363,10 @@ const Subject = (nav) => {
                 <Tooltip title="Tạo mới">
                   <Button
                     isIconOnly
-                    variant="light"
-                    radius="full"
-                    size="sm"
-                    className="bg-[#AF84DD] block sm:hidden"
+                    className="bg-[#fefefe] shadow-sm border-1 border-[#AF84DD] block sm:hidden"
                     onClick={() => navigate(`/admin/management-subject/${subject.clos.id}/clo/create`)}
                   >
-                    <i className="fa-solid fa-plus"></i>
+                    <i className="fa-solid fa-bars"></i>
                   </Button>
                 </Tooltip>
               </>
@@ -384,11 +376,11 @@ const Subject = (nav) => {
         );
       case 'Chapter':
         return (
-          <div className='w-fit'>
+          <div className='flex w-fit justify-start items-center'>
             {subject.chapters.checkChapter ? (
               <>
                 <Button
-                  color="primary" variant="ghost" className='hidden sm:block'
+                  className="bg-[#fefefe] shadow-sm border-1 border-[#AF84DD] hidden sm:block"
                   onClick={() => navigate(`/admin/management-subject/${subject.chapters.id}/chapter/update`)}
                   disabled={!subject.chapters.checkCLo}
                 >
@@ -399,22 +391,18 @@ const Subject = (nav) => {
                 <Tooltip title="Cập nhật">
                   <Button
                     isIconOnly
-                    variant="light"
-                    radius="full"
-                    size="sm"
-                    className="bg-[#AF84DD] block sm:hidden"
+                    className="bg-[#fefefe] shadow-sm border-1 border-[#AF84DD] block sm:hidden"
                   // onClick={() => { handleEditClick(rubric.action) }}
                   >
-                    <i className="fa-solid fa-pen"></i>
+                    <i className="fa-solid fa-bars"></i>
                   </Button>
                 </Tooltip>
               </>
 
             ) : (
               <>
-
                 <Button
-                  color="primary" variant="ghost" className='hidden sm:block'
+                  className="bg-[#fefefe] shadow-sm border-1 border-[#AF84DD] hidden sm:block"
                   onClick={() => navigate(`/admin/management-subject/${subject.chapters.id}/chapter/create`)}
                   disabled={!subject.chapters.checkCLo}
                 >
@@ -424,13 +412,10 @@ const Subject = (nav) => {
                 <Tooltip title="Tạo mới">
                   <Button
                     isIconOnly
-                    variant="light"
-                    radius="full"
-                    size="sm"
-                    className="bg-[#AF84DD] block sm:hidden"
+                    className="bg-[#fefefe] shadow-sm border-1 border-[#AF84DD] block sm:hidden"
                   // onClick={() => { handleEditClick(rubric.action) }}
                   >
-                    <i className="fa-solid fa-plus"></i>
+                    <i className="fa-solid fa-bars"></i>
                   </Button>
                 </Tooltip>
               </>
@@ -439,53 +424,45 @@ const Subject = (nav) => {
         );
       case 'numberCreditsTheory':
         return (
-          <div className="flex flex-col">
+          <div className="flex w-fit justify-start items-center">
             <p className="text-bold text-small capitalize">{subject.numberCreditsTheory}</p>
           </div>
         );
       case 'numberCreditsPractice':
         return (
-          <div className="flex flex-col">
+          <div className="flex w-fit justify-start items-center">
             <p className="text-bold text-small capitalize">{subject.numberCreditsPractice}</p>
           </div>
         );
       case 'typesubject':
         return (
-          <div className="flex flex-col">
+          <div className="flex w-fit justify-start items-center">
             <p className="text-bold text-small capitalize">{subject.typesubject}</p>
           </div>
         );
       case 'createdAt':
         return (
-          <div className="flex flex-col">
+          <div className="flex w-fit justify-start items-center">
             <p className="text-bold text-small capitalize">{subject.createdAt}</p>
           </div>
         );
       case 'action':
         return (
-          <div className="flex items-center justify-center w-fit gap-2">
+          <div className="flex w-fit justify-start items-center gap-2">
             <Tooltip title="Chỉnh sửa">
               <Button
-                isIconOnly
-                variant="light"
-                radius="full"
-                size="sm"
-                className="bg-[#AF84DD]"
+                isIconOnly className="bg-[#fefefe] shadow-sm border-3 border-[#AF84DD]"
                 onClick={() => { handleEditClick(subject.Subject) }}
               >
-                <i className="fa-solid fa-pen text-xl text-[#020401]"></i>
+                <i className="fa-solid fa-pen text-xl sm:text-base"></i>
               </Button>
             </Tooltip>
             <Tooltip title="Xoá">
               <Button
-                isIconOnly
-                variant="light"
-                radius="full"
-                size="sm"
+                isIconOnly className="bg-[#fefefe] shadow-sm border-3 border-[#FF8077]"
                 onClick={() => { onOpen(); setDeleteId(subject.action); }}
-                className="bg-[#FF8077]"
               >
-                <i className="fa-solid fa-trash-can text-xl text-[#020401]"></i>
+                <i className="fa-solid fa-trash-can  text-xl sm:text-base"></i>
               </Button>
             </Tooltip>
           </div>
@@ -515,10 +492,10 @@ const Subject = (nav) => {
         <div className='block sm:hidden'>
           <h1 className="text-2xl pb-2 font-bold text-[#6366F1]">Danh sách Học phần</h1>
         </div>
-        <div className="flex justify-between gap-3 items-end">
+        <div className="flex flex-col sm:flex-row justify-between gap-3 items-end">
           <Input
             isClearable
-            classNames={{ base: 'w-full sm:max-w-[44%]', inputWrapper: 'border-1' }}
+            classNames={{ base: 'w-full  sm:max-w-[44%]', inputWrapper: 'border-1' }}
             placeholder="Tìm kiếm theo tên..."
             size="sm"
             startContent={<SearchIcon className="text-default-300" />}
@@ -527,31 +504,78 @@ const Subject = (nav) => {
             onClear={() => setFilterValue('')}
             onValueChange={onSearchChange}
           />
-          <div className="flex gap-3">
 
-            {/* <Tooltip
-            title=""
-            getPopupContainer={() =>
-              document.querySelector(".Quick__Option")
-            }
-          >
-            <Button
-              className="flex justify-center items-center p-4"
-              isIconOnly
-              variant="light"
-              radius="full"
-              onClick={()=>{
-                //getSelectedItems
-                //console.log('Option selected',());
-                
-                navigateGradingGroup(ValidKeys)
-              }
-              
-              }
-            >
-              <span className="text-[#475569] text-lg font-bold">Chấm theo nhóm</span>
-            </Button>
-          </Tooltip> */}
+
+          <div className='flex-1 flex items-center justify-start sm:justify-end'>
+            <div className='flex gap-2 h-fit justify-center sm:justify-start items-center'>
+              <Dropdown>
+                <DropdownTrigger className="sm:flex">
+                  <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
+                    Cột
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  disallowEmptySelection
+                  aria-label="Table Columns"
+                  closeOnSelect={false}
+                  selectedKeys={visibleColumns}
+                  selectionMode="multiple"
+                  onSelectionChange={setVisibleColumns}
+                >
+                  {columns.map((column) => (
+                    <DropdownItem key={column.uid} className="capitalize">
+                      {capitalize(column.name)}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+              <Dropdown>
+                <DropdownTrigger className="sm:flex">
+                  <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
+                    Lọc theo loại
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  disallowEmptySelection
+                  aria-label="Status Filter"
+                  closeOnSelect={true}
+                  selectedKeys={new Set([statusFilter === 'all' ? 'all' : statusFilter])}
+                  selectionMode="single"
+                  onSelectionChange={(keys) => {
+                    const selectedKey = Array.from(keys)[0] || 'all';
+                    setStatusFilter(selectedKey);
+                  }}
+                >
+                  <DropdownItem key="all" className="capitalize">Tất cả loại</DropdownItem>
+                  {statusOptions.map((option) => (
+                    <DropdownItem key={option.id} className="capitalize">
+                      {option.name}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+              <Dropdown>
+                <DropdownTrigger className="sm:flex">
+                  <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
+                    Lọc theo ngày
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  disallowEmptySelection
+                  aria-label="Date Filter"
+                  closeOnSelect={true}
+                  selectedKeys={new Set([dateFilter])}
+                  selectionMode="single"
+                  onSelectionChange={(keys) => {
+                    const selectedKey = Array.from(keys)[0] || 'newest';
+                    setDateFilter(selectedKey);
+                  }}
+                >
+                  <DropdownItem key="newest" className="capitalize">Mới nhất</DropdownItem>
+                  <DropdownItem key="oldest" className="capitalize">Cũ nhất</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
           </div>
         </div>
         <div className="w-full flex  sm:items-center sm:justify-between">
@@ -596,112 +620,49 @@ const Subject = (nav) => {
 
   return (
     <>
-      <div className='w-full flex justify-between'>
+      <div className='w-full flex justify-between items-center'>
         <div className='h-full my-auto p-5 hidden sm:block'>
           <div>
-            <h1 className="text-2xl pb-2 font-bold text-[#6366F1]">Danh sách Học phần</h1>
+            <h1 className="text-2xl pb-2 font-bold text-[#4F46E5]">Danh sách Học phần</h1>
           </div>
           <BackButton />
         </div>
-        <div className='w-full sm:w-fit bg-[white] border-slate-300 rounded-xl border-2 p-2 justify-start items-center flex gap-4 flex-col mb-4'>
-          <div className='flex justify-center w-full flex-wrap items-center gap-1'>
+        <div className='w-full sm:w-auto bg-[#fefefe] border-2 border-[#4F46E5] mb-2 shadow-sm rounded-xl p-4 flex gap-4 flex-col sm:flex-row items-center'>
+          <div className='flex flex-wrap justify-center gap-2'>
             <Button
-              className='bg-[#AF84DD] '
-              endContent={<PlusIcon />}
+              className='bg-transparent  shadow-sm border-2 border-[#AF84DD] hover:bg-[#AF84DD]'
+              endContent={<i className="fas fa-plus"></i>} // Icon thêm mới
               onClick={handleAddClick}
             >
               Tạo mới
             </Button>
             <Button
-              className='bg-[#FF8077] '
-              endContent={<PlusIcon />}
+              className='bg-transparent shadow-sm border-2 border-[#FF8077]  hover:bg-[#FF8077]'
+              endContent={<i className="fas fa-eye-slash"></i>} // Icon ẩn nhiều
               onClick={onOpen}
               disabled={selectedKeys.size === 0}
             >
               Ẩn nhiều
             </Button>
             <Button
-              endContent={<PlusIcon />}
-              onClick={() => handleNavigate(
-                `/admin/management-subject/store`
-              )}
+              className='bg-transparent shadow-sm border-2 border-[#6B7280] hover:bg-[#6B7280]'
+              endContent={<i className="fas fa-archive"></i>} // Icon kho lưu trữ
+              onClick={() => handleNavigate(`/admin/management-subject/store`)}
             >
               Kho lưu trữ
             </Button>
-          </div>
-          <div className='flex gap-2 h-fit justify-center sm:justify-start flex-wrap items-center'>
-            <Dropdown>
-              <DropdownTrigger className="sm:flex">
-                <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
-                Cột
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={visibleColumns}
-                selectionMode="multiple"
-                onSelectionChange={setVisibleColumns}
-              >
-                {columns.map((column) => (
-                  <DropdownItem key={column.uid} className="capitalize">
-                    {capitalize(column.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            <Dropdown>
-              <DropdownTrigger className="sm:flex">
-                <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
-                Lọc theo loại
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Status Filter"
-                closeOnSelect={true}
-                selectedKeys={new Set([statusFilter === 'all' ? 'all' : statusFilter])}
-                selectionMode="single"
-                onSelectionChange={(keys) => {
-                  const selectedKey = Array.from(keys)[0] || 'all';
-                  setStatusFilter(selectedKey);
-                }}
-              >
-                <DropdownItem key="all" className="capitalize">Tất cả loại</DropdownItem>
-                {statusOptions.map((option) => (
-                  <DropdownItem key={option.id} className="capitalize">
-                    {option.name}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-
-
-            <Dropdown>
-              <DropdownTrigger className="sm:flex">
-                <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
-                Lọc theo ngày
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Date Filter"
-                closeOnSelect={true}
-                selectedKeys={new Set([dateFilter])}
-                selectionMode="single"
-                onSelectionChange={(keys) => {
-                  const selectedKey = Array.from(keys)[0] || 'newest';
-                  setDateFilter(selectedKey);
-                }}
-              >
-                <DropdownItem key="newest" className="capitalize">Mới nhất</DropdownItem>
-                <DropdownItem key="oldest" className="capitalize">Cũ nhất</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
+            <Button
+              className='bg-transparent border-2 border-[#FF9908]  hover:bg-[#FF9908]'
+              endContent={<i className="fas fa-file-excel"></i>} // Icon Excel
+            //onClick={handleExcelImport} // Hàm xử lý nhập Excel
+            >
+              Nhập dữ liệu Excel
+            </Button>
           </div>
         </div>
       </div>
+
+
       <Table
         aria-label="Example table with dynamic content"
         bottomContent={bottomContent}
@@ -711,6 +672,7 @@ const Subject = (nav) => {
           table: 'overflow-visible',
           th: 'text-small',
         }}
+        color={"primary"}
         selectedKeys={selectedKeys}
         selectionMode="multiple"
         sortDescriptor={sortDescriptor}

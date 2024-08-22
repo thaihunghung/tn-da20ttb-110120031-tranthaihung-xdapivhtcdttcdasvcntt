@@ -56,15 +56,15 @@ export const fetchSujectDataGrading = async () => {
 
 const columns = [
   {name: "id", uid: "id", sortable: true},
-  {name: "name", uid: "name", sortable: true},
-  {name: "Code", uid: "subjectCode", sortable: true},
-  {name: "Clo", uid: "Clo", sortable: true},
-  {name: "Chapter", uid: "Chapter", sortable: true},
-  {name: "numberCreditsTheory", uid: "numberCreditsTheory", sortable: true},
-  {name: "numberCreditsPractice", uid: "numberCreditsPractice", sortable: true},
-  {name: "typesubject", uid: "typesubject", sortable: true},
-  {name: "createdAt", uid: "createdAt", sortable: true},
-  {name: "action", uid: "action", sortable: true},
+  {name: "Tên HP", uid: "name", sortable: true},
+  {name: "Mã HP", uid: "subjectCode", sortable: true},
+  {name: "QL_CĐR", uid: "Clo", sortable: true},
+  {name: "QL_Chương", uid: "Chapter", sortable: true},
+  {name: "STC lý thuyết", uid: "numberCreditsTheory", sortable: true},
+  {name: "STC thực hành", uid: "numberCreditsPractice", sortable: true},
+  {name: "Loại HP", uid: "typesubject", sortable: true},
+  {name: "Ngày Tạo", uid: "createdAt", sortable: true},
+  {name: "Thao tác", uid: "action", sortable: true},
 ];
 
 const statusOptions = [

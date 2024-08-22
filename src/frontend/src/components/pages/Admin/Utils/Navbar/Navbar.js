@@ -173,7 +173,7 @@ function Nav(props) {
           <div className="flex flex-1 justify-start items-center ">
             <BackButton />
             <div className="Header-mobile-right" onClick={showDrawer}>
-              <i className="fa-solid fa-bars "></i>
+              <i className="fa-solid fa-bars"></i>
             </div>
           </div>
           <div>

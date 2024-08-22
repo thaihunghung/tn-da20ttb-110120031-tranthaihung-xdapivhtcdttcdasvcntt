@@ -6,9 +6,12 @@ import {
   ModalBody,
   ModalFooter,
   Input,
+  Select,
+  SelectItem,
   Button,
   Textarea,
 } from "@nextui-org/react";
+import { capitalize } from "../../Utils/capitalize";
 
 function ModalUpdateClo({ isOpen, onOpenChange, onSubmit, editData, setEditData }) {
 
@@ -20,7 +23,18 @@ function ModalUpdateClo({ isOpen, onOpenChange, onSubmit, editData, setEditData 
       [name]: value,
     }));
   };
-
+  const DataType = [
+    { key: 'Kiến thức', Type: 'Kiến thức' },
+    { key: 'Thái độ', Type: 'Thái độ' },
+    { key: 'Kỹ năng', Type: 'Kỹ năng' },
+  ];
+  const handleSelectChange = (event) => {
+    const { value } = event.target; // Lấy giá trị từ event.target
+    setEditData((prev) => ({
+      ...prev,
+      type: value,
+    }));
+  };
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent>
@@ -54,6 +68,20 @@ function ModalUpdateClo({ isOpen, onOpenChange, onSubmit, editData, setEditData 
                   minRows={4} 
                   maxRows={6} 
                 />
+                <Select
+                        label="Loại CĐR"
+                        name="typesubject"
+                        defaultSelectedKeys={[editData.type]}
+                        value={editData.type || ''}
+                        onChange={(value) => handleSelectChange(value)}
+                        fullWidth
+                      >
+                        {DataType.map((type) => (
+                          <SelectItem key={type.key} value={type.Type}>
+                            {capitalize(type.Type)}
+                          </SelectItem>
+                        ))}
+                      </Select>
               </form>
             </ModalBody>
             <ModalFooter>

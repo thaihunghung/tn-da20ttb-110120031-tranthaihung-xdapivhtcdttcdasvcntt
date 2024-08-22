@@ -31,8 +31,9 @@ import { axiosAdmin } from '../../../../../service/AxiosAdmin';
 import ModalUpdateSubject from './ModalUpdateSubject';
 import ModalAddSubject from './ModalAddSubject';
 import { PlusIcon } from '../../../../../public/PlusIcon';
+import ModalOpenExcelSubject from './ModalOpenExcelSubject';
 
-const INITIAL_VISIBLE_COLUMNS = ['name', 'subjectCode', 'Clo', 'Chapter', 'action'];
+const INITIAL_VISIBLE_COLUMNS = ['name', 'subjectCode','description', 'Clo', 'Chapter', 'action'];
 const COMPACT_VISIBLE_COLUMNS = ['name', 'Clo', 'Chapter', 'action'];
 
 const Subject = (nav) => {
@@ -64,7 +65,7 @@ const Subject = (nav) => {
   const [selectedKeys, setSelectedKeys] = useState(new Set());
   const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
   const [statusFilter, setStatusFilter] = useState('all');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(15);
   const [deleteId, setDeleteId] = useState(null);
   const [sortDescriptor, setSortDescriptor] = useState({
     column: 'age',
@@ -323,6 +324,15 @@ const Subject = (nav) => {
             <p className="text-bold text-small text-justify">{cellValue}</p>
           </div>
         );
+        case 'description':
+          return (
+            <div className="flex w-fit justify-start items-center">
+              <p className="text-bold text-small text-justify">{cellValue}</p>
+            </div>
+          );
+
+
+        
       case 'Clo':
         return (
           <div className='flex w-fit justify-start items-center'>
@@ -617,7 +627,10 @@ const Subject = (nav) => {
   }, [page, pages, selectedKeys, Subjects]);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
+  const [isExcelModalOpen, setIsExcelModalOpen] = useState(false);
+  const handleExcelClick = () => {
+    setIsExcelModalOpen(true);
+};
   return (
     <>
       <div className='w-full flex justify-between items-center'>
@@ -654,7 +667,7 @@ const Subject = (nav) => {
             <Button
               className='bg-transparent border-2 border-[#FF9908]  hover:bg-[#FF9908]'
               endContent={<i className="fas fa-file-excel"></i>} // Icon Excel
-            //onClick={handleExcelImport} // Hàm xử lý nhập Excel
+              onClick={handleExcelClick} 
             >
               Nhập dữ liệu Excel
             </Button>
@@ -662,7 +675,10 @@ const Subject = (nav) => {
         </div>
       </div>
 
-
+      <ModalOpenExcelSubject                
+                isOpen={isExcelModalOpen}
+                onOpenChange={setIsExcelModalOpen}
+            />
       <Table
         aria-label="Example table with dynamic content"
         bottomContent={bottomContent}

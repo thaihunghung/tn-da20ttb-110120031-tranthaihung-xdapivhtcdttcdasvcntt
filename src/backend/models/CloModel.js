@@ -15,6 +15,10 @@ const CloModel = sequelize.define('CLO', {
     type: DataTypes.TEXT,
     allowNull: false
   },
+  type: {
+    type: DataTypes.ENUM('Kiến thức', 'Thái độ', 'Kỹ năng'),
+    allowNull: false
+  },
   isDelete: {
     type: DataTypes.TINYINT,
     defaultValue: 0

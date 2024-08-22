@@ -68,6 +68,21 @@ function ModalAddClo({
     );
   };
 
+  const DataType = [
+    { key: 'Kiến thức', Type: 'Kiến thức' },
+    { key: 'Thái độ', Type: 'Thái độ' },
+    { key: 'Kỹ năng', Type: 'Kỹ năng' },
+  ];
+
+  const handleSelectChange = (event) => {
+    const { value } = event.target; // Lấy giá trị từ event.target
+    setEditData((prev) => ({
+      ...prev,
+      type: value,
+    }));
+  };
+  
+
   return (
     <Modal
       className="max-w-lg"
@@ -135,6 +150,19 @@ function ModalAddClo({
                         minRows={4}
                         maxRows={6}
                       />
+                      <Select
+                        label="Loại CĐR"
+                        name="typesubject"
+                        value={editData.type || ''}
+                        onChange={(value) => handleSelectChange(value)}
+                        fullWidth
+                      >
+                        {DataType.map((type) => (
+                          <SelectItem key={type.key} value={type.Type}>
+                            {capitalize(type.Type)}
+                          </SelectItem>
+                        ))}
+                      </Select>
                     </form>
                   </div>
                 </Tab>

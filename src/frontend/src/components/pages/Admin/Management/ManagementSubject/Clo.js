@@ -56,6 +56,15 @@ const Clo = (nav) => {
             title: "Mô tả",
             dataIndex: "description",
             render: (record) => (
+                <div className="text-sm max-w-[300px]">
+                    <p className="font-medium">{record}</p>
+                </div>
+            ),
+        },
+        {
+            title: "Loại CĐR",
+            dataIndex: "type",
+            render: (record) => (
                 <div className="text-sm">
                     <p className="font-medium">{record}</p>
                 </div>
@@ -123,19 +132,21 @@ const Clo = (nav) => {
                 key: clo?.clo_id,
                 name: clo?.cloName,
                 description: clo?.description,
+                type: clo?.type,
                 isDeleted: clo?.isDelete,
                 action: {
                     _id: clo?.clo_id,
                     CLO: {
                         clo_id: clo?.clo_id,
                         cloName: clo?.cloName,
+                        type: clo?.type,
                         description: clo?.description,
                         subject_id: clo?.subject_id,
                     }
                 }
             }));
             setPosListData(updatedPoData);
-            console.log(response.data);
+            console.log(updatedPoData[0].action.CLO);
         } catch (error) {
             console.error("Error: " + error.message);
         }
@@ -181,12 +192,14 @@ const Clo = (nav) => {
     const [newClo, setNewClo] = useState({
         cloName: "",
         description: "",
+        type: "",
         subject_id: "",
     });
     const [editClo, setEditClo] = useState({
         clo_id: "",
         cloName: "",
         description: "",
+        type: "",
         subject_id: "",
     });
 
@@ -195,6 +208,7 @@ const Clo = (nav) => {
             console.error("No clo selected for editing");
             return;
         }
+        
         try {
             const response = await axiosAdmin.put(`/clo/${clo_id}`, { data: values });
             getAllClo();
@@ -224,6 +238,7 @@ const Clo = (nav) => {
         const data = {
             cloName: newClo.cloName,
             description: newClo.description,
+            type: newClo.type,
             subject_id: id,
         }
         try {
@@ -231,6 +246,7 @@ const Clo = (nav) => {
             if (response.status === 201) {
                 message.success('Data saved successfully');
                 setNewClo(UnValueModalNew)
+                getAllClo()
             } else {
                 message.error(response.data.message || 'Error saving data');
             }
@@ -240,6 +256,7 @@ const Clo = (nav) => {
         }
     };
     const handleEditClick = (clo) => {
+        console.log("clo",clo)
         setEditClo(clo);
         setIsEditModalOpen(true);
     };

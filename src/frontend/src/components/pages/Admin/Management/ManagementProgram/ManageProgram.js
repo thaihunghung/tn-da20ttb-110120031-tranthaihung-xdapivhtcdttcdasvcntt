@@ -120,7 +120,7 @@ const ManageProgram = (nav) => {
                 setEditData={setEditPrograms}
                 loadData={allProgramNotIsDelete}
             />
-             <ModalOpenExcel                
+            <ModalOpenExcel                
                 isOpen={isExcelModalOpen}
                 onOpenChange={setIsExcelModalOpen}
             />

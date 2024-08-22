@@ -58,6 +58,7 @@ const columns = [
   {name: "id", uid: "id", sortable: true},
   {name: "Tên HP", uid: "name", sortable: true},
   {name: "Mã HP", uid: "subjectCode", sortable: true},
+  {name: "Mô tả", uid: "description", sortable: true},
   {name: "QL_CĐR", uid: "Clo", sortable: true},
   {name: "QL_Chương", uid: "Chapter", sortable: true},
   {name: "STC lý thuyết", uid: "numberCreditsTheory", sortable: true},

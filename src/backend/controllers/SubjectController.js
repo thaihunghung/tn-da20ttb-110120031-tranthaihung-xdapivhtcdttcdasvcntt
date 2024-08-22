@@ -496,16 +496,42 @@ const SubjectController = {
 
   getFormPost: async (req, res) => {
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('SUBJECT');
+    const SubjectWorksheet = workbook.addWorksheet('Subject');
 
-    worksheet.columns = [
-      { header: 'Tên Subject', key: 'subjectName', width: 30 },
-      { header: 'subjectCode format:000000', key: 'subjectCode', width: 30 },
-      { header: 'Mô tả', key: 'description', width: 30 },
+    SubjectWorksheet.columns = [
+      { header: 'Tên HP', key: 'subjectName', width: 30 },
+      { header: 'Mã HP', key: 'subjectCode', width: 30 },
+      { header: 'Mô tả', key: 'description', width: 100 },
       { header: 'Số tín chỉ', key: 'numberCredits', width: 10 },
       { header: 'STC LT', key: 'numberCreditsTheory', width: 10 },
       { header: 'STC TH', key: 'numberCreditsPractice', width: 10 },
       { header: 'Loại học phần (Đại cương, Cơ sở ngành, Chuyên ngành, Thực tập và Đồ án)', key: 'typesubject', width: 40 },
+    ];
+
+    const clooWorksheet = workbook.addWorksheet('CLO');
+    clooWorksheet.columns = [
+      { header: 'Mã Môn học', key: 'subjectCode', width: 20 },
+      { header: 'Mã CĐR', key: 'cloName', width: 20 },
+      { header: 'Mô tả', key: 'description', width: 65 },
+    ];
+
+    const chapterWorksheet = workbook.addWorksheet('Chapter');
+    chapterWorksheet.columns = [
+      { header: 'Mã Môn học', key: 'subjectCode', width: 20 },
+      { header: 'Mã Chapter', key: 'chapterName', width: 20 },
+      { header: 'Mô tả', key: 'description', width: 65 },
+    ];
+
+    const CLO_PLOWorksheet = workbook.addWorksheet('CLO_PLO');
+    CLO_PLOWorksheet.columns = [
+      { header: 'Mã CLO', key: 'cloName', width: 20 },
+      { header: 'Mã PLO', key: 'ploName', width: 20 },
+    ];
+
+    const CLO_CHAPTERWorksheet = workbook.addWorksheet('CLO_CHAPTER');
+    CLO_CHAPTERWorksheet.columns = [
+      { header: 'Mã CLO', key: 'cloName', width: 20 },
+      { header: 'Mã CHAPTER', key: 'chapterName', width: 20 },
     ];
 
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');

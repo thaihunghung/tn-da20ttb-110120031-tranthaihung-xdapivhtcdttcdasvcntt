@@ -95,7 +95,7 @@ function ModalAddChapter({
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="text-[#FF9908]">Create Chapter</ModalHeader>
+            <ModalHeader className="text-[#FF9908]">Tạo chương mới</ModalHeader>
             <ModalBody>
               <Tabs
                 aria-label="Tabs colors"
@@ -115,7 +115,7 @@ function ModalAddChapter({
                     >
                       <Input
                         fullWidth
-                        label="Clo Name"
+                        label="Tên chương"
                         name="chapterName"
                         value={editData.chapterName || ''}
                         onChange={handleChange}
@@ -123,9 +123,9 @@ function ModalAddChapter({
                       />
                       <Textarea
                         fullWidth
-                        label="Description"
+                        label="Mô tả"
                         name="description"
-                        placeholder="Enter your description"
+                        placeholder="Nhập mô tả"
                         value={editData.description || ''}
                         onChange={handleChange}
                         rows={4}
@@ -204,7 +204,7 @@ function ModalAddChapter({
             </ModalBody>
             <ModalFooter>
               <Button variant="light" onClick={onClose}>
-                Cancel
+                Hủy
               </Button>
               {activeTab !== 'Excel' && (
                 <Button
@@ -216,7 +216,7 @@ function ModalAddChapter({
                     onClose();
                   }}
                 >
-                  Create
+                  Tạo mới
                 </Button>
               )}
             </ModalFooter>

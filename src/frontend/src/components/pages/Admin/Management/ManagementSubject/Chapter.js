@@ -122,7 +122,7 @@ const Chapter = (nav) => {
         setSelectedRowKeys([]);
         setSelectedRow([]);
     };
-    const getAllChapter = async () => {
+    const getAllChapter = async (id) => {
         try {
             const response = await axiosAdmin.get(`/chapters?subject_id=${id}&isDelete=false`);
             const updatedPoData = response.data.map((chapter) => {
@@ -157,7 +157,7 @@ const Chapter = (nav) => {
         console.log(data)
         try {
             const response = await axiosAdmin.put('/chapters/softDelete', { data });
-            await getAllChapter();
+            await getAllChapter(id);
             handleUnSelect();
             message.success(response.data.message);
         } catch (error) {
@@ -169,7 +169,7 @@ const Chapter = (nav) => {
     const handleSoftDeleteById = async (_id) => {
         try {
             const response = await axiosAdmin.put(`/chapter/${_id}/softDelete`);
-            await getAllChapter();
+            await getAllChapter(id);
             handleUnSelect();
             message.success(response.data.message);
         } catch (error) {
@@ -179,7 +179,7 @@ const Chapter = (nav) => {
     };
 
     useEffect(() => {
-        getAllChapter()
+        getAllChapter(id)
         getSubjectById()
         const handleResize = () => {
             if (window.innerWidth < 1024) {
@@ -217,8 +217,9 @@ const Chapter = (nav) => {
         }
         try {
             const response = await axiosAdmin.put(`/chapter/${chapter_id}`, { data: values });
-            getAllChapter();
+            
             message.success(response.data.message);
+            getAllChapter(id);
         } catch (error) {
             console.error("Error updating chapter:", error);
             message.error("Error updating chapter: " + (error.response?.data?.message || 'Internal server error'));

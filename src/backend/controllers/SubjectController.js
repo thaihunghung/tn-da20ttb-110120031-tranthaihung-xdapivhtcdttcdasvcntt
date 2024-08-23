@@ -15,6 +15,7 @@ const TeacherModel = require("../models/TeacherModel");
 const RubricModel = require("../models/RubricModel");
 const CourseModel = require("../models/CourseModel");
 const AssessmentModel = require("../models/AssessmentModel");
+const PloModel = require("../models/PloModel");
 
 
 
@@ -149,7 +150,7 @@ const SubjectController = {
     }
   },
 
-  
+
 
   getArrayIDCloBySubjectId: async (req, res) => {
     try {
@@ -218,7 +219,7 @@ const SubjectController = {
       if (!subject) {
         return res.status(404).json({ message: 'Subject not found' });
       }
-      const rubric = await RubricModel.findAll({ where: { subject_id: subject_id, teacher_id:teacher_id } });
+      const rubric = await RubricModel.findAll({ where: { subject_id: subject_id, teacher_id: teacher_id } });
       if (!rubric) {
         return res.status(404).json({ message: 'rubric not found' });
       }
@@ -257,25 +258,25 @@ const SubjectController = {
 
   getByCourseId: async (req, res) => {
     try {
-        const { course_id } = req.params;
+      const { course_id } = req.params;
 
-        // Find the course by course_id
-        const course = await CourseModel.findOne({ where: { course_id: course_id } });
-        if (!course) {
-            return res.status(404).json({ message: 'Course not found' });
-        }
+      // Find the course by course_id
+      const course = await CourseModel.findOne({ where: { course_id: course_id } });
+      if (!course) {
+        return res.status(404).json({ message: 'Course not found' });
+      }
 
-        // Find the subject by subject_id from the found course
-        const subject = await SubjectModel.findOne({ where: { subject_id: course.subject_id } });
-        if (!subject) {
-            return res.status(404).json({ message: 'Subject not found' });
-        }
+      // Find the subject by subject_id from the found course
+      const subject = await SubjectModel.findOne({ where: { subject_id: course.subject_id } });
+      if (!subject) {
+        return res.status(404).json({ message: 'Subject not found' });
+      }
 
-        // Send the subject as a response
-        res.status(200).json(subject);
+      // Send the subject as a response
+      res.status(200).json(subject);
     } catch (error) {
-        console.error('Error finding subject:', error);
-        res.status(500).json({ message: 'Server error' });
+      console.error('Error finding subject:', error);
+      res.status(500).json({ message: 'Server error' });
     }
   },
 
@@ -612,75 +613,82 @@ const SubjectController = {
     if (!req.files || req.files.length === 0) {
       return res.status(400).send('No file uploaded.');
     }
-  
+
     const teacher_id = req.user.teacher_id;
-    
-    let teacher;
+
     try {
-      teacher = await TeacherModel.findOne({ where: { teacher_id: teacher_id } });
+      // Verify teacher exists
+      const teacher = await TeacherModel.findOne({ where: { teacher_id } });
       if (!teacher) {
         return res.status(404).json({ message: 'Teacher not found' });
       }
-    } catch (error) {
-      return res.status(500).json({ message: 'Error fetching teacher data' });
-    }
-  
-    const uploadDirectory = path.join(__dirname, '../uploads');
-    const filename = req.files[0].filename;
-    const filePath = path.join(uploadDirectory, filename);
-  
-    const workbook = new ExcelJS.Workbook();
-    try {
+
+      // Define paths and load the Excel workbook
+      const uploadDirectory = path.join(__dirname, '../uploads');
+      const filename = req.files[0].filename;
+      const filePath = path.join(uploadDirectory, filename);
+
+      const workbook = new ExcelJS.Workbook();
       await workbook.xlsx.readFile(filePath);
-    } catch (error) {
-      fs.unlinkSync(filePath); // Xóa tệp nếu có lỗi xảy ra
-      return res.status(500).json({ message: 'Error reading the uploaded file' });
-    }
-  
-    const subjects = await SubjectModel.findAll({
-      attributes: ['subjectCode'],
-    });
-    const subjectCodes = subjects.map(subject => subject.subjectCode);
-    const SubjectWorksheet = workbook.getWorksheet('Subject');
-    const CLOWorksheet = workbook.getWorksheet('CLO');
 
-    const SubjectData = [];
-    const CLOData = [];
+      // Fetch existing data
+      const [subjects, clos, chapters, PloClos, CloChapters] = await Promise.all([
+        SubjectModel.findAll({ attributes: ['subject_id', 'subjectCode'] }),
+        CloModel.findAll({ attributes: ['cloName'] }),
+        ChapterModel.findAll({ attributes: ['chapterName'] }),
+        PloCloModel.findAll({
+          include: [
+            { model: PloModel, attributes: ['ploName'] },
+            { model: CloModel, attributes: ['cloName'] },
+          ],
+        }),
+        CloChapterModel.findAll({
+          include: [
+            { model: CloModel, attributes: ['cloName'] },
+            { model: ChapterModel, attributes: ['chapterName'] },
+          ],
+        }),
+      ]);
 
-  
-    
+      // Prepare data from the database
+      const PloClosCodes = PloClos.map(item => ({
+        cloName: item.CLO.cloName,
+        ploName: item.PLO.ploName,
+      }));
+      const CloChaptersCodes = CloChapters.map(item => ({
+        cloName: item.CLO.cloName,
+        chapterName: item.Chapter.chapterName,
+      }));
+
+      // Extract data from the Excel sheets
+      const SubjectWorksheet = workbook.getWorksheet('Subject');
+      const CLOWorksheet = workbook.getWorksheet('CLO');
+      const ChapterWorksheet = workbook.getWorksheet('Chapter');
+      const CLO_PLOWorksheet = workbook.getWorksheet('CLO_PLO');
+      const CLO_CHAPTERWorksheet = workbook.getWorksheet('CLO_CHAPTER');
+
+      const SubjectData = [];
+      const CLOData = [];
+      const ChapterData = [];
+      const CLO_PLOData = [];
+      const CLO_CHAPTERData = [];
+
+      // Read each row and push to respective arrays
       SubjectWorksheet.eachRow((row, rowNumber) => {
         if (rowNumber > 1) {
-          const numberCredits = row.getCell(4).value;
-          const numberCreditsTheory = row.getCell(5).value;
-          const numberCreditsPractice = row.getCell(6).value;
-          const typesubject = row.getCell(7).value;
-  
-          // if (
-          //   isNaN(numberCredits) ||
-          //   isNaN(numberCreditsTheory) ||
-          //   isNaN(numberCreditsPractice)
-          // ) {
-          //   throw new Error(`Invalid number values at row ${rowNumber}`);
-          // }
-  
-          // if (!validTypes.includes(typesubject)) {
-          //   throw new Error(`Invalid type subject at row ${rowNumber}`);
-          // }
-  
           SubjectData.push({
             subjectName: row.getCell(1).value,
             subjectCode: row.getCell(2).value,
             description: row.getCell(3).value,
             teacher_id: teacher.teacher_id,
-            numberCredits,
-            numberCreditsTheory,
-            numberCreditsPractice,
-            typesubject,
+            numberCredits: row.getCell(4).value,
+            numberCreditsTheory: row.getCell(5).value,
+            numberCreditsPractice: row.getCell(6).value,
+            typesubject: row.getCell(7).value,
           });
         }
       });
-    
+
       CLOWorksheet.eachRow((row, rowNumber) => {
         if (rowNumber > 1) {
           CLOData.push({
@@ -691,18 +699,139 @@ const SubjectController = {
           });
         }
       });
-    const filteredSubjectData = SubjectData.filter(subject => !subjectCodes.includes(subject.subjectCode));
-  
-    console.log("CLOData");  console.log(CLOData);
-    fs.unlinkSync(filePath); // Xóa tệp sau khi đã xử lý xong
-  
-    // try {
-    //   const createdSubject = await SubjectModel.bulkCreate(filteredSubjectData);
-    //   res.status(201).json({ message: 'Data saved successfully', data: createdSubject });
-    // } catch (error) {
-    //   console.error('Error saving data to the database:', error);
-    //   res.status(500).json({ message: 'Error saving data to the database' });
-    // }
+
+      ChapterWorksheet.eachRow((row, rowNumber) => {
+        if (rowNumber > 1) {
+          ChapterData.push({
+            subjectCode: row.getCell(1).value,
+            chapterName: row.getCell(2).value,
+            description: row.getCell(3).value,
+          });
+        }
+      });
+
+      CLO_PLOWorksheet.eachRow((row, rowNumber) => {
+        if (rowNumber > 1) {
+          CLO_PLOData.push({
+            cloName: row.getCell(1).value,
+            ploName: row.getCell(2).value,
+          });
+        }
+      });
+
+      CLO_CHAPTERWorksheet.eachRow((row, rowNumber) => {
+        if (rowNumber > 1) {
+          CLO_CHAPTERData.push({
+            cloName: row.getCell(1).value,
+            chapterName: row.getCell(2).value,
+          });
+        }
+      });
+
+      // Filter and insert new subjects
+      const filteredSubjectData = SubjectData.filter(subject => !subjects.some(s => s.subjectCode === subject.subjectCode));
+      const createdSubjects = filteredSubjectData.length > 0 ? await SubjectModel.bulkCreate(filteredSubjectData) : [];
+      const allSubjects = [...subjects, ...createdSubjects];
+
+      // Create CLO and Chapter results
+      const CLOResults = CLOData.map(item => {
+        const subject = allSubjects.find(s => s.subjectCode === item.subjectCode);
+        if (subject) {
+          return {
+            subject_id: subject.subject_id,
+            cloName: item.cloName,
+            description: item.description,
+            type: item.type,
+          };
+        }
+        return null;
+      }).filter(result => result && !clos.some(c => c.cloName === result.cloName));
+
+      const ChapterResults = ChapterData.map(item => {
+        const subject = allSubjects.find(s => s.subjectCode === item.subjectCode);
+        if (subject) {
+          return {
+            subject_id: subject.subject_id,
+            chapterName: item.chapterName,
+            description: item.description,
+          };
+        }
+        return null;
+      }).filter(result => result && !chapters.some(c => c.chapterName === result.chapterName));
+
+      await Promise.all([
+        CLOResults.length > 0 && CloModel.bulkCreate(CLOResults),
+        ChapterResults.length > 0 && ChapterModel.bulkCreate(ChapterResults),
+      ]);
+
+      // Fetch and process PLO-CLO and Chapter-CLO IDs
+      const fetchPloCLOIds = async (cloName, ploName) => {
+        try {
+          const clo = await CloModel.findOne({ where: { cloName } });
+          const plo = await PloModel.findOne({ where: { ploName } });
+          if (plo && clo) {
+            return { clo_id: clo.clo_id, plo_id: plo.plo_id };
+          }
+          return null;
+        } catch (error) {
+          console.error('Error fetching PLO or CLO:', error);
+          return null;
+        }
+      };
+
+      const fetchChapterCLOIds = async (cloName, chapterName) => {
+        try {
+          const clo = await CloModel.findOne({ where: { cloName } });
+          const chapter = await ChapterModel.findOne({ where: { chapterName } });
+          if (chapter && clo) {
+            return { clo_id: clo.clo_id, chapter_id: chapter.chapter_id };
+          }
+          return null;
+        } catch (error) {
+          console.error('Error fetching Chapter or CLO:', error);
+          return null;
+        }
+      };
+
+      // Process and bulk create PLO-CLO and Chapter-CLO
+      const PloClosNamePairs = PloClosCodes.map(item => `${item.cloName}-${item.ploName}`);
+      const CloChaptersNamePairs = CloChaptersCodes.map(item => `${item.cloName}-${item.chapterName}`);
+
+      const filteredCLO_PLOData = CLO_PLOData.filter(item => {
+        const namePair = `${item.cloName}-${item.ploName}`;
+        return !PloClosNamePairs.includes(namePair);
+      });
+
+      const filteredCLO_CHAPTERData = CLO_CHAPTERData.filter(item => {
+        const namePair = `${item.cloName}-${item.chapterName}`;
+        return !CloChaptersNamePairs.includes(namePair);
+      });
+
+      const PloClosIds = await Promise.all(
+        filteredCLO_PLOData.map(async item => await fetchPloCLOIds(item.cloName, item.ploName))
+      );
+
+      const filteredPloClosIds = PloClosIds.filter(id => id !== null);
+
+      const ChapterClosIds = await Promise.all(
+        filteredCLO_CHAPTERData.map(async item => await fetchChapterCLOIds(item.cloName, item.chapterName))
+      );
+
+      const filteredChapterClosIds = ChapterClosIds.filter(id => id !== null);
+
+      await Promise.all([
+        filteredPloClosIds.length > 0 && PloCloModel.bulkCreate(filteredPloClosIds),
+        filteredChapterClosIds.length > 0 && CloChapterModel.bulkCreate(filteredChapterClosIds),
+      ]);
+
+      // Clean up the uploaded file
+      fs.unlinkSync(filePath);
+
+      return res.status(201).json({ message: 'Data saved successfully' });
+    } catch (error) {
+      console.error('Error in processSaveTemplateSubject:', error.message);
+      return res.status(500).json({ message: 'Server error', error: error.message });
+    }
   },
 
   processUpdateTemplateSubject: async (req, res) => {
@@ -789,7 +918,7 @@ const SubjectController = {
       return res.status(500).json({ message: 'Server error' });
     }
   },
-  
+
 
 };
 

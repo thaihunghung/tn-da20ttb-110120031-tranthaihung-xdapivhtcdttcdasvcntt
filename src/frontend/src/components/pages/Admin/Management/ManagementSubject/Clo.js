@@ -246,10 +246,11 @@ const Clo = (nav) => {
             if (response.status === 201) {
                 message.success('Data saved successfully');
                 setNewClo(UnValueModalNew)
-                getAllClo()
+                
             } else {
                 message.error(response.data.message || 'Error saving data');
             }
+            getAllClo()
         } catch (error) {
             console.error(error);
             message.error('Error saving data');

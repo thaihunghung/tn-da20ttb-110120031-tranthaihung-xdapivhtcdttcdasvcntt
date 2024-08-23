@@ -26,7 +26,7 @@ function ModalUpdateChapter({ isOpen, onOpenChange, onSubmit, editData, setEditD
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className='text-[#FF9908]'>Edit Chapter</ModalHeader>
+            <ModalHeader className='text-[#FF9908]'>Cập nhật chương</ModalHeader>
             <ModalBody>
               <form
                 className="flex flex-col gap-3"
@@ -37,7 +37,7 @@ function ModalUpdateChapter({ isOpen, onOpenChange, onSubmit, editData, setEditD
                 }}>
                 <Input
                   fullWidth
-                  label="Chapter Name"
+                  label="Tên chương"
                   name="chapterName"
                   value={editData.chapterName || ''}
                   onChange={handleChange}
@@ -45,9 +45,9 @@ function ModalUpdateChapter({ isOpen, onOpenChange, onSubmit, editData, setEditD
                 />
                  <Textarea
                   fullWidth
-                  label="Description"
+                  label="Mô tả"
                   name="description"
-                  placeholder="Enter your description"
+                  placeholder="Nhập mô tả"
                   value={editData.description || ''}
                   onChange={handleChange}
                   rows={4}
@@ -58,7 +58,7 @@ function ModalUpdateChapter({ isOpen, onOpenChange, onSubmit, editData, setEditD
             </ModalBody>
             <ModalFooter>
               <Button variant="light" onClick={onClose}>
-                Cancel
+                Hủy
               </Button>
               <Button
                 type="submit"
@@ -69,7 +69,7 @@ function ModalUpdateChapter({ isOpen, onOpenChange, onSubmit, editData, setEditD
                   onClose();
                 }}
               >
-                Update
+                Cập nhật
               </Button>
             </ModalFooter>
           </>

@@ -113,7 +113,7 @@ function ModalAddClo({
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="text-[#FF9908]">Create Clo</ModalHeader>
+            <ModalHeader className="text-[#FF9908]">Tạo mới CĐR HP</ModalHeader>
             <ModalBody>
               <Tabs
                 aria-label="Tabs colors"
@@ -133,7 +133,7 @@ function ModalAddClo({
                     >
                       <Input
                         fullWidth
-                        label="Clo Name"
+                        label="Mã CLO"
                         name="cloName"
                         value={editData.cloName || ''}
                         onChange={handleChange}
@@ -141,9 +141,9 @@ function ModalAddClo({
                       />
                       <Textarea
                         fullWidth
-                        label="Description"
+                        label="Mô tả"
                         name="description"
-                        placeholder="Enter your description"
+                        placeholder="Nhập mô tả"
                         value={editData.description || ''}
                         onChange={handleChange}
                         rows={4}
@@ -235,7 +235,7 @@ function ModalAddClo({
             </ModalBody>
             <ModalFooter>
               <Button variant="light" onClick={onClose}>
-                Cancel
+                Hủy
               </Button>
               {activeTab !== 'Excel' && (
                 <Button
@@ -247,7 +247,7 @@ function ModalAddClo({
                     onClose();
                   }}
                 >
-                  Create
+                  Tạo
                 </Button>
               )}
             </ModalFooter>

@@ -8,49 +8,50 @@ export const fetchSujectDataGrading = async () => {
     const updatedPoData = response.data.map((subject) => {
       const clos = {
         id: subject.subject_id,
-        check: subject.CLO.length > 0 ? true : false
+        check: (subject.CLO && subject.CLO.length > 0) ? true : false
       };
 
       const chapters = {
         id: subject.subject_id,
-        checkCLo: subject.CLO.length > 0 ? true : false,
-        checkChapter: subject.CHAPTER.length > 0 ? true : false
+        checkCLo: (subject.CLO && subject.CLO.length > 0) ? true : false,
+        checkChapter: (subject.CHAPTER && subject.CHAPTER.length > 0) ? true : false
       };
       
       const Subject = {
-        subject_id: subject.subject_id,
-        subjectName: subject.subjectName,
-        subjectCode: subject.subjectCode,
-        description: subject.description,
-        numberCredits: subject.numberCredits,
-        numberCreditsTheory: subject.numberCreditsTheory,
-        numberCreditsPractice: subject.numberCreditsPractice,
-        typesubject: subject.typesubject
-
-      }
+        subject_id: subject.subject_id ?? '',
+        subjectName: subject.subjectName ?? '',
+        subjectCode: subject.subjectCode ?? '',
+        description: subject.description ?? '',
+        numberCredits: subject.numberCredits ?? 0,
+        numberCreditsTheory: subject.numberCreditsTheory ?? 0,
+        numberCreditsPractice: subject.numberCreditsPractice ?? 0,
+        typesubject: subject.typesubject ?? ''
+      };
 
       return {
-        id: subject.subject_id,
-        name: subject.subjectName,
-        subjectCode: subject.subjectCode,
-        description: subject.description,
-        numberCredits: subject.numberCredits,
+        id: subject.subject_id ?? '',
+        name: subject.subjectName ?? '',
+        subjectCode: subject.subjectCode ?? '',
+        description: subject.description ?? '',
+        numberCredits: subject.numberCredits ?? 0,
         clos: clos,
         chapters: chapters,
-        numberCreditsTheory: subject.numberCreditsTheory,
-        numberCreditsPractice: subject.numberCreditsPractice,
-        typesubject: subject.typesubject,
-        action: subject.subject_id,
+        numberCreditsTheory: subject.numberCreditsTheory ?? 0,
+        numberCreditsPractice: subject.numberCreditsPractice ?? 0,
+        typesubject: subject.typesubject ?? '',
+        action: subject.subject_id ?? '',
         Subject: Subject,
-        createdAt: subject.createdAt
+        createdAt: subject.createdAt ?? ''
       };
     });
 
     return updatedPoData;
   } catch (error) {
     console.error("Error: " + error.message);
+    return [];
   }
 };
+
 
 
 

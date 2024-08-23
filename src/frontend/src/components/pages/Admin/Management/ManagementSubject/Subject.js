@@ -240,6 +240,7 @@ const Subject = (nav) => {
       console.error("No subject selected for editing");
       return;
     }
+    console.log('values',values);
     try {
       const response = await axiosAdmin.put(`/subject/${subject_id}`, { data: values });
       loadSubjects();

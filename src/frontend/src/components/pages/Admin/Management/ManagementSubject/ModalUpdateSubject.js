@@ -9,6 +9,7 @@ import {
   Select,
   SelectItem,
   Button,
+  Textarea,
 } from "@nextui-org/react";
 import { capitalize } from "../../Utils/capitalize";
 
@@ -24,10 +25,11 @@ function ModalUpdateSubject({ isOpen, onOpenChange, onSubmit, editRubric, setEdi
   };
 
   // Xử lý thay đổi giá trị của Select
-  const handleSelectChange = (value) => {
+  const handleSelectChange = (e) => {
+    const Value = e.target.value;
     setEditRubric((prev) => ({
       ...prev,
-      typesubject: value,
+      typesubject: Value,
     }));
   };
 
@@ -42,6 +44,7 @@ function ModalUpdateSubject({ isOpen, onOpenChange, onSubmit, editRubric, setEdi
     <Modal 
       isOpen={isOpen} 
       onOpenChange={onOpenChange}
+      size='3xl'
       scrollBehavior="outside"
           motionProps={{
             variants: {
@@ -92,13 +95,16 @@ function ModalUpdateSubject({ isOpen, onOpenChange, onSubmit, editRubric, setEdi
                   onChange={handleChange}
                   required
                 />
-                <Input
+                <Textarea
                   fullWidth
-                  label="Description"
+                  label="description"
                   name="description"
+                  placeholder="Enter your description"
                   value={editRubric.description || ''}
                   onChange={handleChange}
-                  required
+                  rows={4}
+                  minRows={4}
+                  maxRows={6}
                 />
                 <Input
                   fullWidth

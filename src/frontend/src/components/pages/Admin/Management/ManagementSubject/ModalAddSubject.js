@@ -11,6 +11,7 @@ import {
   Button,
   Tabs,
   Tab,
+  Textarea,
 } from "@nextui-org/react";
 import { axiosAdmin } from "../../../../../service/AxiosAdmin";
 import CustomUpload from "../../CustomUpload/CustomUpload";
@@ -34,14 +35,14 @@ function ModalAddSubject({
     }));
   };
 
-  const handleSelectChange = (event) => {
-    const { value } = event.target; // Lấy giá trị từ event.target
+  const handleSelectChange = (e) => {
+    const Value = e.target.value;
     setNewRubric((prev) => ({
       ...prev,
-      typesubject: value,
+      typesubject: Value,
     }));
   };
-  
+
 
   const handleDownloadTemplateExcel = async () => {
     try {
@@ -84,7 +85,7 @@ function ModalAddSubject({
 
   return (
     <Modal
-      className="max-w-lg"
+      size="3xl"
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       scrollBehavior="outside"
@@ -146,13 +147,16 @@ function ModalAddSubject({
                         onChange={handleChange}
                         required
                       />
-                      <Input
+                      <Textarea
                         fullWidth
-                        label="Description"
+                        label="description"
                         name="description"
+                        placeholder="Enter your description"
                         value={newRubric.description || ''}
                         onChange={handleChange}
-                        required
+                        rows={4}
+                        minRows={4}
+                        maxRows={6}
                       />
                       <Input
                         fullWidth

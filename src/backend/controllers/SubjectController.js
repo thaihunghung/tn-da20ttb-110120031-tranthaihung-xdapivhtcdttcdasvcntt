@@ -513,6 +513,7 @@ const SubjectController = {
       { header: 'Mã Môn học', key: 'subjectCode', width: 20 },
       { header: 'Mã CĐR', key: 'cloName', width: 20 },
       { header: 'Mô tả', key: 'description', width: 65 },
+      { header: 'Loại', key: 'type', width: 20 },
     ];
 
     const chapterWorksheet = workbook.addWorksheet('Chapter');
@@ -608,72 +609,100 @@ const SubjectController = {
   },
 
   processSaveTemplateSubject: async (req, res) => {
-    if (!req.files) {
+    if (!req.files || req.files.length === 0) {
       return res.status(400).send('No file uploaded.');
     }
-
+  
     const teacher_id = req.user.teacher_id;
-
-    const teacher = await TeacherModel.findOne({ where: { teacher_id: teacher_id } });
-    if (!teacher) {
-      return res.status(404).json({ message: 'TeacherModels not found' });
+    
+    let teacher;
+    try {
+      teacher = await TeacherModel.findOne({ where: { teacher_id: teacher_id } });
+      if (!teacher) {
+        return res.status(404).json({ message: 'Teacher not found' });
+      }
+    } catch (error) {
+      return res.status(500).json({ message: 'Error fetching teacher data' });
     }
-
-
+  
     const uploadDirectory = path.join(__dirname, '../uploads');
     const filename = req.files[0].filename;
     const filePath = path.join(uploadDirectory, filename);
-
+  
     const workbook = new ExcelJS.Workbook();
     try {
       await workbook.xlsx.readFile(filePath);
     } catch (error) {
+      fs.unlinkSync(filePath); // Xóa tệp nếu có lỗi xảy ra
       return res.status(500).json({ message: 'Error reading the uploaded file' });
     }
-
-    const worksheet = workbook.getWorksheet('SUBJECT');
-    const jsonData = [];
-    worksheet.eachRow((row, rowNumber) => {
-      if (rowNumber > 1) {
-        const numberCredits = row.getCell(4).value;
-        const numberCreditsTheory = row.getCell(5).value;
-        const numberCreditsPractice = row.getCell(6).value;
-        const typesubject = row.getCell(7).value;
-
-        if (
-          isNaN(numberCredits) ||
-          isNaN(numberCreditsTheory) ||
-          isNaN(numberCreditsPractice)
-        ) {
-          return res.status(400).json({ message: `Invalid number values at row ${rowNumber}` });
-        }
-
-        // Validate typesubject
-        if (!validTypes.includes(typesubject)) {
-          return res.status(400).json({ message: `Invalid type subject at row ${rowNumber}` });
-        }
-
-        jsonData.push({
-          subjectName: row.getCell(1).value,
-          subjectCode: row.getCell(2).value,
-          description: row.getCell(3).value,
-          teacher_id: teacher.teacher_id,
-          numberCredits,
-          numberCreditsTheory,
-          numberCreditsPractice,
-          typesubject,
-        });
-      }
+  
+    const subjects = await SubjectModel.findAll({
+      attributes: ['subjectCode'],
     });
+    const subjectCodes = subjects.map(subject => subject.subjectCode);
+    const SubjectWorksheet = workbook.getWorksheet('Subject');
+    const CLOWorksheet = workbook.getWorksheet('CLO');
 
-    fs.unlinkSync(filePath);
-    try {
-      const createdSubject = await SubjectModel.bulkCreate(jsonData);
-      res.status(201).json({ message: 'Data saved successfully', data: createdSubject });
-    } catch (error) {
-      console.error('Error saving data to the database:', error);
-      res.status(500).json({ message: 'Error saving data to the database' });
-    }
+    const SubjectData = [];
+    const CLOData = [];
+
+  
+    
+      SubjectWorksheet.eachRow((row, rowNumber) => {
+        if (rowNumber > 1) {
+          const numberCredits = row.getCell(4).value;
+          const numberCreditsTheory = row.getCell(5).value;
+          const numberCreditsPractice = row.getCell(6).value;
+          const typesubject = row.getCell(7).value;
+  
+          // if (
+          //   isNaN(numberCredits) ||
+          //   isNaN(numberCreditsTheory) ||
+          //   isNaN(numberCreditsPractice)
+          // ) {
+          //   throw new Error(`Invalid number values at row ${rowNumber}`);
+          // }
+  
+          // if (!validTypes.includes(typesubject)) {
+          //   throw new Error(`Invalid type subject at row ${rowNumber}`);
+          // }
+  
+          SubjectData.push({
+            subjectName: row.getCell(1).value,
+            subjectCode: row.getCell(2).value,
+            description: row.getCell(3).value,
+            teacher_id: teacher.teacher_id,
+            numberCredits,
+            numberCreditsTheory,
+            numberCreditsPractice,
+            typesubject,
+          });
+        }
+      });
+    
+      CLOWorksheet.eachRow((row, rowNumber) => {
+        if (rowNumber > 1) {
+          CLOData.push({
+            subjectCode: row.getCell(1).value,
+            cloName: row.getCell(2).value,
+            description: row.getCell(3).value,
+            type: row.getCell(4).value,
+          });
+        }
+      });
+    const filteredSubjectData = SubjectData.filter(subject => !subjectCodes.includes(subject.subjectCode));
+  
+    console.log("CLOData");  console.log(CLOData);
+    fs.unlinkSync(filePath); // Xóa tệp sau khi đã xử lý xong
+  
+    // try {
+    //   const createdSubject = await SubjectModel.bulkCreate(filteredSubjectData);
+    //   res.status(201).json({ message: 'Data saved successfully', data: createdSubject });
+    // } catch (error) {
+    //   console.error('Error saving data to the database:', error);
+    //   res.status(500).json({ message: 'Error saving data to the database' });
+    // }
   },
 
   processUpdateTemplateSubject: async (req, res) => {

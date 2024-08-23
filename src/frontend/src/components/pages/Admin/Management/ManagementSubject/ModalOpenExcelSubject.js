@@ -146,7 +146,7 @@ function ModalOpenExcelSubject({
                 <div className="flex flex-col card p-6 bg-white shadow-md rounded-lg justify-center items-center">
                   <h3 className="text-xl font-medium">Lưu dữ liệu</h3>
                   <CustomUpload
-                    endpoint="program"
+                    endpoint="subject"
                     method="POST"
                     fileList={fileList}
                     setFileList={setFileList}

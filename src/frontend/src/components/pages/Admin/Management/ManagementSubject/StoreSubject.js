@@ -206,11 +206,10 @@ const StoreSubject = (nav) => {
                 <div className='h-full my-auto p-5 hidden sm:block'>
                     <BackButton />
                 </div>
-
             </div>
-
+            <div className="p-5 px-2 sm:p-5 border-2 border-default rounded-xl bg-[#fefefe] shadow-sm"> 
             <div className="pl-5">
-                <h1 className="text-xl font-bold text-[#6366F1] text-left">Danh sách Subject Đã ẩn</h1>
+                <h1 className="text-xl font-bold text-[#6366F1] text-left">Danh sách học phần đã ẩn</h1>
             </div>
             <div className="w-full my-5 px-5">
                 {selectedRowKeys.length !== 0 && (
@@ -274,6 +273,7 @@ const StoreSubject = (nav) => {
                         dataSource={subjectListData}
                     />
                 </div>
+            </div>
             </div>
         </div>
     );

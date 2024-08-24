@@ -70,7 +70,7 @@ function ModalUpdateSubject({ isOpen, onOpenChange, onSubmit, editRubric, setEdi
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className='text-[#FF9908]'>Edit Subject</ModalHeader>
+            <ModalHeader className='text-[#FF9908]'>Cập nhật HP</ModalHeader>
             <ModalBody>
               <form
                 className="flex flex-col gap-3"
@@ -81,7 +81,7 @@ function ModalUpdateSubject({ isOpen, onOpenChange, onSubmit, editRubric, setEdi
                 }}>
                 <Input
                   fullWidth
-                  label="Name"
+                  label="Tên HP"
                   name="subjectName"
                   value={editRubric.subjectName || ''}
                   onChange={handleChange}
@@ -89,7 +89,7 @@ function ModalUpdateSubject({ isOpen, onOpenChange, onSubmit, editRubric, setEdi
                 />
                 <Input
                   fullWidth
-                  label="Code"
+                  label="Mã HP"
                   name="subjectCode"
                   value={editRubric.subjectCode || ''}
                   onChange={handleChange}
@@ -97,7 +97,7 @@ function ModalUpdateSubject({ isOpen, onOpenChange, onSubmit, editRubric, setEdi
                 />
                 <Textarea
                   fullWidth
-                  label="description"
+                  label="Mô tả"
                   name="description"
                   placeholder="Enter your description"
                   value={editRubric.description || ''}
@@ -108,7 +108,7 @@ function ModalUpdateSubject({ isOpen, onOpenChange, onSubmit, editRubric, setEdi
                 />
                 <Input
                   fullWidth
-                  label="Number Credits"
+                  label="STC"
                   name="numberCredits"
                   type="number"
                   value={editRubric.numberCredits || ''}
@@ -117,7 +117,7 @@ function ModalUpdateSubject({ isOpen, onOpenChange, onSubmit, editRubric, setEdi
                 />
                 <Input
                   fullWidth
-                  label="Number Credits Theory"
+                  label="STC LT"
                   name="numberCreditsTheory"
                   type="number"
                   value={editRubric.numberCreditsTheory || ''}
@@ -126,7 +126,7 @@ function ModalUpdateSubject({ isOpen, onOpenChange, onSubmit, editRubric, setEdi
                 />
                 <Input
                   fullWidth
-                  label="Number Credits Practice"
+                  label="STC TH"
                   name="numberCreditsPractice"
                   type="number"
                   value={editRubric.numberCreditsPractice || ''}
@@ -134,7 +134,7 @@ function ModalUpdateSubject({ isOpen, onOpenChange, onSubmit, editRubric, setEdi
                   required
                 />
                 <Select
-                  label="Type of Subject"
+                  label="Loại HP"
                   name="typesubject"
                   defaultSelectedKeys={[editRubric.typesubject]}
                   value={editRubric?.typesubject}
@@ -151,7 +151,7 @@ function ModalUpdateSubject({ isOpen, onOpenChange, onSubmit, editRubric, setEdi
             </ModalBody>
             <ModalFooter>
               <Button variant="light" onClick={onClose}>
-                Cancel
+                Hủy
               </Button>
               <Button
                 type="submit"
@@ -162,7 +162,7 @@ function ModalUpdateSubject({ isOpen, onOpenChange, onSubmit, editRubric, setEdi
                   onClose();
                 }}
               >
-                Update
+                Cập nhật
               </Button>
             </ModalFooter>
           </>

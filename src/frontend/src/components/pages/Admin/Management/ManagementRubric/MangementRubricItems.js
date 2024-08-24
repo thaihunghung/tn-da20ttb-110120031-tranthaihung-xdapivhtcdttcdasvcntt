@@ -357,11 +357,7 @@ const MangementRubricItems = ({ setCollapsedNav, successNoti, errorNoti }) => {
                     <div className="flex items-center justify-center w-full gap-2">
                         <Tooltip title="Chỉnh sửa">
                             <Button
-                                isIconOnly
-                                variant="light"
-                                radius="full"
-                                size="sm"
-                                className="bg-[#AF84DD]"
+                                   isIconOnly className="bg-[#fefefe] shadow-sm border-3 border-[#AF84DD]"                
                                 onClick={() => {
                                     handleEditClick(rubric.rubricsItem, rubric.chapters, rubric.plos)
                                 }}
@@ -374,12 +370,8 @@ const MangementRubricItems = ({ setCollapsedNav, successNoti, errorNoti }) => {
                         </Tooltip>
                         <Tooltip title="Xoá">
                             <Button
-                                isIconOnly
-                                variant="light"
-                                radius="full"
-                                size="sm"
+                                isIconOnly className="bg-[#fefefe] shadow-sm border-3 border-[#FF8077]"
                                 onClick={() => { onOpen(); setDeleteId(rubric.action.id); }}
-                                className="bg-[#FF8077]"
                             >
                                 <i className="fa-solid fa-trash-can text-xl text-[#020401]"></i>
                             </Button>
@@ -390,120 +382,6 @@ const MangementRubricItems = ({ setCollapsedNav, successNoti, errorNoti }) => {
                 return cellValue;
         }
     }, []);
-    const topContent = React.useMemo(() => {
-        return (
-            <div className="flex flex-col gap-4">
-                <div className='block sm:hidden'>
-                    <h1 className="text-2xl pb-2 font-bold text-[#6366F1]">Danh sách Rubric items</h1>
-                </div>
-                <div className="flex justify-between gap-3 items-center">
-                    {/* <Input
-                        isClearable
-                        classNames={{ base: 'w-full sm:max-w-[44%]', inputWrapper: 'border-1' }}
-                        placeholder="Search by name..."
-                        size="sm"
-                        startContent={<SearchIcon className="text-default-300" />}
-                        value={filterValue}
-                        variant="bordered"
-                        onClear={() => setFilterValue('')}
-                        onValueChange={onSearchChange}
-                    /> */}
-                    <div className="flex gap-3">
-
-                        {/* <Tooltip
-            title=""
-            getPopupContainer={() =>
-              document.querySelector(".Quick__Option")
-            }
-          >
-            <Button
-              className="flex justify-center items-center p-4"
-              isIconOnly
-              variant="light"
-              radius="full"
-              onClick={()=>{
-                //getSelectedItems
-                //console.log('Option selected',());
-                
-                navigateGradingGroup(ValidKeys)
-              }
-              
-              }
-            >
-              <span className="text-[#475569] text-lg font-bold">Chấm theo nhóm</span>
-            </Button>
-          </Tooltip> */}
-                    </div>
-                </div>
-                <div className="w-full flex  sm:items-center sm:justify-between">
-                    <p className="text-small text-default-400 min-w-[100px]">
-                        <span className="text-default-500">{assessments.length}</span> rubicItems(s)
-                    </p>
-                    <div className="w-fit sm:w-auto flex items-center gap-2 ">
-                        <p className="text-small text-default-400">Rows per page:</p>
-                        <select
-                            className="w-fit sm:w-auto rounded-lg border-default-200 bg-default-100 text-small transition-opacity focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                            onChange={onRowsPerPageChange}
-                            value={rowsPerPage}
-                        >
-                            <option value={5}>5</option>
-                            <option value={10}>10</option>
-                            <option value={15}>15</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        );
-    }, [filterValue, assessments, rowsPerPage, visibleColumns, onSearchChange, onRowsPerPageChange]);
-    const bottomContent = React.useMemo(() => {
-        return (
-            <div className="py-2 px-2 flex justify-between items-center">
-                <p className="text-small">
-                    {selectedKeys === 'all' ? 'All items selected' : `${selectedKeys.size} of ${assessments.length} selected`}
-                </p>
-                <Pagination
-                    showControls
-                    isCompact
-                    page={page}
-                    total={pages}
-                    onChange={(newPage) => setPage(newPage)}
-                />
-            </div>
-        );
-    }, [page, pages, selectedKeys, assessments]);
-    const headerColumns = React.useMemo(() => {
-        if (visibleColumns === 'all') return columns;
-        return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
-    }, [visibleColumns]);
-
-    const filteredItems = React.useMemo(() => {
-        let filteredAssessment = [...assessments];
-
-        if (hasSearchFilter) {
-            filteredAssessment = filteredAssessment.filter((teacher) =>
-                teacher.description.toLowerCase().includes(filterValue.toLowerCase())
-            );
-        }
-        if (cloFilter && cloFilter !== '') {
-            filteredAssessment = filteredAssessment.filter(item =>
-                item.cloName.cloName === cloFilter
-            );
-        }
-        if (ploFilter && ploFilter !== '') {
-            filteredAssessment = filteredAssessment.filter(item =>
-                item.ploName.ploName === ploFilter
-            );
-        }
-        if (chapterFilter && chapterFilter !== '') {
-            filteredAssessment = filteredAssessment.filter(item =>
-                item.chapterName.chapterName === chapterFilter
-            );
-        }
-        return filteredAssessment;
-    }, [assessments, filterValue, cloFilter, ploFilter, chapterFilter]);
-
-
-
     const uniqueSortedCloNames = useMemo(() => {
         const cloNameSet = new Set();
         assessments.forEach(item => cloNameSet.add(item.cloName.cloName));
@@ -548,6 +426,190 @@ const MangementRubricItems = ({ setCollapsedNav, successNoti, errorNoti }) => {
 
         return uniqueChapterNamesArray;
     }, [assessments]);
+    const topContent = React.useMemo(() => {
+        return (
+            <div className="flex flex-col gap-4">
+                <div className='block sm:hidden'>
+                    <h1 className="text-2xl pb-2 font-bold text-[#6366F1]">Danh sách Rubric items</h1>
+                </div>
+                <div className="flex justify-between gap-3 items-center">
+                    <div className='flex-1 flex items-center justify-start sm:justify-end'>
+                        <div className='flex gap-2 h-fit flex-wrap justify-center sm:justify-start items-center'>
+
+                            <Dropdown>
+                                <DropdownTrigger className="sm:flex">
+                                    <Button endContent={<ChevronDownIcon className="font-semibold" />} size="sm" variant="flat">
+                                        <span className="font-medium">Cột</span>
+                                    </Button>
+                                </DropdownTrigger>
+                                <DropdownMenu
+                                    disallowEmptySelection
+                                    aria-label="Table Columns"
+                                    closeOnSelect={false}
+                                    selectedKeys={visibleColumns}
+                                    selectionMode="multiple"
+                                    onSelectionChange={setVisibleColumns}
+                                >
+                                    {columns.map((column) => (
+                                        <DropdownItem key={column.uid} className="capitalize text-base">
+                                            {capitalize(column.name)}
+                                        </DropdownItem>
+                                    ))}
+                                </DropdownMenu>
+                            </Dropdown>
+
+                            <Dropdown>
+                                <DropdownTrigger className="sm:flex">
+                                    <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
+                                        Lọc theo CĐR HP
+                                    </Button>
+                                </DropdownTrigger>
+                                <DropdownMenu
+                                    aria-label="Filter by CLO"
+                                    closeOnSelect={true}
+                                    selectedKeys={new Set([cloFilter])} // Chuyển đổi cloFilter thành Set
+                                    selectionMode="single"
+                                    onSelectionChange={(keys) => {
+                                        const selectedKey = Array.from(keys)[0] || ''; // Đảm bảo chọn giá trị rỗng nếu không có lựa chọn
+                                        setCloFilter(selectedKey);
+                                    }}
+                                >
+                                    <DropdownItem key="" className="capitalize">
+                                        All
+                                    </DropdownItem>
+                                    {uniqueSortedCloNames.map((cloName) => (
+                                        <DropdownItem key={cloName} className="capitalize">
+                                            {cloName}
+                                        </DropdownItem>
+                                    ))}
+                                </DropdownMenu>
+                            </Dropdown>
+
+                            <Dropdown>
+                                <DropdownTrigger className="sm:flex">
+                                    <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
+                                        Lọc theo CĐR CT
+                                    </Button>
+                                </DropdownTrigger>
+                                <DropdownMenu
+                                    aria-label="Filter by PLO"
+                                    closeOnSelect={true}
+                                    selectedKeys={new Set([ploFilter])} // Chuyển đổi ploFilter thành Set
+                                    selectionMode="single"
+                                    onSelectionChange={(keys) => {
+                                        const selectedKey = Array.from(keys)[0] || ''; // Đảm bảo chọn giá trị rỗng nếu không có lựa chọn
+                                        setPloFilter(selectedKey);
+                                    }}
+                                >
+                                    <DropdownItem key="" className="capitalize">
+                                        All PLOs
+                                    </DropdownItem>
+                                    {uniqueSortedPloNames.map((ploName) => (
+                                        <DropdownItem key={ploName} className="capitalize">
+                                            {ploName}
+                                        </DropdownItem>
+                                    ))}
+                                </DropdownMenu>
+                            </Dropdown>
+                            <Dropdown>
+                                <DropdownTrigger className="sm:flex">
+                                    <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
+                                        Lọc theo Chương HP
+                                    </Button>
+                                </DropdownTrigger>
+                                <DropdownMenu
+                                    aria-label="Filter by Chapter"
+                                    closeOnSelect={true}
+                                    selectedKeys={new Set([chapterFilter])} // Chuyển đổi chapterFilter thành Set
+                                    selectionMode="single"
+                                    onSelectionChange={(keys) => {
+                                        const selectedKey = Array.from(keys)[0] || ''; // Đảm bảo chọn giá trị rỗng nếu không có lựa chọn
+                                        setChapterFilter(selectedKey);
+                                    }}
+                                >
+                                    <DropdownItem key="" className="capitalize">
+                                        All Chapters
+                                    </DropdownItem>
+                                    {uniqueSortedChapterNames.map((chapterName) => (
+                                        <DropdownItem key={chapterName} className="capitalize">
+                                            {chapterName}
+                                        </DropdownItem>
+                                    ))}
+                                </DropdownMenu>
+                            </Dropdown>
+                        </div>
+                    </div>
+                </div>
+                <div className="w-full flex  sm:items-center sm:justify-between">
+                    <p className="text-small text-default-400 min-w-[100px]">
+                        <span className="text-default-500">{assessments.length}</span> Tiêu chí ĐG(s)
+                    </p>
+                    <div className="w-fit sm:w-auto flex items-center gap-2 ">
+                        <p className="text-small text-default-400">Số dòng mỗi trang:</p>
+                        <select
+                            className="w-fit sm:w-auto rounded-lg border-default-200 bg-default-100 text-small transition-opacity focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                            onChange={onRowsPerPageChange}
+                            value={rowsPerPage}
+                        >
+                            <option value={5}>5</option>
+                            <option value={10}>10</option>
+                            <option value={15}>15</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        );
+    }, [filterValue, assessments, rowsPerPage, visibleColumns, onSearchChange, onRowsPerPageChange]);
+    const bottomContent = React.useMemo(() => {
+        return (
+            <div className="py-2 px-2 flex justify-between items-center">
+                <p className="text-small">
+                    {selectedKeys === 'all' ? 'Đã chọn tất cả các mục' : `${selectedKeys.size} trong số ${assessments.length} mục đã chọn`}
+                </p>
+                <Pagination
+                    showControls
+                    isCompact
+                    page={page}
+                    total={pages}
+                    onChange={(newPage) => setPage(newPage)}
+                />
+            </div>
+        );
+    }, [page, pages, selectedKeys, assessments]);
+    const headerColumns = React.useMemo(() => {
+        if (visibleColumns === 'all') return columns;
+        return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
+    }, [visibleColumns]);
+
+    const filteredItems = React.useMemo(() => {
+        let filteredAssessment = [...assessments];
+
+        if (hasSearchFilter) {
+            filteredAssessment = filteredAssessment.filter((teacher) =>
+                teacher.description.toLowerCase().includes(filterValue.toLowerCase())
+            );
+        }
+        if (cloFilter && cloFilter !== '') {
+            filteredAssessment = filteredAssessment.filter(item =>
+                item.cloName.cloName === cloFilter
+            );
+        }
+        if (ploFilter && ploFilter !== '') {
+            filteredAssessment = filteredAssessment.filter(item =>
+                item.ploName.ploName === ploFilter
+            );
+        }
+        if (chapterFilter && chapterFilter !== '') {
+            filteredAssessment = filteredAssessment.filter(item =>
+                item.chapterName.chapterName === chapterFilter
+            );
+        }
+        return filteredAssessment;
+    }, [assessments, filterValue, cloFilter, ploFilter, chapterFilter]);
+
+
+
+
 
 
 
@@ -569,163 +631,50 @@ const MangementRubricItems = ({ setCollapsedNav, successNoti, errorNoti }) => {
         <>
             <div className='w-full flex justify-between'>
                 <div className='h-full my-auto p-5 hidden sm:block'>
-                <div>
-                    <h1 className="text-2xl pb-2 font-bold text-[#6366F1]">Danh sách Rubric items</h1>
-                </div>
+                    <div>
+                        <h1 className="text-2xl pb-2 font-bold text-[#6366F1]">Danh sách tiêu chí ĐG</h1>
+                    </div>
                     <BackButton />
                 </div>
-                <div className='w-full sm:w-fit bg-[white] border-slate-300 rounded-xl border-2 p-2 justify-start items-center flex gap-4 flex-col mb-4'>
-                    <div className='flex justify-center w-full flex-wrap items-center gap-1'>
+                <div className='w-full sm:w-auto bg-[#fefefe] border-2 border-[#4F46E5] mb-2 shadow-sm rounded-xl p-4 flex gap-4 flex-col sm:flex-row items-center'>
+                    <div className='flex flex-wrap justify-center gap-2'>
                         <Button
-                            className='bg-[#AF84DD] '
-                            endContent={<PlusIcon />}
-                            // onClick={() => handleNavigate(
-                            //     `/admin/management-rubric/create`
-                            // )}
-
+                            className='bg-transparent  shadow-sm border-2 border-[#AF84DD] hover:bg-[#AF84DD]'
+                            endContent={<i className="fas fa-plus"></i>} // Icon thêm mới
                             onClick={handleAddClick}
                         >
-                            New
+                            Tạo mới
                         </Button>
                         <Button
-                            className='bg-[#FF8077]'
-                            endContent={<PlusIcon />}
+                            className='bg-transparent shadow-sm border-2 border-[#FF8077]  hover:bg-[#FF8077]'
+                            endContent={<i className="fas fa-eye-slash"></i>} // Icon ẩn nhiều
                             onClick={onOpen}
                             disabled={selectedKeys.size === 0}
                         >
-                            Deletes
+                            Ẩn nhiều
                         </Button>
                         <Button
-                            endContent={<PlusIcon />}
+                            className='bg-transparent shadow-sm border-2 border-[#6B7280] hover:bg-[#6B7280]'
+                            endContent={<i className="fas fa-archive"></i>} // Icon kho lưu trữ
+                            onClick={() => handleNavigate(`/admin/management-rubric/${id}/rubric-items/store`)}
+                        >
+                            Kho lưu trữ
+                        </Button>
+                        <Button
+                            className='bg-transparent border-2 border-[#FF9908]  hover:bg-[#FF9908]'
+                            endContent={<i className="fas fa-file-excel"></i>} // Icon Excel
                             onClick={() => handleNavigate(
                                 `/admin/management-rubric/${id}/rubric-items/template`
                             )}
                         >
-                            View
+                            Xem tổng quan
                         </Button>
-
-                        <Button
-                            endContent={<PlusIcon />}
-                            onClick={() => handleNavigate(
-                                `/admin/management-rubric/${id}/rubric-items/store`
-                            )}
-                        >
-                            Store
-                        </Button>
-
                     </div>
-
-                    <div className='flex gap-2 h-fit justify-center sm:justify-start flex-wrap items-center'>
-                        <Dropdown>
-                            <DropdownTrigger className="sm:flex">
-                                <Button endContent={<ChevronDownIcon className="font-semibold" />} size="sm" variant="flat">
-                                    <span className="font-medium">Columns</span>
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu
-                                disallowEmptySelection
-                                aria-label="Table Columns"
-                                closeOnSelect={false}
-                                selectedKeys={visibleColumns}
-                                selectionMode="multiple"
-                                onSelectionChange={setVisibleColumns}
-                            >
-                                {columns.map((column) => (
-                                    <DropdownItem key={column.uid} className="capitalize text-base">
-                                        {capitalize(column.name)}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        </Dropdown>
-
-                        <Dropdown>
-                            <DropdownTrigger className="sm:flex">
-                                <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
-                                    Filter by CLO
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu
-                                aria-label="Filter by CLO"
-                                closeOnSelect={true}
-                                selectedKeys={new Set([cloFilter])} // Chuyển đổi cloFilter thành Set
-                                selectionMode="single"
-                                onSelectionChange={(keys) => {
-                                    const selectedKey = Array.from(keys)[0] || ''; // Đảm bảo chọn giá trị rỗng nếu không có lựa chọn
-                                    setCloFilter(selectedKey);
-                                }}
-                            >
-                                <DropdownItem key="" className="capitalize">
-                                    All
-                                </DropdownItem>
-                                {uniqueSortedCloNames.map((cloName) => (
-                                    <DropdownItem key={cloName} className="capitalize">
-                                        {cloName}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        </Dropdown>
-
-                        <Dropdown>
-                            <DropdownTrigger className="sm:flex">
-                                <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
-                                    Filter by PLO
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu
-                                aria-label="Filter by PLO"
-                                closeOnSelect={true}
-                                selectedKeys={new Set([ploFilter])} // Chuyển đổi ploFilter thành Set
-                                selectionMode="single"
-                                onSelectionChange={(keys) => {
-                                    const selectedKey = Array.from(keys)[0] || ''; // Đảm bảo chọn giá trị rỗng nếu không có lựa chọn
-                                    setPloFilter(selectedKey);
-                                }}
-                            >
-                                <DropdownItem key="" className="capitalize">
-                                    All PLOs
-                                </DropdownItem>
-                                {uniqueSortedPloNames.map((ploName) => (
-                                    <DropdownItem key={ploName} className="capitalize">
-                                        {ploName}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        </Dropdown>
-                        <Dropdown>
-                            <DropdownTrigger className="sm:flex">
-                                <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
-                                    Filter by Chapter
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu
-                                aria-label="Filter by Chapter"
-                                closeOnSelect={true}
-                                selectedKeys={new Set([chapterFilter])} // Chuyển đổi chapterFilter thành Set
-                                selectionMode="single"
-                                onSelectionChange={(keys) => {
-                                    const selectedKey = Array.from(keys)[0] || ''; // Đảm bảo chọn giá trị rỗng nếu không có lựa chọn
-                                    setChapterFilter(selectedKey);
-                                }}
-                            >
-                                <DropdownItem key="" className="capitalize">
-                                    All Chapters
-                                </DropdownItem>
-                                {uniqueSortedChapterNames.map((chapterName) => (
-                                    <DropdownItem key={chapterName} className="capitalize">
-                                        {chapterName}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        </Dropdown>
-
-
-                    </div>
-
                 </div>
             </div>
-            <div className="p-5 w-full flex justify-center items-start flex-col sm:flex-col lg:flex-row xl:fex-row">
+            <div className="p-5 w-full flex justify-center items-start flex-col">
                 <div className="text-lg w-[300px] sm:w-full leading-8 italic font-bold text-[#FF9908] text-wrap flex-1 text-justify">Tên học phần:{' ' + rubicData.rubricName}</div>
-                <div className="text-lg w-[300px] sm:w-full leading-8 italic font-bold text-[#FF9908] text-wrap flex-1 text-justify">Tên rubric:{' ' + rubicData.subjectName}</div>
+                <div className="text-lg w-[300px] sm:w-full leading-8 italic font-bold text-[#FF9908] text-wrap flex-1 text-justify">Tên bảng TC:{' ' + rubicData.subjectName}</div>
             </div>
             <Table
                 aria-label="Example table with dynamic content"

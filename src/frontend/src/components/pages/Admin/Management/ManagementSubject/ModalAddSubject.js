@@ -43,39 +43,6 @@ function ModalAddSubject({
     }));
   };
 
-
-  const handleDownloadTemplateExcel = async () => {
-    try {
-      const response = await axiosAdmin.get("/subject/templates/post", {
-        responseType: "blob",
-      });
-
-      if (response && response.data) {
-        const url = window.URL.createObjectURL(
-          new Blob([response.data])
-        );
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "subject.xlsx";
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-      }
-    } catch (error) {
-      console.error("Error downloading file:", error);
-    }
-  };
-
-  const handleFileChange = (e) => {
-    setFileList([...e.target.files]);
-  };
-
-  const handleRemoveFile = (indexToRemove) => {
-    setFileList((currentFiles) =>
-      currentFiles.filter((_, index) => index !== indexToRemove)
-    );
-  };
-
   const DataTypeSubject = [
     { key: 'Đại cương', TypeSubject: 'Đại cương' },
     { key: 'Cơ sở ngành', TypeSubject: 'Cơ sở ngành' },
@@ -113,15 +80,8 @@ function ModalAddSubject({
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="text-[#FF9908]">Create Subject</ModalHeader>
+            <ModalHeader className="text-[#FF9908]">Tạo mới học phần</ModalHeader>
             <ModalBody>
-              <Tabs
-                aria-label="Tabs colors"
-                radius="full"
-                selectedKey={activeTab}
-                onSelectionChange={(key) => setActiveTab(key)}
-              >
-                <Tab key="Form" title="Form">
                   <div className="flex flex-col h-full">
                     <form
                       className="flex flex-col gap-3 h-full"
@@ -133,7 +93,7 @@ function ModalAddSubject({
                     >
                       <Input
                         fullWidth
-                        label="Name"
+                        label="Tên HP"
                         name="subjectName"
                         value={newRubric.subjectName || ''}
                         onChange={handleChange}
@@ -141,7 +101,7 @@ function ModalAddSubject({
                       />
                       <Input
                         fullWidth
-                        label="Code"
+                        label="Mã HP"
                         name="subjectCode"
                         value={newRubric.subjectCode || ''}
                         onChange={handleChange}
@@ -149,7 +109,7 @@ function ModalAddSubject({
                       />
                       <Textarea
                         fullWidth
-                        label="description"
+                        label="Mô tả"
                         name="description"
                         placeholder="Enter your description"
                         value={newRubric.description || ''}
@@ -160,7 +120,7 @@ function ModalAddSubject({
                       />
                       <Input
                         fullWidth
-                        label="Number Credits"
+                        label="STC"
                         name="numberCredits"
                         type="number"
                         value={newRubric.numberCredits || ''}
@@ -169,7 +129,7 @@ function ModalAddSubject({
                       />
                       <Input
                         fullWidth
-                        label="Number Credits Theory"
+                        label="STC LT"
                         name="numberCreditsTheory"
                         type="number"
                         value={newRubric.numberCreditsTheory || ''}
@@ -178,7 +138,7 @@ function ModalAddSubject({
                       />
                       <Input
                         fullWidth
-                        label="Number Credits Practice"
+                        label="STC TH"
                         name="numberCreditsPractice"
                         type="number"
                         value={newRubric.numberCreditsPractice || ''}
@@ -186,7 +146,7 @@ function ModalAddSubject({
                         required
                       />
                       <Select
-                        label="Type of Subject"
+                        label="Loại HP"
                         name="typesubject"
                         value={newRubric.typesubject || ''}
                         onChange={(value) => handleSelectChange(value)}
@@ -200,79 +160,12 @@ function ModalAddSubject({
                       </Select>
                     </form>
                   </div>
-                </Tab>
-                <Tab key="Excel" title="Excel">
-                  <div className="flex flex-col h-full">
-                    <div className="flex flex-col gap-4 p-4 flex-grow">
-                      <div className="flex flex-wrap gap-4 justify-center items-center">
-                        <div className="flex flex-col card p-3 justify-center items-center">
-                          <h3>Tải Mẫu CSV</h3>
-                          <Button
-                            className="bg-sky-500 text-white w-[125px]"
-                            onClick={handleDownloadTemplateExcel}
-                          >
-                            Tải xuống mẫu
-                          </Button>
-                        </div>
-                        <div className="flex flex-col card p-3 justify-center items-center">
-                          <h3>Upload File</h3>
-                          <label htmlFor="file-upload" className="cursor-pointer">
-                            <Button className="w-[125px]" auto flat as="span" color="primary">
-                              Chọn file
-                            </Button>
-                          </label>
-                          <input
-                            id="file-upload"
-                            type="file"
-                            style={{ display: "none" }}
-                            onChange={handleFileChange}
-                            multiple
-                          />
-                          {fileList.length > 0 && (
-                            <div className="mt-2">
-                              <ul>
-                                {fileList.map((file, index) => (
-                                  <li
-                                    key={index}
-                                    className="flex justify-between items-center"
-                                  >
-                                    <p>{file.name}</p>
-                                    <Button
-                                      auto
-                                      flat
-                                      color="error"
-                                      size="xs"
-                                      className='w-[125px]'
-                                      onClick={() => handleRemoveFile(index)}
-                                    >
-                                      X
-                                    </Button>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
-                        </div>
-                        <div className="flex flex-col card p-3 justify-center items-center">
-                          <h3>Lưu file</h3>
-                          <CustomUpload
-                            endpoint="subject"
-                            method="POST"
-                            fileList={fileList}
-                            setFileList={setFileList}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </Tab>
-              </Tabs>
             </ModalBody>
             <ModalFooter>
               <Button variant="light" onClick={onClose}>
-                Cancel
+                Hủy 
               </Button>
-              {activeTab !== 'Excel' && (
+             
                 <Button
                   type="submit"
                   color="primary"
@@ -282,9 +175,9 @@ function ModalAddSubject({
                     onClose();
                   }}
                 >
-                  Create
+                  Tạo mới
                 </Button>
-              )}
+              
             </ModalFooter>
           </>
         )}

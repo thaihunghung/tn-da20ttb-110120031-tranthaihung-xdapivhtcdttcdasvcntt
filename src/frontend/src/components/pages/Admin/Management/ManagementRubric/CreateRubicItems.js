@@ -157,7 +157,7 @@ function CreateRubicItems({
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1 text-[#FF9908]">Create Rubric items</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1 text-[#FF9908]">Tạo mới tiêu chí</ModalHeader>
               <ModalBody>
                 <form
                   className="flex flex-col gap-3"

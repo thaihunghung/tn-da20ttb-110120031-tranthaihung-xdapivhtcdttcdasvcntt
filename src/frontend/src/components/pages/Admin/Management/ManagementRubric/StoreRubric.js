@@ -35,7 +35,7 @@ const StoreRubric = (nav) => {
     };
     const columns = [
         {
-            title: "Tên rubric",
+            title: "Tên bảng tiêu chí",
             dataIndex: "name",
             render: (record) => (
                 <div className="text-sm min-w-[100px]">
@@ -44,51 +44,9 @@ const StoreRubric = (nav) => {
             ),
         },
         {
-            title: "items",
-            dataIndex: "status",
-            render: (record) => (
-                <div className="text-sm">
-                    {record.status ?
-                        <Link to={`/admin/management-rubric/${record._id}/rubric-items/list`}>
-                            <Button
-                                isIconOnly
-                                variant="light"
-                                radius="full"
-                                size="sm"
-                            >
-                                <p>Chỉnh sửa</p>
-                            </Button>
-
-                        </Link>
-                        :
-                        <Link to={`/admin/management-rubric/${record._id}/rubric-items/create`}>
-                            <Button
-                                isIconOnly
-                                variant="light"
-                                radius="full"
-                                size="sm"
-                            >
-                                <p>Tạo mới</p>
-                            </Button>
-                        </Link>
-                    }
-                </div>
-            ),
-        },
-        {
-            title: "Tổng điểm",
-            dataIndex: "point",
-            render: (record) => (
-                <div className="text-sm">
-                    <p className="font-medium">{record}</p>
-
-                </div>
-            ),
-        },
-        {
             title: (
                 <div className="flex items-center justify-center w-full">
-                    <span>Form</span>
+                    <span>Thao tác</span>
                 </div>
             ),
             dataIndex: "action",
@@ -218,7 +176,7 @@ const StoreRubric = (nav) => {
     }, []);
 
     return (
-        <div className="flex w-full flex-col justify-center leading-8 pt-5 px-4 sm:px-4 lg:px-7 xl:px-7 bg-[#f5f5f5]-500">
+        <div className="flex w-full flex-col justify-center leading-8">
             <ConfirmAction
                 onOpenChange={onOpenChange}
                 isOpen={isOpen}
@@ -232,71 +190,77 @@ const StoreRubric = (nav) => {
                     }
                 }}
             />
-            <div>
-            <BackButton />
+            <div className='w-full flex justify-between'>
+                <div className='h-full my-auto p-5 hidden sm:block'>
+                    <BackButton />
+                </div>
             </div>
-            
-            <div className="w-full my-5">
-                {selectedRowKeys.length !== 0 && (
-                    <div className="Quick__Option flex justify-between items-center sticky top-2 bg-[white] z-50 w-full p-4 py-3 border-1 border-slate-300">
-                        <p className="text-sm font-medium">
-                            <i className="fa-solid fa-circle-check mr-3 text-emerald-500"></i>{" "}
-                            Đã chọn {selectedRow.length} rubric
-                        </p>
-                        <div className="flex items-center gap-2">
+            <div className="p-5 px-2 sm:p-5 border-2 border-default rounded-xl bg-[#fefefe] shadow-sm">
+            <div className="pl-5">
+                <h1 className="text-xl font-bold text-[#6366F1] text-left">Danh sách bảng tiêu chí đã ẩn</h1>
+            </div>
+                <div className="w-full my-5">
+                    {selectedRowKeys.length !== 0 && (
+                        <div className="Quick__Option flex justify-between items-center sticky top-2 bg-[white] z-50 w-full p-4 py-3 border-1 border-slate-300">
+                            <p className="text-sm font-medium">
+                                <i className="fa-solid fa-circle-check mr-3 text-emerald-500"></i>{" "}
+                                Đã chọn {selectedRow.length} rubric
+                            </p>
+                            <div className="flex items-center gap-2">
 
-                            <Tooltip
-                                title={`Khôi phục ${selectedRowKeys.length} rubric`}
-                                getPopupContainer={() =>
-                                    document.querySelector(".Quick__Option")
-                                }
-                            >
-                                <Button isIconOnly variant="light" radius="full" onClick={() => handleRestore()}>
-                                    <i className="fa-solid fa-clock-rotate-left"></i>
-                                </Button>
-                            </Tooltip>
-                            <Tooltip
-                                title={`Xoá vĩnh viễn ${selectedRowKeys.length} rubric`}
-                                getPopupContainer={() =>
-                                    document.querySelector(".Quick__Option")
-                                }
-                            >
-                                <Button isIconOnly variant="light" radius="full" onClick={onOpen}>
-                                    <i className="fa-solid fa-trash-can"></i>
-                                </Button>
-                            </Tooltip>
-
-                            <Tooltip
-                                title="Bỏ chọn"
-                                getPopupContainer={() =>
-                                    document.querySelector(".Quick__Option")
-                                }
-                            >
-                                <Button
-                                    isIconOnly
-                                    variant="light"
-                                    radius="full"
-                                    onClick={() => {
-                                        handleUnSelect();
-                                    }}
+                                <Tooltip
+                                    title={`Khôi phục ${selectedRowKeys.length} rubric`}
+                                    getPopupContainer={() =>
+                                        document.querySelector(".Quick__Option")
+                                    }
                                 >
-                                    <i className="fa-solid fa-xmark text-[18px]"></i>
-                                </Button>
-                            </Tooltip>
+                                    <Button isIconOnly variant="light" radius="full" onClick={() => handleRestore()}>
+                                        <i className="fa-solid fa-clock-rotate-left"></i>
+                                    </Button>
+                                </Tooltip>
+                                <Tooltip
+                                    title={`Xoá vĩnh viễn ${selectedRowKeys.length} rubric`}
+                                    getPopupContainer={() =>
+                                        document.querySelector(".Quick__Option")
+                                    }
+                                >
+                                    <Button isIconOnly variant="light" radius="full" onClick={onOpen}>
+                                        <i className="fa-solid fa-trash-can"></i>
+                                    </Button>
+                                </Tooltip>
+
+                                <Tooltip
+                                    title="Bỏ chọn"
+                                    getPopupContainer={() =>
+                                        document.querySelector(".Quick__Option")
+                                    }
+                                >
+                                    <Button
+                                        isIconOnly
+                                        variant="light"
+                                        radius="full"
+                                        onClick={() => {
+                                            handleUnSelect();
+                                        }}
+                                    >
+                                        <i className="fa-solid fa-xmark text-[18px]"></i>
+                                    </Button>
+                                </Tooltip>
+                            </div>
                         </div>
+                    )}
+                    <div className="w-full overflow-auto">
+                        <Table className="table-po text-[#fefefe]"
+                            bordered
+                            loading={loading}
+                            rowSelection={{
+                                type: "checkbox",
+                                ...rowSelection,
+                            }}
+                            columns={columns}
+                            dataSource={rubicData}
+                        />
                     </div>
-                )}
-                <div className="w-full overflow-auto">
-                    <Table className="table-po text-[#fefefe]"
-                        bordered
-                        loading={loading}
-                        rowSelection={{
-                            type: "checkbox",
-                            ...rowSelection,
-                        }}
-                        columns={columns}
-                        dataSource={rubicData}
-                    />
                 </div>
             </div>
         </div>

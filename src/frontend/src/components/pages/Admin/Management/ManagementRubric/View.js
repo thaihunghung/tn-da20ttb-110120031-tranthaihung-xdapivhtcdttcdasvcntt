@@ -32,45 +32,46 @@ const View = () => {
                 </div>
                 
             </div>
-            <div className="pl-5 pb-5">
-                <h1 className="text-2xl font-bold text-[#6366F1] text-center">Tổng quan</h1>
-            </div>
-            <div className="w-[26cm] overflow-auto mx-auto">
-                <table className='border-collapse border leading-6 border-[#ff8077] w-full h-full'>
-                    <thead>
-                        <tr className="border border-b-0 border-[#ff8077] h-[20px]">
-                            <th className="border border-b-0 border-[#ff8077]">CLO</th>
-                            <th className="border border-b-0 border-[#ff8077]">PLO</th>
-                            <th className="border border-b-0 border-[#ff8077]">Tiêu chí</th>
-                            <th className="border border-b-0 border-r-0 border-[#ff8077]">Tổng điểm</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {RubicItemsData.map((item, i) => (
+            <div className="p-5 px-2 sm:p-5 sm:pb-10 border-2 border-default rounded-xl bg-[#fefefe] shadow-sm">
+    <div className="pl-5 pb-5">
+        <h1 className="text-2xl font-bold text-[#6366F1] text-center">Tổng quan</h1>
+    </div>
+    <div className="w-full overflow-x-auto mx-auto">
+        <table className="border-collapse border leading-6 border-[#ff8077] w-full">
+            <thead>
+                <tr className="border border-[#ff8077] h-[20px]">
+                    <th className="border border-[#ff8077] py-2 px-4 text-left">CLO</th>
+                    <th className="border border-[#ff8077] py-2 px-4 text-left">PLO</th>
+                    <th className="border border-[#ff8077] py-2 px-4 text-left">Tiêu chí</th>
+                    <th className="border border-[#ff8077] py-2 px-4 text-left">Tổng điểm</th>
+                </tr>
+            </thead>
+            <tbody>
+                {RubicItemsData.map((item, i) => (
+                    <tr key={item.rubricsItem_id} className="border border-[#ff8077]">
+                        <td className="border border-[#ff8077] py-2 px-4 text-center">{item.CLO.cloName}</td>
+                        <td className="border border-[#ff8077] py-2 px-4 text-center">{item.PLO.ploName}</td>
+                        <td className="border border-[#ff8077] py-2 px-4 text-justify">
+                            <span dangerouslySetInnerHTML={{ __html: item.description }} />
+                        </td>
+                        <td className="border border-[#ff8077] py-2 px-4 text-center">
+                            {item.maxScore}
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
+            <tfoot className="border-t border-[#ff8077]">
+                <tr>
+                    <td className="py-5"></td>
+                    <td className="py-5"></td>
+                    <td className="py-5"></td>
+                    <td className="py-5"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
 
-                            <tr key={item.rubricsItem_id} className="border border-b-0 border-[#ff8077] p-5">
-                                <td className="border  border-[#ff8077] text-center px-2">{item.CLO.cloName}</td>
-                                <td className="border  border-[#ff8077] text-center px-2">{item.PLO.ploName}</td>
-                                <td className="border border-[#ff8077] test text-justify p-2">
-                                    <span dangerouslySetInnerHTML={{ __html: item.description }} />
-                                </td>
-                                <td className="border border-r-0 border-[#ff8077] text-center px-2">
-                                    {item.maxScore}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                    <tfoot className="border border-[#ff8077] p-5">
-                        <tr className="h-[20px]">
-                            <td className="p-5"></td>
-                            <td className="p-5"></td>
-                            <td className="p-5"></td>
-                            <td className="p-5"></td>
-                        </tr>
-                    </tfoot>
-                </table>
-
-            </div>
         </div>
     );
 };

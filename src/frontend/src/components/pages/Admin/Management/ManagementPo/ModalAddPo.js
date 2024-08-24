@@ -25,48 +25,12 @@ function ModalAddPo({
   setEditData,
   loadData,
 }) {
-  const [fileList, setFileList] = useState([]);
-  const [activeTab, setActiveTab] = useState('Form'); // Trạng thái để theo dõi tab hiện tại
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditData((prev) => ({
       ...prev,
       [name]: value,
     }));
-  };
-
-
-  const handleDownloadTemplateExcel = async () => {
-    try {
-      const response = await axiosAdmin.get("/po/templates/post", {
-        responseType: "blob",
-      });
-
-      if (response && response.data) {
-        const url = window.URL.createObjectURL(
-          new Blob([response.data])
-        );
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "po.xlsx";
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-      }
-    } catch (error) {
-      console.error("Error downloading file:", error);
-    }
-  };
-
-  const handleFileChange = (e) => {
-    setFileList([...e.target.files]);
-  };
-
-  const handleRemoveFile = (indexToRemove) => {
-    setFileList((currentFiles) =>
-      currentFiles.filter((_, index) => index !== indexToRemove)
-    );
   };
 
   return (
@@ -99,15 +63,8 @@ function ModalAddPo({
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="text-[#FF9908]">Create PO</ModalHeader>
+            <ModalHeader className="text-[#FF9908]">Tạo mới mục tiêu CT</ModalHeader>
             <ModalBody>
-              <Tabs
-                aria-label="Tabs colors"
-                radius="full"
-                selectedKey={activeTab}
-                onSelectionChange={(key) => setActiveTab(key)}
-              >
-                <Tab key="Form" title="Form">
                   <div className="flex flex-col h-full">
                     <form
                       className="flex flex-col gap-3 h-full"
@@ -119,7 +76,7 @@ function ModalAddPo({
                     >
                       <Input
                         fullWidth
-                        label="PO Name"
+                        label="Mã mục tiêu (PO)"
                         name="poName"
                         value={editData.poName || ''}
                         onChange={handleChange}
@@ -127,9 +84,9 @@ function ModalAddPo({
                       />
                       <Textarea
                         fullWidth
-                        label="Description"
+                        label="Mô tả"
                         name="description"
-                        placeholder="Enter your description"
+                        placeholder="Nhập mô tả"
                         value={editData.description || ''}
                         onChange={handleChange}
                         rows={4}
@@ -138,81 +95,12 @@ function ModalAddPo({
                       />
                     </form>
                   </div>
-                </Tab>
-                <Tab key="Excel" title="Excel">
-                  <div className="flex flex-col h-full">
-                    <div className="flex flex-col gap-4 p-4 flex-grow">
-                      <div className="flex flex-wrap gap-4 justify-center items-center">
-                        <div className="flex flex-col card p-3 justify-center items-center">
-                          <h3>Tải Mẫu CSV</h3>
-                          <Button
-                            className="bg-sky-500 text-white w-[125px]"
-                            onClick={handleDownloadTemplateExcel}
-                          >
-                            Tải xuống mẫu
-                          </Button>
-                        </div>
-                        <div className="flex flex-col card p-3 justify-center items-center">
-                          <h3>Upload File</h3>
-                          <label htmlFor="file-upload" className="cursor-pointer">
-                            <Button className="w-[125px]" auto flat as="span" color="primary">
-                              Chọn file
-                            </Button>
-                          </label>
-                          <input
-                            id="file-upload"
-                            type="file"
-                            style={{ display: "none" }}
-                            onChange={handleFileChange}
-                            multiple
-                          />
-                          {fileList.length > 0 && (
-                            <div className="mt-2">
-                              <ul>
-                                {fileList.map((file, index) => (
-                                  <li
-                                    key={index}
-                                    className="flex justify-between items-center"
-                                  >
-                                    <p>{file.name}</p>
-                                    <Button
-                                      auto
-                                      flat
-                                      color="error"
-                                      size="xs"
-                                      className='w-[125px]'
-                                      onClick={() => handleRemoveFile(index)}
-                                    >
-                                      X
-                                    </Button>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
-                        </div>
-                        <div className="flex flex-col card p-3 justify-center items-center">
-                          <h3>Lưu file</h3>
-                          <CustomUpload
-                            endpoint="po"
-                            method="POST"
-                            fileList={fileList}
-                            setFileList={setFileList}
-                            LoadData={loadData}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </Tab>
-              </Tabs>
             </ModalBody>
             <ModalFooter>
               <Button variant="light" onClick={onClose}>
-                Cancel
+                Hủy
               </Button>
-              {activeTab !== 'Excel' && (
-                <Button
+              <Button
                   type="submit"
                   color="primary"
                   onClick={(e) => {
@@ -221,9 +109,8 @@ function ModalAddPo({
                     onClose();
                   }}
                 >
-                  Create
+                  Tạo mới
                 </Button>
-              )}
             </ModalFooter>
           </>
         )}

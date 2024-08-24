@@ -44,7 +44,7 @@ const StoreClo = (nav) => {
         {
             title: (
                 <div className="flex items-center justify-center w-full">
-                    <span>Form</span>
+                    <span>Thao tác</span>
                 </div>
             ),
             dataIndex: "action",
@@ -216,12 +216,13 @@ const StoreClo = (nav) => {
                 </div>
 
             </div>
+           
+            <div className="p-5 px-2 sm:p-5 border-2 border-default rounded-xl bg-[#fefefe] shadow-sm"> 
             <div className="p-5 w-full flex justify-center items-start flex-col sm:flex-col lg:flex-row xl:fex-row">
-                <div className="text-2xl w-[300px] sm:w-full leading-8 italic font-bold text-[#FF9908] text-wrap flex-1 text-justify">{Subject.subjectCode + ': ' + Subject.subjectName}</div>
+                <div className="text-2xl w-[300px] sm:w-full leading-8 italic font-bold text-[#FF9908] text-wrap flex-1 text-justify">{Subject?.subjectCode + ': ' + Subject?.subjectName}</div>
             </div>
-
             <div className="pl-5">
-                <h1 className="text-xl font-bold text-[#6366F1] text-left">Danh sách Clo Đã ẩn</h1>
+                <h1 className="text-xl font-bold text-[#6366F1] text-left">Danh sách CĐR HP đã ẩn</h1>
             </div>
             <div className="w-full my-5 px-5">
                 {selectedRowKeys.length !== 0 && (
@@ -285,6 +286,7 @@ const StoreClo = (nav) => {
                         dataSource={poListData}
                     />
                 </div>
+            </div>
             </div>
         </div>
     );

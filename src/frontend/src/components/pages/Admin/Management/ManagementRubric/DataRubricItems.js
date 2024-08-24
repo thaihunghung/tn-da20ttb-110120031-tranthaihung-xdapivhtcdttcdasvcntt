@@ -68,15 +68,15 @@ export const fetchRubricItemsData = async (id) => {
 
 const columns = [
   { name: "id", uid: "id", sortable: true }, // Có thể sử dụng `key` hoặc `rubric_id` tùy thuộc vào cách bạn muốn hiển thị
-  { name: "Clo", uid: "Clo", sortable: true },
-  { name: "Plo", uid: "Plo", sortable: true },
-  { name: "Chapter", uid: "Chapter", sortable: true },
-  { name: "CloName", uid: "CloName", sortable: true },
-  { name: "PloName", uid: "PloName", sortable: true },
-  { name: "ChapterName", uid: "ChapterName", sortable: true },
-  { name: "description", uid: "description", sortable: true },
-  { name: "maxScore", uid: "maxScore", sortable: true },
-  { name: "action", uid: "action", sortable: true },
+  { name: "CĐR HP", uid: "Clo", sortable: true },
+  { name: "CĐR CT", uid: "Plo", sortable: true },
+  { name: "Chương", uid: "Chapter", sortable: true },
+  { name: "Mã CĐR HP", uid: "CloName", sortable: true },
+  { name: "Mã CĐR CT", uid: "PloName", sortable: true },
+  { name: "Mã chương", uid: "ChapterName", sortable: true },
+  { name: "Mô tả TC", uid: "description", sortable: true },
+  { name: "Điểm TC", uid: "maxScore", sortable: true },
+  { name: "Thao tác", uid: "action", sortable: true },
 ];
 
 

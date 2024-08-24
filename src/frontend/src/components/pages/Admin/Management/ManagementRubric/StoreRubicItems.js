@@ -244,15 +244,18 @@ const StoreRubicItems = (nav) => {
                     }
                 }}
             />
-            <div>
-            <BackButton />
+              <div className='w-full flex justify-between'>
+                <div className='h-full my-auto p-5 hidden sm:block'>
+                    <BackButton />
+                </div>
             </div>
-            <div className="my-5 flex justify-center items-center flex-col sm:flex-col lg:flex-row xl:fex-row">
+            <div className="p-5 px-2 sm:p-5 border-2 border-default rounded-xl bg-[#fefefe] shadow-sm">
+            <div className="my-5 pl-5 flex justify-center items-start flex-col">
                 <div className="text-lg leading-8 italic font-bold text-[#FF9908] flex-1 text-justify">Tên học phần:{' '+rubicData.rubricName}</div>
                 <div className="text-lg  leading-8 italic font-bold text-[#FF9908]  flex-1 text-justify">Tên rubric:{' '+rubicData.subjectName}</div>
             </div>
-            <div className="mb-5 w-fit p-2 bg-[#475569] rounded-lg">
-                <p className="text-lg text-[#fefefe] text-left">Danh sách</p>
+            <div className="pl-5">
+                <h1 className="text-xl font-bold text-[#6366F1] text-left">Danh sách tiêu chí đã ẩn</h1>
             </div>
             <div className="w-full">
                 {selectedRowKeys.length !== 0 && (
@@ -316,6 +319,7 @@ const StoreRubicItems = (nav) => {
                         dataSource={rubicItemsData}
                     />
                 </div>
+            </div>
             </div>
         </div>
     );

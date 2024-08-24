@@ -100,8 +100,8 @@ const PoPlo = (nav) => {
     }, []);
 
     return (
-        <div className="flex w-full flex-col justify-center leading-8 p-5 bg-[#f5f5f5]-500">
-             <div className='w-full flex justify-between'>
+        <div className="flex w-full flex-col justify-center leading-8 ">
+             <div className='w-full flex justify-between mb-2'>
                 <div className='h-full my-auto p-5 hidden sm:block'>
                     <BackButton />
                 </div>
@@ -116,6 +116,7 @@ const PoPlo = (nav) => {
                     </div>
                 </div>
             </div>
+            <div className="p-5 px-2 sm:p-5 border-2 border-default rounded-xl bg-[#fefefe] shadow-sm">
             <div className="pl-5 mt-2 hidden sm:block">
                 <h1 className="text-2xl font-bold text-[#6366F1] text-left">Ánh xạ PO và PLO</h1>
             </div>
@@ -172,6 +173,7 @@ const PoPlo = (nav) => {
                         ))}
                     </tbody>
                 </table>
+            </div>
             </div>
         </div>
     );

@@ -77,7 +77,7 @@ const ManagePlo = (nav) => {
                             <i className="fa-solid fa-pen text-xl text-[#020401]"></i>
                         </Button> */}
 
-                        <Button isIconOnly  className="bg-[#fefefe] shadow-sm border-1 border-default"
+                        <Button isIconOnly className="bg-[#fefefe] shadow-sm border-3 border-[#AF84DD]"
                             onClick={() => { handleEditClick(action.PLO) }}
                         >
                         <i className="fa-solid fa-pen text-xl  sm:text-lg"></i>
@@ -85,8 +85,7 @@ const ManagePlo = (nav) => {
                     </Tooltip>
                     <Tooltip title="Xoá">
                         <Button
-                           isIconOnly
-                            className="bg-[#fefefe] shadow-sm border-1 border-default"
+                           isIconOnly className="bg-[#fefefe] shadow-sm border-3 border-[#FF8077]"
                             onClick={() => { onOpen(); setDeleteId(action._id); }}
                         >
                             <i className="fa-solid fa-trash-can text-xl sm:text-lg"></i>
@@ -300,9 +299,11 @@ const ManagePlo = (nav) => {
                     </div> */}
                     <BackButton />
                 </div>
-                <div className='w-full sm:w-fit bg-[white] border-slate-300 rounded-xl border-2 p-2 justify-center items-center flex gap-4 flex-col'>
-                    <div className='flex justify-center w-full flex-wrap items-center gap-1'>
+
+                <div className='w-full sm:w-auto bg-[#fefefe] border-2 border-[#4F46E5] mb-2 shadow-sm rounded-xl p-4 flex gap-4 flex-col sm:flex-row items-center'>
+                    <div className='flex flex-wrap justify-center gap-2'>
                         <Button
+                            className='bg-transparent  shadow-sm border-2 border-[#FF9908] hover:bg-[#FF9908]'
                             endContent={<PlusIcon />}
                             onClick={() => handleNavigate(
                                 `/admin/management-program/po-plo`
@@ -311,36 +312,36 @@ const ManagePlo = (nav) => {
                             Po_Plo
                         </Button>
                         <Button
-                            className='bg-[#AF84DD] '
-                            endContent={<PlusIcon />}
+                            className='bg-transparent  shadow-sm border-2 border-[#AF84DD] hover:bg-[#AF84DD]'
+                            endContent={<i className="fas fa-plus"></i>} // Icon thêm mới
                             onClick={handleAddClick}
                         >
                             Tạo mới
                         </Button>
                         <Button
-                            className='bg-[#FF8077] '
-                            endContent={<PlusIcon />}
+                            className='bg-transparent shadow-sm border-2 border-[#FF8077]  hover:bg-[#FF8077]'
+                            endContent={<i className="fas fa-eye-slash"></i>} // Icon ẩn nhiều
                             onClick={onOpen}
                             disabled={selectedRowKeys.length === 0}
                         >
                             Ẩn nhiều
                         </Button>
                         <Button
-                            endContent={<PlusIcon />}
-                            onClick={() => handleNavigate(
-                                `/admin/management-plo/store`
-                            )}
+                            className='bg-transparent shadow-sm border-2 border-[#6B7280] hover:bg-[#6B7280]'
+                            endContent={<i className="fas fa-archive"></i>} // Icon kho lưu trữ
+                            onClick={() => handleNavigate(`/admin/management-plo/store`)}
                         >
                             Kho lưu trữ
                         </Button>
                     </div>
                 </div>
             </div>
+            <div className="p-5 px-2 sm:p-5 border-2 border-default rounded-xl bg-[#fefefe] shadow-sm">
             <div className="p-5 w-full flex justify-center items-start flex-col sm:flex-col lg:flex-row xl:fex-row">
                 <div className="text-2xl w-[300px] sm:w-full leading-8 italic font-bold text-[#FF9908] text-wrap flex-1 text-justify">{programData.program_id + ': ' + programData.programName}</div>
             </div>
             <div className="pl-5">
-                <h1 className="text-xl font-bold text-[#475569] text-left">Danh sách chuẩn đầu ra CT</h1>
+                <h1 className="text-xl font-bold text-[#475569] text-left">Danh sách CĐR CT</h1>
             </div>
             <div className="w-full my-5 px-5">
                 {selectedRowKeys.length !== 0 && (
@@ -394,6 +395,7 @@ const ManagePlo = (nav) => {
                     />
                 </div>
             </div>
+            </div>
         </div>
     );
 }
@@ -439,7 +441,7 @@ function ConfirmAction(props) {
                         <ModalHeader>Cảnh báo</ModalHeader>
                         <ModalBody>
                             <p className="text-[16px]">
-                                Plo sẽ được chuyển vào <Chip radius="sm" className="bg-zinc-200"><i class="fa-solid fa-trash-can-arrow-up mr-2"></i>Kho lưu trữ</Chip> và có thể khôi phục lại, tiếp tục thao tác?
+                                CĐR sẽ được chuyển vào <Chip radius="sm" className="bg-zinc-200"><i class="fa-solid fa-trash-can-arrow-up mr-2"></i>Kho lưu trữ</Chip> và có thể khôi phục lại, tiếp tục thao tác?
                             </p>
                         </ModalBody>
                         <ModalFooter>

@@ -26,7 +26,7 @@ function ModalUpdatePlo({ isOpen, onOpenChange, onSubmit, editData, setEditData 
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className='text-[#FF9908]'>Edit Plo</ModalHeader>
+            <ModalHeader className='text-[#FF9908]'>Cập nhật CĐR</ModalHeader>
             <ModalBody>
               <form
                 className="flex flex-col gap-3"
@@ -37,7 +37,7 @@ function ModalUpdatePlo({ isOpen, onOpenChange, onSubmit, editData, setEditData 
                 }}>
                 <Input
                   fullWidth
-                  label="Plo Name"
+                  label="Mã PLO"
                   name="ploName"
                   value={editData.ploName || ''}
                   onChange={handleChange}
@@ -45,9 +45,9 @@ function ModalUpdatePlo({ isOpen, onOpenChange, onSubmit, editData, setEditData 
                 />
                  <Textarea
                   fullWidth
-                  label="Description"
+                  label="Mô tả"
                   name="description"
-                  placeholder="Enter your description"
+                  placeholder="Nhập mô tả"
                   value={editData.description || ''}
                   onChange={handleChange}
                   rows={4}
@@ -58,7 +58,7 @@ function ModalUpdatePlo({ isOpen, onOpenChange, onSubmit, editData, setEditData 
             </ModalBody>
             <ModalFooter>
               <Button variant="light" onClick={onClose}>
-                Cancel
+                Hủy
               </Button>
               <Button
                 type="submit"
@@ -69,7 +69,7 @@ function ModalUpdatePlo({ isOpen, onOpenChange, onSubmit, editData, setEditData 
                   onClose();
                 }}
               >
-                Update
+                Cập nhật
               </Button>
             </ModalFooter>
           </>

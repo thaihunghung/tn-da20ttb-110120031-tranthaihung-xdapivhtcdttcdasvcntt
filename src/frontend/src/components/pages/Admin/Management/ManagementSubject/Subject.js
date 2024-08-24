@@ -33,7 +33,7 @@ import ModalAddSubject from './ModalAddSubject';
 import { PlusIcon } from '../../../../../public/PlusIcon';
 import ModalOpenExcelSubject from './ModalOpenExcelSubject';
 
-const INITIAL_VISIBLE_COLUMNS = ['name', 'subjectCode','description', 'Clo', 'Chapter', 'action'];
+const INITIAL_VISIBLE_COLUMNS = ['name', 'subjectCode', 'description', 'Clo', 'Chapter', 'action'];
 const COMPACT_VISIBLE_COLUMNS = ['name', 'Clo', 'Chapter', 'action'];
 
 const Subject = (nav) => {
@@ -240,7 +240,7 @@ const Subject = (nav) => {
       console.error("No subject selected for editing");
       return;
     }
-    console.log('values',values);
+    console.log('values', values);
     try {
       const response = await axiosAdmin.put(`/subject/${subject_id}`, { data: values });
       loadSubjects();
@@ -325,15 +325,12 @@ const Subject = (nav) => {
             <p className="text-bold text-small text-justify">{cellValue}</p>
           </div>
         );
-        case 'description':
-          return (
-            <div className="flex w-fit justify-start items-center">
-              <p className="text-bold text-small text-justify">{cellValue}</p>
-            </div>
-          );
-
-
-        
+      case 'description':
+        return (
+          <div className="flex w-fit justify-start items-center">
+            <p className="text-bold text-small text-justify">{cellValue}</p>
+          </div>
+        );
       case 'Clo':
         return (
           <div className='flex w-fit justify-start items-center'>
@@ -361,12 +358,10 @@ const Subject = (nav) => {
                 </Tooltip>
               </>
             ) : (
-
-
               <>
                 <Button
                   className="bg-[#fefefe] shadow-sm border-1 border-[#AF84DD] hidden sm:block"
-                  onClick={() => navigate(`/admin/management-subject/${subject.clos.id}/clo/create`)}
+                  onClick={() => navigate(`/admin/management-subject/${subject.clos.id}/clo/update`)}
                 >
                   Tạo mới
                 </Button>
@@ -375,7 +370,7 @@ const Subject = (nav) => {
                   <Button
                     isIconOnly
                     className="bg-[#fefefe] shadow-sm border-1 border-[#AF84DD] block sm:hidden"
-                    onClick={() => navigate(`/admin/management-subject/${subject.clos.id}/clo/create`)}
+                    onClick={() => navigate(`/admin/management-subject/${subject.clos.id}/clo/update`)}
                   >
                     <i className="fa-solid fa-bars"></i>
                   </Button>
@@ -393,7 +388,7 @@ const Subject = (nav) => {
                 <Button
                   className="bg-[#fefefe] shadow-sm border-1 border-[#AF84DD] hidden sm:block"
                   onClick={() => navigate(`/admin/management-subject/${subject.chapters.id}/chapter/update`)}
-                  disabled={!subject.chapters.checkCLo}
+                 // disabled={!subject.chapters.checkCLo}
                 >
                   Cập nhật
                 </Button>
@@ -403,7 +398,7 @@ const Subject = (nav) => {
                   <Button
                     isIconOnly
                     className="bg-[#fefefe] shadow-sm border-1 border-[#AF84DD] block sm:hidden"
-                  // onClick={() => { handleEditClick(rubric.action) }}
+                     onClick={() => { navigate(`/admin/management-subject/${subject.chapters.id}/chapter/update`) }}
                   >
                     <i className="fa-solid fa-bars"></i>
                   </Button>
@@ -414,8 +409,8 @@ const Subject = (nav) => {
               <>
                 <Button
                   className="bg-[#fefefe] shadow-sm border-1 border-[#AF84DD] hidden sm:block"
-                  onClick={() => navigate(`/admin/management-subject/${subject.chapters.id}/chapter/create`)}
-                  disabled={!subject.chapters.checkCLo}
+                  onClick={() => navigate(`/admin/management-subject/${subject.chapters.id}/chapter/update`)}
+                  //disabled={!subject.chapters.checkCLo}
                 >
                   Tạo mới
                 </Button>
@@ -424,7 +419,7 @@ const Subject = (nav) => {
                   <Button
                     isIconOnly
                     className="bg-[#fefefe] shadow-sm border-1 border-[#AF84DD] block sm:hidden"
-                  // onClick={() => { handleEditClick(rubric.action) }}
+                    onClick={() => { navigate(`/admin/management-subject/${subject.chapters.id}/chapter/update`) }}
                   >
                     <i className="fa-solid fa-bars"></i>
                   </Button>
@@ -631,7 +626,7 @@ const Subject = (nav) => {
   const [isExcelModalOpen, setIsExcelModalOpen] = useState(false);
   const handleExcelClick = () => {
     setIsExcelModalOpen(true);
-};
+  };
   return (
     <>
       <div className='w-full flex justify-between items-center'>
@@ -668,7 +663,7 @@ const Subject = (nav) => {
             <Button
               className='bg-transparent border-2 border-[#FF9908]  hover:bg-[#FF9908]'
               endContent={<i className="fas fa-file-excel"></i>} // Icon Excel
-              onClick={handleExcelClick} 
+              onClick={handleExcelClick}
             >
               Nhập dữ liệu Excel
             </Button>
@@ -676,10 +671,10 @@ const Subject = (nav) => {
         </div>
       </div>
 
-      <ModalOpenExcelSubject                
-                isOpen={isExcelModalOpen}
-                onOpenChange={setIsExcelModalOpen}
-            />
+      <ModalOpenExcelSubject
+        isOpen={isExcelModalOpen}
+        onOpenChange={setIsExcelModalOpen}
+      />
       <Table
         aria-label="Example table with dynamic content"
         bottomContent={bottomContent}

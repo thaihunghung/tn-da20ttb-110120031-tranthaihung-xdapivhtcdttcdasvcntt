@@ -68,7 +68,7 @@ const Chapter = (nav) => {
         {
             title: (
                 <div className="flex items-center justify-center w-full">
-                    <span>Form</span>
+                    <span>Thao tác</span>
                 </div>
             ),
             dataIndex: "action",
@@ -77,11 +77,7 @@ const Chapter = (nav) => {
                    
                     <Tooltip title="Chỉnh sửa">
                             <Button
-                                className="bg-[#AF84DD]"
-                                isIconOnly
-                                variant="light"
-                                radius="full"
-                                size="sm"
+                               isIconOnly className="bg-[#fefefe] shadow-sm border-3 border-[#AF84DD]"
                                 onClick={() => { handleEditClick(action.CHAPTER) }}
 
                             >
@@ -89,14 +85,11 @@ const Chapter = (nav) => {
                             </Button>
                     </Tooltip>
               
-
+                    
+                    
                     <Tooltip title="Xoá">
                         <Button
-                            className="bg-[#FF8077]"
-                            isIconOnly
-                            variant="light"
-                            radius="full"
-                            size="sm"
+                       isIconOnly className="bg-[#fefefe] shadow-sm border-3 border-[#FF8077]"
                             onClick={() => { onOpen(); setDeleteId(action._id); }}
                         >
                             <i className="fa-solid fa-trash-can text-xl text-[#020401]"></i>
@@ -146,7 +139,7 @@ const Chapter = (nav) => {
             console.log(response.data);
         } catch (error) {
             console.error("Error: " + error.message);
-            message.error('Error fetching PO data');
+            
         }
     };
 
@@ -302,7 +295,7 @@ const Chapter = (nav) => {
                 <div className='h-full my-auto p-5 hidden sm:block'>
                     <BackButton />
                 </div>
-                <div className='w-full sm:w-fit bg-[white] border-slate-300 rounded-xl border-2 p-2 justify-center items-center flex gap-4 flex-col'>
+                {/* <div className='w-full sm:w-fit bg-[white] border-slate-300 rounded-xl border-2 p-2 justify-center items-center flex gap-4 flex-col'>
                     <div className='flex justify-center w-full flex-wrap items-center gap-1'>
                         <Button
 
@@ -337,8 +330,50 @@ const Chapter = (nav) => {
                             Store
                         </Button>
                     </div>
+                </div> */}
+
+
+                <div className='w-full sm:w-auto bg-[#fefefe] border-2 border-[#4F46E5] mb-2 shadow-sm rounded-xl p-4 flex gap-4 flex-col sm:flex-row items-center'>
+                    <div className='flex flex-wrap justify-center gap-2'>
+                        <Button
+                            className='bg-transparent  shadow-sm border-2 border-[#FF9908] hover:bg-[#FF9908]'
+                            endContent={<PlusIcon />}
+                            onClick={() => handleNavigate(
+                                `/admin/management-subject/${id}/chapter-clo`
+                            )}
+                        >
+                            Chapter_Clo
+                        </Button>
+                        <Button
+                            className='bg-transparent  shadow-sm border-2 border-[#AF84DD] hover:bg-[#AF84DD]'
+                            endContent={<i className="fas fa-plus"></i>} // Icon thêm mới
+                            onClick={handleAddClick}
+                        >
+                            Tạo mới
+                        </Button>
+                        <Button
+                            className='bg-transparent shadow-sm border-2 border-[#FF8077]  hover:bg-[#FF8077]'
+                            endContent={<i className="fas fa-eye-slash"></i>} // Icon ẩn nhiều
+                            onClick={onOpen}
+                            disabled={selectedRowKeys.length === 0}
+                        >
+                            Ẩn nhiều
+                        </Button>
+                        <Button
+                            className='bg-transparent shadow-sm border-2 border-[#6B7280] hover:bg-[#6B7280]'
+                            endContent={<i className="fas fa-archive"></i>} // Icon kho lưu trữ
+                            onClick={() => handleNavigate(`/admin/management-subject/${id}/Chapter/store`)}
+                        >
+                            Kho lưu trữ
+                        </Button>
+                    </div>
                 </div>
             </div>
+
+
+            <div className="p-5 px-2 sm:p-5 border-2 border-default rounded-xl bg-[#fefefe] shadow-sm">
+
+            
             <div className="p-5 w-full flex justify-center items-start flex-col sm:flex-col lg:flex-row xl:fex-row">
                 <div className="text-2xl w-[300px] sm:w-full leading-8 italic font-bold text-[#FF9908] text-wrap flex-1 text-justify">{Subject.subjectCode + ': ' + Subject.subjectName}</div>
             </div>
@@ -386,6 +421,7 @@ const Chapter = (nav) => {
                         dataSource={chapterListData}
                     />
                 </div>
+            </div>
             </div>
             {/* <Tabs tabs=
                 {[

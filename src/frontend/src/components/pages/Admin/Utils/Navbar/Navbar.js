@@ -151,12 +151,10 @@ function Nav(props) {
       icon: <i className={`fa-solid fa-star mr-${collapsedNav ? "0" : "3"} w-4`}></i>,
       link: "/admin/management-subject/list"
     },
-    { text: "Rubric", link: "/admin/management-rubric/list", icon: <i className={`fa-regular fa-folder mr-${collapsedNav ? "0" : "3"} w-4`}></i> },
+    { text: "Tiêu chí ĐG", link: "/admin/management-rubric/list", icon: <i className={`fa-regular fa-folder mr-${collapsedNav ? "0" : "3"} w-4`}></i> },
     { text: "Sinh viên", link: "/admin/student", icon: <i className={`fa-solid fa-school mr-${collapsedNav ? "0" : "3"} w-4`}></i> },
     { text: "Lớp môn học", link: "/admin/course", icon: <i className={`fa-brands fa-odnoklassniki mr-${collapsedNav ? "0" : "3"} w-4`}></i> },
     { text: "API", link: "http://localhost:1509/api/docs/#/", icon: <i className={`fa-solid fa-cloud mr-${collapsedNav ? "0" : "3"} w-4`}></i> },
-
-
   ];
 
   // Conditionally add the "Giáo viên" tab

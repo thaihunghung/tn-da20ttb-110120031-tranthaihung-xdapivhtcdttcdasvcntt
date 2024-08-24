@@ -23,7 +23,7 @@ const Clo = (nav) => {
     if (!teacher_id) {
         navigate('/login');
     }
-    
+
     const { setCollapsedNav } = nav;
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -73,7 +73,7 @@ const Clo = (nav) => {
         {
             title: (
                 <div className="flex items-center justify-center w-full">
-                    <span>Form</span>
+                    <span>Thao tác</span>
                 </div>
             ),
             dataIndex: "action",
@@ -81,23 +81,16 @@ const Clo = (nav) => {
                 <div className="flex items-center justify-center w-full gap-2">
                     <Tooltip title="Chỉnh sửa">
                         <Button
-                            isIconOnly
-                            variant="light"
-                            radius="full"
-                            size="sm"
-                            className="bg-[#AF84DD]"
+                           isIconOnly className="bg-[#fefefe] shadow-sm border-3 border-[#AF84DD]"
                             onClick={() => { handleEditClick(action.CLO) }}
                         >
                             <i className="fa-solid fa-pen text-xl text-[#020401]"></i>
                         </Button>
                     </Tooltip>
-                    <Tooltip title="Xoá">
+                    <Tooltip title="Ẩn">
                         <Button
-                            isIconOnly
-                            className="bg-[#FF8077]"
-                            variant="light"
-                            radius="full"
-                            size="sm"
+                        
+                           isIconOnly className="bg-[#fefefe] shadow-sm border-3 border-[#FF8077]"
                             onClick={() => { onOpen(); setDeleteId(action._id); }}
                         >
                             <i className="fa-solid fa-trash-can text-xl text-[#020401]"></i>
@@ -208,7 +201,7 @@ const Clo = (nav) => {
             console.error("No clo selected for editing");
             return;
         }
-        
+
         try {
             const response = await axiosAdmin.put(`/clo/${clo_id}`, { data: values });
             getAllClo();
@@ -230,7 +223,7 @@ const Clo = (nav) => {
         //     description: "",
         //     subject_id: "",
         // });
-        
+
         if (newClo.cloName === "") {
             message.warning('Please input a new clo name');
             return;
@@ -246,7 +239,7 @@ const Clo = (nav) => {
             if (response.status === 201) {
                 message.success('Data saved successfully');
                 setNewClo(UnValueModalNew)
-                
+
             } else {
                 message.error(response.data.message || 'Error saving data');
             }
@@ -257,7 +250,7 @@ const Clo = (nav) => {
         }
     };
     const handleEditClick = (clo) => {
-        console.log("clo",clo)
+        console.log("clo", clo)
         setEditClo(clo);
         setIsEditModalOpen(true);
     };
@@ -316,10 +309,10 @@ const Clo = (nav) => {
                 <div className='h-full my-auto p-5 hidden sm:block'>
                     <BackButton />
                 </div>
-                <div className='w-full sm:w-fit bg-[white] border-slate-300 rounded-xl border-2 p-2 justify-center items-center flex gap-4 flex-col'>
-                    <div className='flex justify-center w-full flex-wrap items-center gap-1'>
+                <div className='w-full sm:w-auto bg-[#fefefe] border-2 border-[#4F46E5] mb-2 shadow-sm rounded-xl p-4 flex gap-4 flex-col sm:flex-row items-center'>
+                    <div className='flex flex-wrap justify-center gap-2'>
                         <Button
-
+                            className='bg-transparent  shadow-sm border-2 border-[#FF9908] hover:bg-[#FF9908]'
                             endContent={<PlusIcon />}
                             onClick={() => handleNavigate(
                                 `/admin/management-subject/${id}/clo-plo`
@@ -328,77 +321,78 @@ const Clo = (nav) => {
                             Clo_Plo
                         </Button>
                         <Button
-                            className='bg-[#AF84DD] '
-                            endContent={<PlusIcon />}
+                            className='bg-transparent  shadow-sm border-2 border-[#AF84DD] hover:bg-[#AF84DD]'
+                            endContent={<i className="fas fa-plus"></i>} // Icon thêm mới
                             onClick={handleAddClick}
                         >
-                            New
+                            Tạo mới
                         </Button>
                         <Button
-                            className='bg-[#FF8077] '
-                            endContent={<PlusIcon />}
+                            className='bg-transparent shadow-sm border-2 border-[#FF8077]  hover:bg-[#FF8077]'
+                            endContent={<i className="fas fa-eye-slash"></i>} // Icon ẩn nhiều
                             onClick={onOpen}
                             disabled={selectedRowKeys.length === 0}
                         >
-                            Deletes
+                            Ẩn nhiều
                         </Button>
                         <Button
-                            endContent={<PlusIcon />}
-                            onClick={() => handleNavigate(
-                                `/admin/management-subject/${id}/clo/store`
-                            )}
+                            className='bg-transparent shadow-sm border-2 border-[#6B7280] hover:bg-[#6B7280]'
+                            endContent={<i className="fas fa-archive"></i>} // Icon kho lưu trữ
+                            onClick={() => handleNavigate(`/admin/management-subject/${id}/clo/store`)}
                         >
-                            Store
+                            Kho lưu trữ
                         </Button>
                     </div>
                 </div>
             </div>
-            <div className="p-5 w-full flex justify-center items-start flex-col sm:flex-col lg:flex-row xl:fex-row">
-                <div className="text-2xl w-[300px] sm:w-full leading-8 italic font-bold text-[#FF9908] text-wrap flex-1 text-justify">{Subject.subjectCode + ': ' + Subject.subjectName}</div>
-            </div>
-            <div className="pl-5">
-                <h1 className="text-xl font-bold text-[#6366F1] text-left">Danh sách Clo</h1>
-            </div>
+            <div className="p-5 px-2 sm:p-5 border-2 border-default rounded-xl bg-[#fefefe] shadow-sm">
+                <div className="p-5 w-full flex justify-center items-start flex-col sm:flex-col lg:flex-row xl:fex-row">
+                    <div className="text-2xl w-[300px] sm:w-full leading-8 italic font-bold text-[#FF9908] text-wrap flex-1 text-justify">{Subject.subjectCode + ': ' + Subject.subjectName}</div>
+                </div>
+                <div className="pl-5">
+                    <h1 className="text-xl font-bold text-[#6366F1] text-left">Danh sách Clo</h1>
+                </div>
 
-            <div className="w-full my-5 px-5">
-                {selectedRowKeys.length !== 0 && (
-                    <div className="Quick__Option flex justify-between items-center sticky top-2 bg-[white] z-50 w-full p-4 py-3 border-1 border-slate-300">
-                        <p className="text-sm font-medium">
-                            <i className="fa-solid fa-circle-check mr-3 text-emerald-500"></i>{" "}
-                            Đã chọn {selectedRow.length} clo
-                        </p>
-                        <div className="flex items-center gap-2">
-                            <Tooltip
-                                title="Bỏ chọn"
-                                getPopupContainer={() =>
-                                    document.querySelector(".Quick__Option")
-                                }
-                            >
-                                <Button
-                                    isIconOnly
-                                    variant="light"
-                                    radius="full"
-                                    onClick={() => {
-                                        handleUnSelect();
-                                    }}
+                <div className="w-full my-5 px-5">
+                    {selectedRowKeys.length !== 0 && (
+                        <div className="Quick__Option flex justify-between items-center sticky top-2 bg-[white] z-50 w-full p-4 py-3 border-1 border-slate-300">
+                            <p className="text-sm font-medium">
+                                <i className="fa-solid fa-circle-check mr-3 text-emerald-500"></i>{" "}
+                                Đã chọn {selectedRow.length} clo
+                            </p>
+                            <div className="flex items-center gap-2">
+                                <Tooltip
+                                    title="Bỏ chọn"
+                                    getPopupContainer={() =>
+                                        document.querySelector(".Quick__Option")
+                                    }
                                 >
-                                    <i className="fa-solid fa-xmark text-[18px]"></i>
-                                </Button>
-                            </Tooltip>
+                                    <Button
+                                        isIconOnly
+                                        variant="light"
+                                        radius="full"
+                                        onClick={() => {
+                                            handleUnSelect();
+                                        }}
+                                    >
+                                        <i className="fa-solid fa-xmark text-[18px]"></i>
+                                    </Button>
+                                </Tooltip>
+                            </div>
                         </div>
+                    )}
+                    <div className="w-full h-fit overflow-auto">
+                        <Table className="table-po min-w-[400px] sm:min-w-[400px] lg:min-w-full xl:min-w-full table-auto text-[#fefefe]"
+                            bordered
+                            loading={loading}
+                            rowSelection={{
+                                type: "checkbox",
+                                ...rowSelection,
+                            }}
+                            columns={columns}
+                            dataSource={poListData}
+                        />
                     </div>
-                )}
-                <div className="w-full h-fit overflow-auto">
-                    <Table className="table-po min-w-[400px] sm:min-w-[400px] lg:min-w-full xl:min-w-full table-auto text-[#fefefe]"
-                        bordered
-                        loading={loading}
-                        rowSelection={{
-                            type: "checkbox",
-                            ...rowSelection,
-                        }}
-                        columns={columns}
-                        dataSource={poListData}
-                    />
                 </div>
             </div>
         </div>

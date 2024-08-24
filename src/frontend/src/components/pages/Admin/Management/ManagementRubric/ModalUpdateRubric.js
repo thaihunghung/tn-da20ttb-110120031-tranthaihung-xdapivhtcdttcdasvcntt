@@ -36,7 +36,7 @@ function ModalUpdateRubric({ isOpen, onOpenChange, onSubmit, editRubric, setEdit
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className='text-[#FF9908]'>Edit Rubric</ModalHeader>
+            <ModalHeader className='text-[#FF9908]'>Cập nhật bảng TC</ModalHeader>
             <ModalBody>
               <form
                 className="flex flex-col gap-3"
@@ -47,7 +47,7 @@ function ModalUpdateRubric({ isOpen, onOpenChange, onSubmit, editRubric, setEdit
                 }}>
                 <Input
                   fullWidth
-                  label="Name"
+                  label="Tên bảng TC"
                   name="rubricName"
                   value={editRubric.rubricName || ''}
                   onChange={handleChange}
@@ -55,14 +55,14 @@ function ModalUpdateRubric({ isOpen, onOpenChange, onSubmit, editRubric, setEdit
                 />
                 <Input
                   fullWidth
-                  label="Comment"
+                  label="Ghi chú"
                   name="comment"
-                  placeholder="Enter your Comment"
+                  placeholder="Nhập ghi chú"
                   value={editRubric.comment || ''}
                   onChange={handleChange}
                 />
                 <Select
-                  label="Subject"
+                  label="Chọn học phần"
                   name="subject_id"
                   defaultSelectedKeys={[editRubric.subject_id || '']}
                   value={editRubric.subject_id || ''}
@@ -79,7 +79,7 @@ function ModalUpdateRubric({ isOpen, onOpenChange, onSubmit, editRubric, setEdit
             </ModalBody>
             <ModalFooter>
               <Button variant="light" onClick={onClose}>
-                Cancel
+                Hủy
               </Button>
               <Button
                 type="submit"
@@ -90,7 +90,7 @@ function ModalUpdateRubric({ isOpen, onOpenChange, onSubmit, editRubric, setEdit
                   onClose();
                 }}
               >
-                Update
+                Cập nhật
               </Button>
             </ModalFooter>
           </>

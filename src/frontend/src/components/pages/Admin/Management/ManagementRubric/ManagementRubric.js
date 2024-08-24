@@ -244,44 +244,45 @@ const ManagementRubric = (nav) => {
         switch (columnKey) {
             case 'name':
                 return (
-                    <div className="flex flex-col">
+                    <div className="flex w-fit justify-start items-center">
                         <p className="text-bold text-small capitalize">{cellValue}</p>
                     </div>
                 );
             case 'Items':
                 return (
-                    <div className="flex flex-col">
+                    <div className="flex w-fit justify-start items-center">
                         {/* ${rubric.status.status ? 'text-success' : 'text-danger'} */}
                         <p className={`text-bold text-small `}>
                             {/* // {rubric.status.status ? 'Active' : 'Inactive'} */}
                             {rubric.status.status ?
-                                <Button color="primary" variant="ghost"
+                                <Button
+                                    className="bg-[#fefefe] shadow-sm border-1 border-[#AF84DD]"
                                     onClick={() =>
                                         handleNavigate(`/admin/management-rubric/${rubric.status.id}/rubric-items/list`)}
                                 >
-                                    <p>Update</p>
+                                    <p>Cập nhật</p>
                                 </Button>
                                 :
-                                <Button color="primary" variant="ghost"
-                                    onClick={() =>
-                                        handleNavigate(`/admin/management-rubric/${rubric.status.id}/rubric-items/list`)}
+                                <Button
+                                    className="bg-[#fefefe] shadow-sm border-1 border-[#AF84DD]"
+                                    onClick={() => handleNavigate(`/admin/management-rubric/${rubric.status.id}/rubric-items/list`)}
+                                //disabled={!subject.chapters.checkCLo}
                                 >
-                                    <p>Create</p>
+                                    Tạo mới
                                 </Button>
-
                             }
                         </p>
                     </div>
                 );
             case 'point':
                 return (
-                    <div className="flex flex-col">
+                    <div className="flex w-fit justify-start items-center">
                         <p className="text-bold text-small">{cellValue}</p>
                     </div>
                 );
             case 'createdAt':
                 return (
-                    <div className="flex flex-col">
+                    <div className="flex w-fit justify-start items-center">
                         <p className="text-bold text-small">{rubric.createdAt}</p>
                     </div>
                 );
@@ -291,14 +292,11 @@ const ManagementRubric = (nav) => {
             case 'action':
                 //const disc = replaceCharacters(cellValue.description); // Assuming `replaceCharacters` is a function you have
                 return (
-                    <div className="flex items-center justify-center w-full gap-2">
+                    <div className="flex w-fit justify-start items-center gap-2">
                         <Tooltip title="Chỉnh sửa">
                             <Button
-                                isIconOnly
-                                variant="light"
-                                radius="full"
-                                size="sm"
-                                className="bg-[#AF84DD]"
+                                isIconOnly className="bg-[#fefefe] shadow-sm border-3 border-[#AF84DD]"
+
                                 onClick={() => { handleEditClick(rubric.action) }}
                             >
                                 <i className="fa-solid fa-pen text-xl text-[#020401]"></i>
@@ -306,12 +304,9 @@ const ManagementRubric = (nav) => {
                         </Tooltip>
                         <Tooltip title="Xoá">
                             <Button
-                                isIconOnly
-                                variant="light"
-                                radius="full"
-                                size="sm"
+                                isIconOnly className="bg-[#fefefe] shadow-sm border-3 border-[#FF8077]"
                                 onClick={() => { onOpen(); setDeleteId(rubric.action.rubric_id); }}
-                                className="bg-[#FF8077]"
+
                             >
                                 <i className="fa-solid fa-trash-can text-xl text-[#020401]"></i>
                             </Button>
@@ -319,11 +314,8 @@ const ManagementRubric = (nav) => {
 
                         <Tooltip title="Chấm điểm">
                             <Button
-                                isIconOnly
-                                variant="light"
-                                radius="full"
-                                size="sm"
-                                className="bg-[#FF9908] "
+                                isIconOnly className="bg-[#fefefe] shadow-sm border-3 border-[#FF9908]"
+
                                 onClick={() => handleNavigate(
                                     `/admin/management-grading/list`
                                 )}
@@ -343,13 +335,13 @@ const ManagementRubric = (nav) => {
         return (
             <div className="flex flex-col gap-4">
                 <div className='block sm:hidden'>
-                    <h1 className="text-2xl pb-2 font-bold text-[#6366F1]">Danh sách Rubric</h1>
+                    <h1 className="text-2xl pb-2 font-bold text-[#6366F1]">Danh sách bảng tiêu chí đánh giá</h1>
                 </div>
-                <div className="flex justify-between gap-3 items-center">
+                <div className="flex flex-col sm:flex-row justify-between gap-3 items-end">
                     <Input
                         isClearable
                         classNames={{ base: 'w-full sm:max-w-[44%]', inputWrapper: 'border-1' }}
-                        placeholder="Search by name..."
+                        placeholder="Tìm kiếm theo tên..."
                         size="sm"
                         startContent={<SearchIcon className="text-default-300" />}
                         value={filterValue}
@@ -357,39 +349,59 @@ const ManagementRubric = (nav) => {
                         onClear={() => setFilterValue('')}
                         onValueChange={onSearchChange}
                     />
-                    <div className="flex gap-3">
-
-                        {/* <Tooltip
-            title=""
-            getPopupContainer={() =>
-              document.querySelector(".Quick__Option")
-            }
-          >
-            <Button
-              className="flex justify-center items-center p-4"
-              isIconOnly
-              variant="light"
-              radius="full"
-              onClick={()=>{
-                //getSelectedItems
-                //console.log('Option selected',());
-                
-                navigateGradingGroup(ValidKeys)
-              }
-              
-              }
-            >
-              <span className="text-[#475569] text-lg font-bold">Chấm theo nhóm</span>
-            </Button>
-          </Tooltip> */}
+                    <div className='flex-1 flex items-center justify-start sm:justify-end'>
+                        <div className='flex gap-2 h-fit justify-center sm:justify-start items-center'>
+                            <Dropdown>
+                                <DropdownTrigger className="sm:flex">
+                                    <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
+                                        Cột
+                                    </Button>
+                                </DropdownTrigger>
+                                <DropdownMenu
+                                    disallowEmptySelection
+                                    aria-label="Table Columns"
+                                    closeOnSelect={false}
+                                    selectedKeys={visibleColumns}
+                                    selectionMode="multiple"
+                                    onSelectionChange={setVisibleColumns}
+                                >
+                                    {columns.map((column) => (
+                                        <DropdownItem key={column.uid} className="capitalize">
+                                            {capitalize(column.name)}
+                                        </DropdownItem>
+                                    ))}
+                                </DropdownMenu>
+                            </Dropdown>
+                            <Dropdown>
+                                <DropdownTrigger className="sm:flex">
+                                    <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
+                                        Lọc theo ngày
+                                    </Button>
+                                </DropdownTrigger>
+                                <DropdownMenu
+                                    disallowEmptySelection
+                                    aria-label="Date Filter"
+                                    closeOnSelect={true}
+                                    selectedKeys={new Set([dateFilter])}
+                                    selectionMode="single"
+                                    onSelectionChange={(keys) => {
+                                        const selectedKey = Array.from(keys)[0] || 'newest';
+                                        setDateFilter(selectedKey);
+                                    }}
+                                >
+                                    <DropdownItem key="newest" className="capitalize">Mới nhất</DropdownItem>
+                                    <DropdownItem key="oldest" className="capitalize">Cũ nhất</DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
+                        </div>
                     </div>
                 </div>
                 <div className="w-full flex  sm:items-center sm:justify-between">
                     <p className="text-small text-default-400 min-w-[100px]">
-                        <span className="text-default-500">{rubricData.length}</span> rubric(s)
+                        <span className="text-default-500">{rubricData.length}</span> Bảng tiêu chí(s)
                     </p>
                     <div className="w-fit sm:w-auto flex items-center gap-2 ">
-                        <p className="text-small text-default-400">Rows per page:</p>
+                        <p className="text-small text-default-400">Số dòng mỗi trang:</p>
                         <select
                             className="w-fit sm:w-auto rounded-lg border-default-200 bg-default-100 text-small transition-opacity focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                             onChange={onRowsPerPageChange}
@@ -409,7 +421,7 @@ const ManagementRubric = (nav) => {
         return (
             <div className="py-2 px-2 flex justify-between items-center">
                 <p className="text-small">
-                    {selectedKeys === 'all' ? 'All items selected' : `${selectedKeys.size} of ${rubricData.length} selected`}
+                    {selectedKeys === 'all' ? 'Đã chọn tất cả các mục' : `${selectedKeys.size} trong số ${rubricData.length} mục đã chọn`}
                 </p>
                 <Pagination
                     showControls
@@ -466,83 +478,35 @@ const ManagementRubric = (nav) => {
             <div className='w-full flex justify-between'>
                 <div className='h-full my-auto p-5 hidden sm:block'>
                     <div>
-                        <h1 className="text-2xl pb-2 font-bold text-[#6366F1]">Danh sách Rubric</h1>
+                        <h1 className="text-2xl pb-2 font-bold text-[#6366F1]">Danh sách bảng tiêu chí đánh giá</h1>
                     </div>
                     <BackButton />
                 </div>
-                <div className='w-full sm:w-fit bg-[white] border-slate-300 rounded-xl border-2 p-2 justify-start items-center flex gap-4 flex-col mb-4'>
-                    <div className='flex justify-center w-full flex-wrap items-center gap-1'>
+                <div className='w-full sm:w-auto bg-[#fefefe] border-2 border-[#4F46E5] mb-2 shadow-sm rounded-xl p-4 flex gap-4 flex-col sm:flex-row items-center'>
+                    <div className='flex flex-wrap justify-center gap-2'>
                         <Button
-                            className='bg-[#AF84DD] '
-                            endContent={<PlusIcon />}
+                            className='bg-transparent  shadow-sm border-2 border-[#AF84DD] hover:bg-[#AF84DD]'
+                            endContent={<i className="fas fa-plus"></i>} // Icon thêm mới
                             onClick={handleOpenModalCreate}
                         >
-                            New
+                            Tạo mới
                         </Button>
                         <Button
-                            className='bg-[#FF8077]'
-                            endContent={<PlusIcon />}
+                            className='bg-transparent shadow-sm border-2 border-[#FF8077]  hover:bg-[#FF8077]'
+                            endContent={<i className="fas fa-eye-slash"></i>} // Icon ẩn nhiều
                             onClick={onOpen}
                             disabled={selectedKeys.size === 0}
                         >
-                            Deletes
+                            Ẩn nhiều
                         </Button>
                         <Button
-                            endContent={<PlusIcon />}
-                            onClick={() => handleNavigate(
-                                `/admin/management-rubric/store`
-                            )}
+                            className='bg-transparent shadow-sm border-2 border-[#6B7280] hover:bg-[#6B7280]'
+                            endContent={<i className="fas fa-archive"></i>} // Icon kho lưu trữ
+                            onClick={() => handleNavigate(`/admin/management-rubric/store`)}
                         >
-                            Store
+                            Kho lưu trữ
                         </Button>
-
                     </div>
-
-                    <div className='flex gap-2 h-fit justify-center sm:justify-start flex-wrap items-center'>
-                        <Dropdown>
-                            <DropdownTrigger className="sm:flex">
-                                <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
-                                    Columns
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu
-                                disallowEmptySelection
-                                aria-label="Table Columns"
-                                closeOnSelect={false}
-                                selectedKeys={visibleColumns}
-                                selectionMode="multiple"
-                                onSelectionChange={setVisibleColumns}
-                            >
-                                {columns.map((column) => (
-                                    <DropdownItem key={column.uid} className="capitalize">
-                                        {capitalize(column.name)}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        </Dropdown>
-                        <Dropdown>
-                            <DropdownTrigger className="sm:flex">
-                                <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
-                                    Filter Date
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu
-                                disallowEmptySelection
-                                aria-label="Date Filter"
-                                closeOnSelect={true}
-                                selectedKeys={new Set([dateFilter])}
-                                selectionMode="single"
-                                onSelectionChange={(keys) => {
-                                    const selectedKey = Array.from(keys)[0] || 'newest';
-                                    setDateFilter(selectedKey);
-                                }}
-                            >
-                                <DropdownItem key="newest" className="capitalize">Newest</DropdownItem>
-                                <DropdownItem key="oldest" className="capitalize">Oldest</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
-                    </div>
-
                 </div>
             </div>
             <Table
@@ -653,7 +617,7 @@ function ConfirmAction(props) {
                         <ModalHeader>Cảnh báo</ModalHeader>
                         <ModalBody>
                             <p className="text-[16px]">
-                                Rubric sẽ được chuyển vào <Chip radius="sm" className="bg-zinc-200"><i class="fa-solid fa-trash-can-arrow-up mr-2"></i>Kho lưu trữ</Chip> và có thể khôi phục lại, tiếp tục thao tác?
+                                Bảng tiêu chí sẽ được chuyển vào <Chip radius="sm" className="bg-zinc-200"><i class="fa-solid fa-trash-can-arrow-up mr-2"></i>Kho lưu trữ</Chip> và có thể khôi phục lại, tiếp tục thao tác?
                             </p>
                         </ModalBody>
                         <ModalFooter>

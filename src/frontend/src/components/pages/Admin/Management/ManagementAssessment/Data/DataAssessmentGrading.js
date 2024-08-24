@@ -139,12 +139,12 @@ export const fetchAssessmentsByidTeacher = async (teacher_id) => {
 
 const columns = [
   { name: "id", uid: "id", sortable: true },
-  { name: "generalDescription", uid: "generalDescription", sortable: true },
-  { name: "description", uid: "description", sortable: true },
-  { name: "class", uid: "class", sortable: true },
-  { name: "student", uid: "student", sortable: true },
-  { name: "totalScore", uid: "totalScore", sortable: true },
-  { name: "action", uid: "action", sortable: true },
+  { name: "Mô tả chung", uid: "generalDescription", sortable: true },
+  { name: "Tên đề tài", uid: "description", sortable: true },
+  { name: "Lớp", uid: "class", sortable: true },
+  { name: "SV", uid: "student", sortable: true },
+  { name: "Điểm", uid: "totalScore", sortable: true },
+  { name: "Thao tác", uid: "action", sortable: true },
 
 
   // {name: "ROLE", uid: "role", sortable: true},

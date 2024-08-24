@@ -756,6 +756,7 @@ const FormMultipleGrading = ({ setCollapsedNav }) => {
         <h1 className="text-xl font-bold mb-2 text-[#6366F1] uppercase">{Assessment[0]?.generalDescription}</h1>
         <div className="flex items-center text-lg flex-col font-bold justify-center">
           <Textarea
+          isDisabled
             className="max-w-[700px]"
             label="Đề tài"
             value={AssessmentByStudent[0]?.description}
@@ -935,7 +936,7 @@ const FormMultipleGrading = ({ setCollapsedNav }) => {
               <Dropdown>
                 <DropdownTrigger className="sm:flex">
                   <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
-                    Columns
+                    Cột
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu

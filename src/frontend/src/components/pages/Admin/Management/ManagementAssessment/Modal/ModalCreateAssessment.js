@@ -46,7 +46,8 @@ const ModalCreateAssessment = ({
         place: "",
         date: "",
     });
-    const [selectedDate, setSelectedDate] = useState(new CalendarDate(2001, 1, 1));
+    const today = new Date();
+  const [selectedDate, setSelectedDate] = useState(new CalendarDate(today.getFullYear(), today.getMonth() + 1, today.getDate()));
     const navigate = useNavigate();
     const teacher_id = Cookies.get('teacher_id');
 
@@ -231,7 +232,7 @@ const ModalCreateAssessment = ({
             <ModalContent>
                 {(onClose) => (
                     <>
-                        <ModalHeader className="text-[#FF9908]">Create Assessment</ModalHeader>
+                        <ModalHeader className="text-[#FF9908]">Tạo mới đánh giá</ModalHeader>
                         <ModalBody>
                             <div className="flex flex-col h-full pb-10">
                                 {/* <Button onClick={() => { console.log(newRubric) }}> tesst</Button> */}
@@ -244,7 +245,7 @@ const ModalCreateAssessment = ({
                                     }}
                                 >
                                     <Select
-                                        label="course"
+                                        label="Chọn lớp môn học"
                                         name="course_id"
                                         value={newRubric.course_id || ''}
                                         onChange={handleCourseChange}
@@ -259,7 +260,7 @@ const ModalCreateAssessment = ({
 
 
                                     <Select
-                                        label="Rubric"
+                                        label="Chọn bảng tiêu chí"
                                         name="rubric_id"
                                         value={newRubric.rubric_id || ''}
                                         onChange={handleRubricSelectChange}
@@ -275,9 +276,9 @@ const ModalCreateAssessment = ({
 
                                     <Textarea
                                         fullWidth
-                                        label="description"
+                                        label="mô tả chung"
                                         name="description"
-                                        placeholder="Enter your description"
+                                        placeholder="nhận mô tả chung"
                                         value={newRubric.description || ''}
                                         onChange={handleChange}
                                         rows={4}
@@ -287,7 +288,7 @@ const ModalCreateAssessment = ({
 
                                     <Input
                                         fullWidth
-                                        label="place"
+                                        label="Địa điểm"
                                         name="place"
                                         value={newRubric.place || ''}
                                         onChange={handleChange}
@@ -295,7 +296,7 @@ const ModalCreateAssessment = ({
                                     />
                                     <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
                                         <DateInput
-                                            label="Date"
+                                            label="Ngày đánh giá"
                                             value={selectedDate}
                                             onChange={handleDateChange}
                                         />

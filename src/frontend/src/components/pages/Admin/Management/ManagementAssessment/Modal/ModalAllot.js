@@ -211,7 +211,7 @@ function ModalAllot({ isOpen, onOpenChange, generalDescription, loadData}) {
             <ModalBody>
               <div className="flex flex-col items-center w-full">
                 <Select
-                  label="Chọn Todo"
+                  label="Chọn giáo viên"
                   name="todo_id"
                   value={selectedTodoIds.map(id => id.toString())}
                   onChange={handleTodoChange}
@@ -226,31 +226,29 @@ function ModalAllot({ isOpen, onOpenChange, generalDescription, loadData}) {
                 </Select>
                 <div className='flex gap-2 mt-4'>
                   <Textarea
-                    label="Master list"
+                    label="Danh sách chính"
                     value={todoDescriptions}
                     readOnly
                     fullWidth
                   />
-
+  
                   <div className='flex flex-col justify-between'>
-
                     {currentTeacher ? (
                       <div className='flex flex-col justify-between'>
                         <Button onClick={() => handleCopy(currentTeacher)}>
-                          Copy
+                          Sao chép
                         </Button>
                         <Button onClick={() => handleDelete(currentTeacher)}>
-                          Delete
+                          Xóa
                         </Button>
                         <Button onClick={handleClear}>
-                          Clear Master list
+                          Xóa danh sách chính
                         </Button>
                       </div>
                     ) : null}
-
                   </div>
                   <Textarea
-                    label="Current list"
+                    label="Danh sách hiện tại"
                     value={currentList}
                     readOnly
                     fullWidth
@@ -265,7 +263,7 @@ function ModalAllot({ isOpen, onOpenChange, generalDescription, loadData}) {
                   onClose();
                 }}
               >
-                Back
+                Quay lại
               </Button>
               <Button
                 type="submit"
@@ -284,6 +282,7 @@ function ModalAllot({ isOpen, onOpenChange, generalDescription, loadData}) {
       </ModalContent>
     </Modal>
   );
+  
 };
 
 export default ModalAllot;

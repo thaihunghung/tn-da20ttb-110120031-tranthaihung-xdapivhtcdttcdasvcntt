@@ -301,11 +301,14 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col justify-center gap-4">
-        <div className="flex justify-between gap-3 items-center">
+        <div className='block sm:hidden'>
+          <h1 className="text-2xl pb-2 font-bold text-[#6366F1]">Danh sách sinh viên cần đánh giá</h1>
+        </div>
+        <div className="flex flex-col sm:flex-row justify-between gap-3 items-end">
           <Input
             isClearable
             classNames={{ base: 'w-full sm:max-w-[44%]', inputWrapper: 'border-1' }}
-            placeholder="Search by name..."
+            placeholder="Tìm kiếm theo tên..."
             size="sm"
             startContent={<SearchIcon className="text-default-300" />}
             value={filterValue}
@@ -313,23 +316,127 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
             onClear={() => setFilterValue('')}
             onValueChange={onSearchChange}
           />
-          <div className="flex gap-3">
-            <Button className=''
-            disabled={!CurrentTeacher}
+          <div className='flex-1 flex items-center justify-start sm:justify-end'>
+            <div className='flex gap-2 h-fit justify-center flex-wrap justify-end  sm:justify-start items-center'>
+            <Dropdown>
+              <DropdownTrigger className="sm:flex">
+                <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
+                  Cột
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                disallowEmptySelection
+                aria-label="Table Columns"
+                closeOnSelect={false}
+                selectedKeys={visibleColumns}
+                selectionMode="multiple"
+                onSelectionChange={setVisibleColumns}
+              >
+                {columns.map((column) => (
+                  <DropdownItem key={column.uid} className="capitalize">
+                    {capitalize(column.name)}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
+            <Dropdown>
+              <DropdownTrigger className="sm:flex">
+                <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
+                  Lọc theo điểm
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                disallowEmptySelection
+                aria-label="Status Filter"
+                closeOnSelect={true}
+                selectedKeys={new Set([filterStatus === 'all' ? 'all' : filterStatus.toString()])} // Chuyển đổi thành Set
+                selectionMode="single"
+                onSelectionChange={(keys) => {
+                  const selectedKey = Array.from(keys)[0] || 'all';
+                  setStatusFilter(selectedKey === 'all' ? 'all' : parseInt(selectedKey, 10));
+                }}
+              >
+                <DropdownItem key="all" className="capitalize">Tất cả</DropdownItem>
+                {statusOptions.map((option) => (
+                  <DropdownItem key={option.totalScore} className="capitalize">
+                    {option.name}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
+            <Dropdown>
+              <DropdownTrigger className="sm:flex">
+                <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
+                  Lọc theo lớp
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="Class Filter"
+                closeOnSelect={true}
+                selectedKeys={new Set([filterClass])} // Chuyển đổi filterClass thành Set
+                selectionMode="single"
+                onSelectionChange={(keys) => {
+                  const selectedKey = Array.from(keys)[0] || 'all';
+                  setClassFilter(selectedKey);
+                }}
+              >
+                <DropdownItem key="all" className="capitalize">Tất cả lớp</DropdownItem>
+                {classes.map((classOption) => (
+                  <DropdownItem key={classOption.value} className="capitalize">
+                    {classOption.label}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
+            <Dropdown>
+              <DropdownTrigger className="sm:flex">
+                <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
+                  Lọc theo nhóm
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="Lọc nhóm"
+                closeOnSelect={true}
+                selectedKeys={new Set([filterDescription])} // Chuyển đổi filterDescription thành Set
+                selectionMode="single"
+                onSelectionChange={(keys) => {
+                  const selectedKey = Array.from(keys)[0] || ''; // Đảm bảo chọn giá trị rỗng nếu không có lựa chọn
+                  setDescriptionFilter(selectedKey);
+                }}
+              >
+                <DropdownItem key="" className="capitalize">
+                  Tất cả nhóm
+                </DropdownItem>
+                {uniqueSortedDisription.map((ploName) => (
+                  <DropdownItem key={ploName} className="capitalize">
+                    {ploName}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
             
-            onClick={() => {
-              handleOpenModalUpdateDiscClick()
-            }}>
-              Cập nhật đề tài
-            </Button>
+
+
+
+
+            </div>
           </div>
+
+
+
+
+
+
+
+
+
         </div>
         <div className="w-full flex sm:items-center sm:justify-between">
           <p className="text-small text-default-400 min-w-[100px]">
-            <span className="text-default-500">{assessments.length}</span> teacher(s)
+            <span className="text-default-500">{assessments.length}</span> Sinh viên(s)
           </p>
           <div className="w-fit sm:w-auto flex items-center gap-2 ">
-            <p className="text-small text-default-400">Rows per page:</p>
+            <p className="text-small text-default-400">Số dòng mỗi trang:</p>
             <select
               className="w-fit sm:w-auto rounded-lg border-default-200 bg-default-100 text-small transition-opacity focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               onChange={onRowsPerPageChange}
@@ -349,7 +456,7 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
     return (
       <div className="py-2 px-2 flex justify-between items-center">
         <p className="text-small">
-          {selectedKeys === 'all' ? 'All items selected' : `${selectedKeys.size} of ${assessments.length} selected`}
+          {selectedKeys === 'all' ? 'Đã chọn tất cả các mục' : `${selectedKeys.size} trong số ${assessments.length} mục đã chọn`}
         </p>
         <Pagination
           showControls
@@ -374,25 +481,25 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
     switch (columnKey) {
       case 'id':
         return (
-          <div className="flex flex-col">
+          <div className="flex w-fit justify-start items-center">
             <p className="text-bold text-small capitalize">{cellValue}</p>
           </div>
         );
       case 'description':
         return (
-          <div className="flex flex-col">
+          <div className="flex w-fit justify-start items-center">
             <p className="text-bold text-small capitalize">{cellValue}</p>
           </div>
         );
       case 'generalDescription':
         return (
-          <div className="flex flex-col">
+          <div className="flex w-fit justify-start items-center">
             <p className="text-bold text-small capitalize">{cellValue}</p>
           </div>
         );
       case 'class':
         return (
-          <div className="flex flex-col">
+          <div className="flex w-fit justify-start items-center">
             <p className="text-bold text-small capitalize">{cellValue}</p>
           </div>
         );
@@ -400,7 +507,7 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
         const totalScoreValue = assessment.totalScore ?? 0; // Giá trị mặc định là 0 nếu totalScore là null hoặc undefined
         return (
           <Chip
-            className="capitalize border-none gap-1 text-default-600"
+            className="capitalize border-none gap-1 text-default-600 flex w-fit justify-start items-center"
             color={statusColorMap[totalScoreValue]}
             size="sm"
             variant="dot"
@@ -411,7 +518,7 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
       case 'student':
         const student = assessment.student || {};
         return (
-          <div className="flex flex-col">
+          <div className="flex flex-col items-start justify-center">
             <p className="text-bold text-small capitalize">{student.studentCode ?? 'N/A'}</p>
             <p className="text-bold text-small capitalize">{student.name ?? 'N/A'}</p>
           </div>
@@ -424,15 +531,11 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
           : `/admin/management-grading/${disc}/student-code/${action.studentCode ?? ''}/assessment/${action.assessment_id ?? ''}/rubric/${action.rubric_id ?? ''}`;
 
         return (
-          <div className="flex items-center justify-center w-full gap-2">
+          <div className="flex w-fit justify-start items-center gap-2">
             {action.totalScore === 0 ? (
               <Tooltip content="Chấm điểm">
                 <Button
-                  isIconOnly
-                  variant="light"
-                  radius="full"
-                  size="sm"
-                  className='bg-[#AF84DD]'
+                  isIconOnly className="bg-[#fefefe] shadow-sm border-3 border-[#FF9908]"
                   onClick={() => handleNavigate(urlcreate)}
                 >
                   <i className="fa-solid fa-feather-pointed text-xl text-[#020401]"></i>
@@ -441,11 +544,7 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
             ) : (
               <Tooltip content="Chỉnh sửa">
                 <Button
-                  isIconOnly
-                  variant="light"
-                  radius="full"
-                  size="sm"
-                  className='bg-[#FF9908]'
+                  isIconOnly className="bg-[#fefefe] shadow-sm border-3 border-[#FF9908]"
                   onClick={() => handleNavigate(
                     filterStatus === 0
                       ? `/admin/management-grading/update/${disc}/student-code/${action.studentCode ?? ''}/assessment/${action.assessment_id ?? ''}/rubric/${action.rubric_id ?? ''}?FilterScore=0`
@@ -458,11 +557,7 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
             )}
             <Tooltip content={action.totalScore === 0? 'Chấm điểm trước':"In Điểm"}>
               <Button
-                isIconOnly
-                variant="light"
-                radius="full"
-                size="sm"
-                className='bg-[#FEFEFE]'
+                isIconOnly className="bg-[#fefefe] shadow-sm border-3 border-default"
                 disabled={action.totalScore === 0}
                 onClick={() => { 
                   handleAddPDFOneStudent(assessment?.Assessment) 
@@ -473,12 +568,8 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
             </Tooltip>
             <Tooltip content="Xoá">
               <Button
-                isIconOnly
-                variant="light"
-                radius="full"
-                size="sm"
+                isIconOnly className="bg-[#fefefe] shadow-sm border-3 border-[#FF8077]"
                 disabled={!CurrentTeacher}
-                className='bg-[#FF8077]'
                 onClick={() => { onOpen(); setDeleteId(assessment.meta_assessment_id ?? null) }}
               >
                 <i className="fa-solid fa-trash-can text-xl text-[#020401]"></i>
@@ -813,143 +904,51 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
 
   return (
     <>
-      <div className='w-full flex justify-between'>
+      <div className='w-full flex justify-between items-center'>
         <div className='h-full my-auto p-5 hidden sm:block'>
+        <div>
+            <h1 className="text-2xl pb-2 font-bold text-[#4F46E5]">Danh sách sinh viên cần đánh giá</h1>
+          </div>
           <BackButton path={'/admin/management-grading/list'} />
         </div>
-        <div className='w-fit bg-[white] border-slate-300 rounded-xl border-2 p-2 justify-start items-center flex gap-4 flex-col mb-4'>
-          <div className='flex justify-center w-full flex-wrap items-center gap-1'>
-            <Button
-              className='bg-[#FF9908] '
+        <div className='w-full sm:w-auto bg-[#fefefe] border-2 border-[#4F46E5] mb-2 shadow-sm rounded-xl p-4 flex gap-4 flex-col sm:flex-row items-center'>
+          <div className='flex flex-wrap justify-center gap-2'>
+              <Button
+              className='bg-transparent  shadow-sm border-2 border-[#FF9908] hover:bg-[#FF9908]'
               onClick={() => {
-                //const selectedItems = handleTakeSelectedItems();
-                //console.log('Selected Items:', selectedItems);
-                //console.log('Selected Keys:', Array.from(selectedKeys));
                 handleNavigateGradingGroup();
               }}
-              endContent={<PlusIcon />}
+              endContent={<i className="fa-solid fa-feather-pointed"></i>}
             >
               Chấm theo nhóm
             </Button>
             <Button
-              className='bg-[#FF9908] '
-              onClick={() => {
-                //const selectedItems = handleTakeSelectedItems();
-                //console.log('Selected Items:', selectedItems);
-                //console.log('Selected Keys:', Array.from(selectedKeys));
-                handleDPFGroup();
-              }}
-              endContent={<PlusIcon />}
-            >
-              PDF nhóm
-            </Button>
-            <Button
-              className='bg-[#AF84DD] '
-              endContent={<PlusIcon />}
+              className='bg-transparent  shadow-sm border-2 border-[#AF84DD] hover:bg-[#AF84DD]'
+              endContent={<i className="fas fa-plus"></i>} // Icon thêm mới
               onClick={handleAddClick}
             >
               Tạo mới
             </Button>
+     
+            <Button 
+                disabled={!CurrentTeacher}
+                className='bg-transparent shadow-sm border-2 border-[#FF8077]  hover:bg-[#FF8077]'
+                endContent={<i className="fas fa-eye-slash"></i>}
+                onClick={() => {
+                  handleOpenModalUpdateDiscClick()
+                }}>
+                Cập nhật đề tài
+              </Button>
+            <Button
+              className='bg-transparent shadow-sm border-2 border-[#6B7280] hover:bg-[#6B7280]'
+              endContent={<i className="fa-regular fa-file-pdf"></i>}
+              onClick={() => {
+                handleDPFGroup();
+              }}
+            >
+              PDF nhóm
+            </Button>
           </div>
-          <div className='flex gap-1 justify-start'>
-            <Dropdown>
-              <DropdownTrigger className="sm:flex">
-                <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
-                  Lọc theo điểm
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Status Filter"
-                closeOnSelect={true}
-                selectedKeys={new Set([filterStatus === 'all' ? 'all' : filterStatus.toString()])} // Chuyển đổi thành Set
-                selectionMode="single"
-                onSelectionChange={(keys) => {
-                  const selectedKey = Array.from(keys)[0] || 'all';
-                  setStatusFilter(selectedKey === 'all' ? 'all' : parseInt(selectedKey, 10));
-                }}
-              >
-                <DropdownItem key="all" className="capitalize">Tất cả</DropdownItem>
-                {statusOptions.map((option) => (
-                  <DropdownItem key={option.totalScore} className="capitalize">
-                    {option.name}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            <Dropdown>
-              <DropdownTrigger className="sm:flex">
-                <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
-                  Lọc theo lớp
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                aria-label="Class Filter"
-                closeOnSelect={true}
-                selectedKeys={new Set([filterClass])} // Chuyển đổi filterClass thành Set
-                selectionMode="single"
-                onSelectionChange={(keys) => {
-                  const selectedKey = Array.from(keys)[0] || 'all';
-                  setClassFilter(selectedKey);
-                }}
-              >
-                <DropdownItem key="all" className="capitalize">Tất cả lớp</DropdownItem>
-                {classes.map((classOption) => (
-                  <DropdownItem key={classOption.value} className="capitalize">
-                    {classOption.label}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            <Dropdown>
-              <DropdownTrigger className="sm:flex">
-                <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
-                  Lọc theo nhóm
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                aria-label="Lọc nhóm"
-                closeOnSelect={true}
-                selectedKeys={new Set([filterDescription])} // Chuyển đổi filterDescription thành Set
-                selectionMode="single"
-                onSelectionChange={(keys) => {
-                  const selectedKey = Array.from(keys)[0] || ''; // Đảm bảo chọn giá trị rỗng nếu không có lựa chọn
-                  setDescriptionFilter(selectedKey);
-                }}
-              >
-                <DropdownItem key="" className="capitalize">
-                  Tất cả nhóm
-                </DropdownItem>
-                {uniqueSortedDisription.map((ploName) => (
-                  <DropdownItem key={ploName} className="capitalize">
-                    {ploName}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            <Dropdown>
-              <DropdownTrigger className="sm:flex">
-                <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
-                  Cột
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={visibleColumns}
-                selectionMode="multiple"
-                onSelectionChange={setVisibleColumns}
-              >
-                {columns.map((column) => (
-                  <DropdownItem key={column.uid} className="capitalize">
-                    {capitalize(column.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-
         </div>
       </div>
       <ModalOpenPdfOneStudent

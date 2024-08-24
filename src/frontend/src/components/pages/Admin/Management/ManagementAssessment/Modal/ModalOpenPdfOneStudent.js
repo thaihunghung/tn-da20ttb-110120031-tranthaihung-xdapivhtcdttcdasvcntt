@@ -128,7 +128,7 @@ const ModalOpenPdfOneStudent = ({
                                     className="flex items-center space-x-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded shadow-sm transition ease-in-out duration-150"
                                 >
                                     <FaArrowsAltV className="text-lg" />
-                                    <span>Portrait</span>
+                                    <span>PDF dọc</span>
                                 </Button>
                                 <Button
                                     variant="light"
@@ -136,7 +136,7 @@ const ModalOpenPdfOneStudent = ({
                                     className="flex items-center space-x-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded shadow-sm transition ease-in-out duration-150"
                                 >
                                     <FaArrowsAltH className="text-lg" />
-                                    <span>Landscape</span>
+                                    <span>PDF ngang</span>
                                 </Button>
                                 {loading && (
                                     <div className="flex items-center space-x-2">
@@ -147,8 +147,8 @@ const ModalOpenPdfOneStudent = ({
                             </div>
                             <div className="relative w-full h-full flex flex-col justify-center items-center">
                                 <div className="flex justify-end mb-2 w-full ">
-                                    <button className="px-2 py-1 bg-blue-500 text-white rounded mr-2" onClick={handleZoomIn}>Zoom In</button>
-                                    <button className="px-2 py-1 bg-blue-500 text-white rounded" onClick={handleZoomOut}>Zoom Out</button>
+                                    <button className="px-2 py-1 bg-blue-500 text-white rounded mr-2" onClick={handleZoomIn}>Phóng to</button>
+                                    <button className="px-2 py-1 bg-blue-500 text-white rounded" onClick={handleZoomOut}>Thu nhỏ</button>
                                 </div>
                                 <div className="overflow-auto w-full flex flex-col justify-center items-center border p-4" style={{ transform: `scale(${zoom})`, transformOrigin: 'top left' }}>
                                     <div className='w-full text-sm' id="downloadDiv">
@@ -175,8 +175,10 @@ const ModalOpenPdfOneStudent = ({
                                                     {AllAssessment?.MetaAssessment?.description}
                                                 </span>
                                             </div>
-                                            <div className="w-full flex flex-col gap-4 p-4">
-                                                <div className="flex flex-col gap-2 p-4 border border-black rounded-lg">
+                                            
+                                        </div>
+                                        <div className="w-full flex flex-col gap-4 p-4">
+                                                <div className="flex flex-col w-full gap-2 p-4 border border-black rounded-lg">
                                                     <div className="flex items-center gap-2">
                                                         <span className="w-[80px] font-semibold text-black">SV:</span>
                                                         <span className="text-lg font-medium text-black">{AllAssessment?.MetaAssessment?.Student?.name}</span>
@@ -187,7 +189,6 @@ const ModalOpenPdfOneStudent = ({
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
                                         <table className='border-collapse border border-black w-full min-w-[16cm] text-base mt-5 font-times'>
                                             <thead>
                                                 <tr className="border border-b-0 border-black h-[20px]">
@@ -271,7 +272,7 @@ const ModalOpenPdfOneStudent = ({
                         </ModalBody>
                         <ModalFooter>
                             <Button variant="light" onClick={onClose}>
-                                Cancel
+                                Hủy
                             </Button>
                         </ModalFooter>
                     </>

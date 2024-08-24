@@ -129,7 +129,7 @@ const ModalOpenPdf = ({
             <ModalContent>
                 {(onClose) => (
                     <>
-                        <ModalHeader className="text-[#FF9908]">Download Template According to Selection</ModalHeader>
+                        <ModalHeader className="text-[#FF9908]">Tải mẫu theo lựa chọn</ModalHeader>
                         <ModalBody>
                             <div className="flex space-x-4">
                                 <Button
@@ -138,7 +138,7 @@ const ModalOpenPdf = ({
                                     className="flex items-center space-x-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded shadow-sm transition ease-in-out duration-150"
                                 >
                                     <FaArrowsAltV className="text-lg" />
-                                    <span>Portrait</span>
+                                    <span>PDF Dọc</span>
                                 </Button>
                                 <Button
                                     variant="light"
@@ -146,7 +146,7 @@ const ModalOpenPdf = ({
                                     className="flex items-center space-x-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded shadow-sm transition ease-in-out duration-150"
                                 >
                                     <FaArrowsAltH className="text-lg" />
-                                    <span>Landscape</span>
+                                    <span>PDF Ngang</span>
                                 </Button>
                                 {loading && (
                                     <div className="flex items-center space-x-2">
@@ -157,8 +157,8 @@ const ModalOpenPdf = ({
                             </div>
                             <div className="relative w-full h-full flex flex-col justify-center items-center">
                                 <div className="flex justify-end mb-2 w-full ">
-                                    <button className="px-2 py-1 bg-blue-500 text-white rounded mr-2" onClick={handleZoomIn}>Zoom In</button>
-                                    <button className="px-2 py-1 bg-blue-500 text-white rounded" onClick={handleZoomOut}>Zoom Out</button>
+                                    <button className="px-2 py-1 bg-blue-500 text-white rounded mr-2" onClick={handleZoomIn}>Phóng to</button>
+                                    <button className="px-2 py-1 bg-blue-500 text-white rounded" onClick={handleZoomOut}>Thu nhỏ</button>
                                 </div>
                                 <div className="overflow-auto w-full flex flex-col justify-center items-center border p-4" style={{ transform: `scale(${zoom})`, transformOrigin: 'top left' }}>
                                     <div className='w-full text-sm' id="downloadDiv">

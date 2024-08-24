@@ -69,14 +69,14 @@ export const fetchAssessmentDataTrue = async (teacher_id) => {
 
 const columns = [
   {name: "id", uid: "id", sortable: true},
-  {name: "generalDescription", uid: "generalDescription", sortable: true},
-  {name: "assessmentCount", uid: "assessmentCount", sortable: true},
-  {name: "studentCount", uid: "studentCount", sortable: true},
-  {name: "courseName", uid: "courseName", sortable: true},
+  {name: "Mô tả chung", uid: "generalDescription", sortable: true},
+  {name: "Số lượng ĐG", uid: "assessmentCount", sortable: true},
+  {name: "Số lượng SV", uid: "studentCount", sortable: true},
+  {name: "Lớp môn học", uid: "courseName", sortable: true},
   {name: "Phân công", uid: "Phân công", sortable: true},
-  {name: "createdAt", uid: "createdAt", sortable: true},
-  {name: "status", uid: "status", sortable: true},
-  {name: "action", uid: "action", sortable: true},
+  {name: "Ngày tạo", uid: "createdAt", sortable: true},
+  {name: "% SV Điểm khác 0", uid: "status", sortable: true},
+  {name: "Thao tác", uid: "action", sortable: true},
 ];
 
 const statusOptions = [

@@ -195,8 +195,8 @@ function Nav(props) {
           <Menu mode="inline">
             {navTab.map((item, index) => (
               item.submenu ? (
-                <Menu.SubMenu key={index} title={<span className="text-[#020401] text-base font-medium">
-                  <span className="text-[#FF8077] text-base font-bold mr-3">
+                <Menu.SubMenu key={index} title={<span className="text-[#6366F1] text-base font-medium">
+                  <span className="text-[#6366F1] text-base font-bold mr-3">
                     {item.icon}
                   </span>
                   <span className="text-[#020401] text-base font-medium">
@@ -213,18 +213,14 @@ function Nav(props) {
                 </Menu.SubMenu>
               ) : (
                 <Menu.Item key={index}>
-                  <Link to={item.link} onClick={onClose}>
-
-                    <span className="text-[#FF8077] text-base font-bold mr-3">
+                  <Link to={item.link} onClick={onClose}>        
+                    <span className="text-[#6366F1] text-base font-bold mr-3">
                       {item.icon}
 
                     </span>
                     <span className="text-[#020401] text-base font-medium">
                       {item.text}
-
                     </span>
-
-
                   </Link>
                 </Menu.Item>
               )

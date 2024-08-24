@@ -111,7 +111,7 @@ const ModalUpdateAssessment = ({
             <ModalContent>
                 {(onClose) => (
                     <>
-                        <ModalHeader className="text-[#FF9908]">Update Assessment</ModalHeader>
+                        <ModalHeader className="text-[#FF9908]">Cập nhật đánh giá</ModalHeader>
                         <ModalBody>
                             <div className="flex flex-col h-full">
                                 <form
@@ -123,7 +123,7 @@ const ModalUpdateAssessment = ({
                                     }}
                                 >
                                     <Select
-                                        label="course"
+                                        label="Chọn lớp môn học"
                                         name="course_id"
                                         defaultSelectedKeys={[editRubric.course_id]}
                                         value={editRubric.course_id || ''}
@@ -139,7 +139,7 @@ const ModalUpdateAssessment = ({
                                     </Select>
 
                                     <Select
-                                        label="Rubric"
+                                        label="Chọn bảng đánh giá"
                                         name="rubric_id"
                                         defaultSelectedKeys={[editRubric.rubric_id]}
                                         value={editRubric.rubric_id || ''}
@@ -155,9 +155,9 @@ const ModalUpdateAssessment = ({
                                     </Select>
                                     <Textarea
                                         fullWidth
-                                        label="generalDescription"
+                                        label="Mô tả chung"
                                         name="generalDescription"
-                                        placeholder="Enter your description"
+                                        placeholder="Nhập mô tả chung"
                                         value={editRubric.generalDescription || ''}
                                         onChange={handleChange}
                                         rows={4}
@@ -167,7 +167,7 @@ const ModalUpdateAssessment = ({
 
                                     <Input
                                         fullWidth
-                                        label="place"
+                                        label="Địa điểm"
                                         name="place"
                                         value={editRubric.place || ''}
                                         onChange={handleChange}
@@ -175,7 +175,7 @@ const ModalUpdateAssessment = ({
                                     />
                                     <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
                                         <DateInput
-                                            label="Date"
+                                            label="Ngày đánh giá"
                                             value={selectedDate}
                                             onChange={handleDateChange}
                                         />
@@ -186,7 +186,7 @@ const ModalUpdateAssessment = ({
                         </ModalBody>
                         <ModalFooter>
                             <Button variant="light" onClick={onClose}>
-                                Cancel
+                                Hủy 
                             </Button>
                             <Button
                                 type="submit"
@@ -197,7 +197,7 @@ const ModalUpdateAssessment = ({
                                     onClose();
                                 }}
                             >
-                                Update
+                                Cập nhật
                             </Button>
                         </ModalFooter>
                     </>

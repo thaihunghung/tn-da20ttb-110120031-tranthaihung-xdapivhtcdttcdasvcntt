@@ -20,6 +20,7 @@ import { ModalConfirmAction } from './Modal/ModalConfirmAction';
 import { handleReplaceCharacters } from '../../Utils/Utils';
 import ModalManamentAllot from './Modal/ModalManamentAllot';
 import ModalUpdateAllot from './Modal/ModalUpdateAllot';
+import ModalOpenViewMetaAssessments from './Modal/ModalOpenViewMetaAssessments';
 
 const INITIAL_VISIBLE_COLUMNS = ['generalDescription', 'status', 'courseName', 'Phân công', 'action'];
 const COMPACT_VISIBLE_COLUMNS = ['generalDescription', 'status', 'Phân công', 'action'];
@@ -46,7 +47,8 @@ const ManagementAssessment = ({ setCollapsedNav }) => {
   const [DataCourse, setCourseByTeacher] = useState([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAllotManageMentModalOpen, setIsAllotManageMentModalOpen] = useState(false);
-
+  const [isViewMetaAssessmentsModalOpen, setIsViewMetaAssessmentsModalOpen] = useState(false);
+  const [viewMetaAssessments, setViewMetaAssessments] = useState([]);
   const [editRubric, setEditRubric] = useState({
     course_id: '',
     rubric_id: '',
@@ -237,7 +239,7 @@ const ManagementAssessment = ({ setCollapsedNav }) => {
             <Tooltip content={'Xem điểm cuối'}>
               <Button
                 isIconOnly className="bg-[#fefefe] shadow-sm border-3 border-[#475569]"
-                
+                onClick={()=>handleViewMetaAssessmentsClick(assessment?.ViewMetaAssessments || [])}
               >
                 <i class="fas fa-eye text-xl text-[#020401]"></i>
               </Button>
@@ -383,6 +385,13 @@ const ManagementAssessment = ({ setCollapsedNav }) => {
     setOldDescription(generalDescription)
     setIsEditModalOpen(true);
   };
+  const handleViewMetaAssessmentsClick = (viewMetaAssessments) => {
+
+    console.log("viewMetaAss1", viewMetaAssessments[0]);
+    console.log("viewMetaAss2", viewMetaAssessments[1]);
+    setViewMetaAssessments(viewMetaAssessments)
+    setIsViewMetaAssessmentsModalOpen(true);
+  };
   const handleAllotClick = (generalDescription) => {
     setGeneralDescription(generalDescription)
     setIsModalallot(true);
@@ -497,6 +506,11 @@ const ManagementAssessment = ({ setCollapsedNav }) => {
         isOpen={isAddModalOpen}
         onOpenChange={setIsAddModalOpen}
         load={loadAssessment}
+      />
+      <ModalOpenViewMetaAssessments
+        isOpen={isViewMetaAssessmentsModalOpen}
+        onOpenChange={setIsViewMetaAssessmentsModalOpen}
+        metaAssessment={viewMetaAssessments}
       />
       <ModalOpenPdf
         isOpen={isAddModalOpenPDF}

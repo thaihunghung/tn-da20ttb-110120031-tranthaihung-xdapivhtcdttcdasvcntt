@@ -81,7 +81,6 @@ const MetaAssessmentController = {
         if (assessments.length === 0) {
           return res.status(404).json({ message: 'No meta-assessments found for this user' });
         }
-
         const result = await Promise.all(assessments.map(async assessment => {
           let status;
           const assessmentCount = parseInt(assessment.dataValues.assessmentCount);
@@ -183,6 +182,41 @@ const MetaAssessmentController = {
           };
         }));
 
+        const ViewMetaAssessments = await MetaAssessmentModel.findAll({
+          where: {
+            teacher_id: teacherId,
+            isDelete: isDelete === 'true'
+          },
+          include: [{
+            model: CourseModel,
+            attributes: ['courseCode', 'courseName']
+          },{
+            model: StudentModel
+          }
+          ]
+        });
+
+        const ResultViewMetaAssessments = await Promise.all(ViewMetaAssessments.map(async assessment => {
+          const Assessment = await AssessmentModel.findAll({
+            where: {
+              meta_assessment_id: assessment.meta_assessment_id,
+              isDelete: isDelete === 'true'
+            },
+            include: [{
+              model: TeacherModel,
+              where: {
+                isDelete: isDelete === 'true'
+              },
+            }]
+          });
+                  assessment.dataValues.Assessment = Assessment;
+          return assessment;
+        }));
+        result.forEach(resItem => {
+          resItem.ViewMetaAssessments = ResultViewMetaAssessments.filter(viewMetaAssessment => 
+            viewMetaAssessment.generalDescription === resItem.generalDescription
+          );
+        });
         return res.status(200).json(result);
       } else if (generalDescription) {
         const metaAssessments = await MetaAssessmentModel.findAll({

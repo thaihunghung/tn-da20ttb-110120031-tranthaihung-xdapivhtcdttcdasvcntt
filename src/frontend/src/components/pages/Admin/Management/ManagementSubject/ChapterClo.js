@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { Tooltip, message, Button } from 'antd';
+import { Tooltip, message } from 'antd';
 import { axiosAdmin } from "../../../../../service/AxiosAdmin";
 import DropdownAndNavChapter from "../../Utils/DropdownAndNav/DropdownAndNavChapter";
 import BackButton from "../../Utils/BackButton/BackButton";
+import { Button } from "@nextui-org/react";
 const ChapterClo = (nav) => {
     const location = useLocation();
     const isActive = (path) => location.pathname.startsWith(path);
@@ -140,20 +141,26 @@ const ChapterClo = (nav) => {
 
     return (
         <div className="flex w-full flex-col justify-center leading-8 pt-5 relative">
-            <div className='w-full flex justify-between'>
+            <div className='w-full flex justify-between mb-2'>
                 <div className='h-full my-auto p-5 hidden sm:block'>
                     <BackButton />
                 </div>
-                <div className='w-full sm:w-fit bg-[white] border-slate-300 rounded-xl border-2 p-2 justify-center items-center flex gap-4 flex-col'>
-                    <div className='flex justify-end w-full flex-wrap items-center gap-1'>
+                <div className='w-full sm:w-fit bg-[white] border-slate-300 rounded-xl border-2 p-2 justify-center items-center flex gap-4 flex-col min-w-[320px]'>
+                    <div className='flex  justify-between sm:justify-end w-full flex-wrap items-center gap-1 '>
+                        <div className="pl-5 mt-2 block sm:hidden">
+                            <h1 className="text-2xl font-bold text-[#6366F1] text-justify">Ánh xạ Chương và CLO</h1>
+                        </div>
                         <Button color="primary" onClick={handleSaveOrDelete}>
-                            Save
+                            Lưu
                         </Button>
                     </div>
                 </div>
             </div>
-            <div className="pl-5 mt-2">
-                <h1 className="text-2xl font-bold text-[#6366F1] text-left">Map Clo Plo</h1>
+
+            <div className="p-5 px-2 sm:p-5 border-2 border-default rounded-xl bg-[#fefefe] shadow-sm">
+
+            <div className="pl-5 mt-2 hidden sm:block">
+                <h1 className="text-2xl font-bold text-[#6366F1] text-left">Ánh xạ Chương và CLO</h1>
             </div>
             <div className="p-5 pt-0 pb-10 mt-5 flex justify-end items-start relative">
                 <div className="sticky left-0 top-0 z-50 block sm:hidden lg:hidden xl:hidden">
@@ -181,7 +188,7 @@ const ChapterClo = (nav) => {
                     <table className="border-collapse table-auto w-full">
                         <thead>
                             <tr>
-                                <th className="p-2 text-center sm:px-4 sm:py-2 lg:px-4 lg:py-2 xl:px-4 xl:py-2 hidden sm:block lg:block xl:block bg-[#475569]  text-[#fefefe]">CLO</th>
+                                <th className="p-2 text-center sm:px-4 sm:py-2 lg:px-4 lg:py-2 xl:px-4 xl:py-2 hidden sm:block lg:block xl:block bg-[#475569]  text-[#fefefe]">Chương</th>
                                 {clos.map((clo_item, index) => (
                                     <th key={index} className="p-2 lg:w-[8%] xl:w-[8%] text-center sm:px-4 sm:py-2 lg:px-4 lg:py-2 xl:px-4 xl:py-2 bg-[#475569]  text-[#fefefe]">
                                         <Tooltip title={clo_item.description} color={'#ff9908'}>
@@ -223,6 +230,7 @@ const ChapterClo = (nav) => {
                         </tbody>
                     </table>
                 </div>
+            </div>
             </div>
         </div>
     );

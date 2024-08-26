@@ -249,7 +249,7 @@ const ModalOpenPdf = ({
                         </ModalBody>
                         <ModalFooter>
                             <Button variant="light" onClick={onClose}>
-                                Cancel
+                                Hủy
                             </Button>
                         </ModalFooter>
                     </>

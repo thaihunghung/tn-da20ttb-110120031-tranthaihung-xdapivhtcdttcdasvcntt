@@ -52,24 +52,26 @@ function ModalUpdateDisc({ isOpen, onOpenChange, download, LoadData }) {
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="text-[#FF9908]">Cập nhật đề tài</ModalHeader>
+            <ModalHeader className="text-[#FF9908] text-2xl font-semibold">
+              Cập nhật đề tài
+            </ModalHeader>
             <ModalBody>
-              <div className="flex flex-col items-center w-full">
+              <div className="flex flex-col h-full gap-6 p-6 rounded-lg">
                 <div className="flex flex-wrap gap-6 justify-center items-start">
-                  <div className="flex flex-col bg-white shadow-md rounded-lg p-4 justify-center items-center w-full md:w-auto">
-                    <h3 className="text-lg font-semibold text-gray-700 mb-2">Tải Mẫu Excel</h3>
+                  <div className="flex flex-col card p-6 bg-white shadow-md rounded-lg justify-center items-center w-full md:w-auto">
+                    <h3 className="text-xl font-medium text-gray-700 mb-2">Tải Mẫu Excel</h3>
                     <Button
-                      className="bg-sky-500 text-white w-[125px] disabled:opacity-50"
+                      className="bg-sky-500 text-white mt-4 w-[150px] hover:bg-sky-600 transition-all"
                       onClick={download}
                     >
                       Tải mẫu
                     </Button>
                   </div>
-
-                  <div className="flex flex-col bg-white shadow-md rounded-lg p-4 justify-center items-center w-full md:w-auto">
-                    <h3 className="text-lg font-semibold text-gray-700 mb-2">Tải mẫu lại</h3>
-                    <label htmlFor="file-upload" className="cursor-pointer w-[125px]">
-                      <Button className="w-full bg-blue-500 text-white" auto flat as="span" color="primary">
+  
+                  <div className="flex flex-col card p-6 bg-white shadow-md rounded-lg justify-center items-center w-full md:w-auto">
+                    <h3 className="text-xl font-medium text-gray-700 mb-2">Tải mẫu lại</h3>
+                    <label htmlFor="file-upload" className="cursor-pointer mt-4">
+                      <Button className="w-[150px]" auto flat as="span" color="primary">
                         Chọn file
                       </Button>
                     </label>
@@ -81,20 +83,20 @@ function ModalUpdateDisc({ isOpen, onOpenChange, download, LoadData }) {
                       multiple
                     />
                     {fileList.length > 0 && (
-                      <div className="mt-2 w-full">
+                      <div className="mt-4 w-full">
                         <ul className="space-y-2">
                           {fileList.map((file, index) => (
                             <li
                               key={index}
-                              className="flex justify-between items-center bg-gray-100 p-2 rounded-md"
+                              className="flex justify-between items-center bg-gray-50 p-2 rounded-md"
                             >
-                              <p className="text-gray-700">{file.name}</p>
+                              <p className="text-sm font-medium text-gray-700">{file.name}</p>
                               <Button
                                 auto
                                 flat
                                 color="error"
                                 size="xs"
-                                className="bg-red-500 text-white px-2 py-1 rounded-md"
+                                className="w-[40px] bg-red-500 text-white"
                                 onClick={() => handleRemoveFile(index)}
                               >
                                 X
@@ -105,36 +107,35 @@ function ModalUpdateDisc({ isOpen, onOpenChange, download, LoadData }) {
                       </div>
                     )}
                   </div>
-
-                  <div className="flex flex-col bg-white shadow-md rounded-lg p-4 justify-center items-center w-full md:w-auto">
-                    <h3 className="text-lg font-semibold text-gray-700 mb-2">Cập nhật</h3>
+  
+                  <div className="flex flex-col card p-6 bg-white shadow-md rounded-lg justify-center items-center w-full md:w-auto">
+                    <h3 className="text-xl font-medium text-gray-700 mb-2">Cập nhật</h3>
                     <CustomUpload
-                      endpoint={'/meta-assessment/updateDescription'}
+                      endpoint="/meta-assessment/updateDescription"
                       fileList={fileList}
                       setFileList={setFileList}
                       LoadData={LoadData}
                     />
-
                   </div>
                 </div>
               </div>
             </ModalBody>
-            <ModalFooter>
+            <ModalFooter className="bg-gray-50 p-4 rounded-b-lg">
               <Button
                 variant="light"
-                onClick={() => {
-                  onClose();
-                }}
+                onClick={onClose}
+                className="mr-4"
               >
                 Đóng
               </Button>
-
             </ModalFooter>
           </>
         )}
       </ModalContent>
     </Modal>
   );
+  
+  
 };
 
 export default ModalUpdateDisc;

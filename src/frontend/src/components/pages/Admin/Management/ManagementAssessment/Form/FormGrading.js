@@ -33,7 +33,7 @@ const FormGrading = (nav) => {
   const columns = [
     { uid: 'clo', name: 'CLO' },
     { uid: 'plo', name: 'PLO' },
-    { uid: 'chapter', name: 'Chapter' },
+    { uid: 'chapter', name: 'Chương' },
   ];
 
   const handleSelectionChange = (keys) => {
@@ -367,7 +367,7 @@ const FormGrading = (nav) => {
               <Dropdown>
                 <DropdownTrigger className="sm:flex">
                   <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
-                    Columns
+                    Cột
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu
@@ -382,7 +382,7 @@ const FormGrading = (nav) => {
                     onClick={handleShowAll}
                     className="capitalize"
                   >
-                    {showAll ? 'Unselect All' : 'Show All'}
+                    {showAll ? 'Bỏ Tất cả' : 'Tất cả'}
                   </DropdownItem>
                   {columns.map((column) => (
                     <DropdownItem key={column.uid} className="capitalize">
@@ -426,7 +426,7 @@ const FormGrading = (nav) => {
         w-full text-justify   flex flex-col sm:flex-col lg:flex-row xl:flex-row`}>
             <div className={`${showAny ? 'lg:w-[40%]' : ''} ${showAtLeastTwo ? 'lg:w-[40%]' : ''} ${showAllThree ? 'lg:w-[80%]' : ''} flex justify-center items-center`}>
               <div className={`hidden p-2 bg-[#475569] ${showChapter ? 'lg:block xl:block' : 'hidden'} sm:hidden flex-1`}>
-                <p className=" text-[#fefefe] text-center font-bold">CHAPTER</p>
+                <p className=" text-[#fefefe] text-center font-bold">Chương</p>
               </div>
               <div className={`hidden p-2 bg-[#475569] ${showPLO ? 'lg:block xl:block' : 'hidden'} sm:hidden flex-1`}>
                 <p className=" text-[#fefefe] text-center font-bold">PLO</p>

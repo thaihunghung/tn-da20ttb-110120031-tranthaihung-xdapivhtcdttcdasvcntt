@@ -146,20 +146,31 @@ const CloPlo = (nav) => {
 
     return (
         <div className="flex w-full flex-col justify-center leading-8 pt-5 relative">
-            <div className='w-full flex justify-between'>
+
+            <div className='w-full flex justify-between mb-2'>
                 <div className='h-full my-auto p-5 hidden sm:block'>
                     <BackButton />
                 </div>
-                <div className='w-full sm:w-fit bg-[white] border-slate-300 rounded-xl border-2 p-2 justify-center items-center flex gap-4 flex-col'>
-                    <div className='flex justify-end w-full flex-wrap items-center gap-1'>
+                <div className='w-full sm:w-fit bg-[white] border-slate-300 rounded-xl border-2 p-2 justify-center items-center flex gap-4 flex-col min-w-[320px]'>
+                    <div className='flex  justify-between sm:justify-end w-full flex-wrap items-center gap-1 '>
+                        <div className="pl-5 mt-2 block sm:hidden">
+                            <h1 className="text-2xl font-bold text-[#6366F1] text-justify">Ánh xạ Clo và Plo</h1>
+                        </div>
                         <Button color="primary" onClick={handleSaveOrDelete}>
-                            Save
+                            Lưu
                         </Button>
                     </div>
                 </div>
             </div>
-            <div className="pl-5 mt-2">
-                <h1 className="text-2xl font-bold text-[#6366F1] text-left">Map Clo Plo</h1>
+
+
+
+
+
+            <div className="p-5 px-2 sm:p-5 border-2 border-default rounded-xl bg-[#fefefe] shadow-sm">
+
+            <div className="pl-5 mt-2 hidden sm:block">
+                <h1 className="text-2xl font-bold text-[#6366F1] text-left">Ánh xạ Clo và Plo</h1>
             </div>
             <div className="p-5 pt-0 pb-10 mt-5 flex justify-end items-start relative">
                 <div className="sticky left-0 top-0 z-50 block sm:hidden lg:hidden xl:hidden">
@@ -232,6 +243,7 @@ const CloPlo = (nav) => {
 
                 </div>
 
+            </div>
             </div>
         </div>
     );

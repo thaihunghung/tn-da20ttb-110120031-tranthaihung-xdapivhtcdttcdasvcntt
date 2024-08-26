@@ -27,7 +27,7 @@ const ManagementAssessmentStore = (nav) => {
 
   const columns = [
     {
-      title: "generalDescription",
+      title: "Mô tả chung",
       dataIndex: "generalDescription",
       render: (record) => (
         <div className="text-sm min-w-[100px]">
@@ -36,7 +36,7 @@ const ManagementAssessmentStore = (nav) => {
       ),
     },
     {
-      title: "courseName",
+      title: "Mã lớp",
       dataIndex: "courseName",
       render: (record) => (
         <div className="text-sm min-w-[100px]">
@@ -48,7 +48,7 @@ const ManagementAssessmentStore = (nav) => {
     {
       title: (
         <div className="flex items-center justify-center w-full">
-          <span>Form</span>
+          <span>Thao tác</span>
         </div>
       ),
       dataIndex: "action",
@@ -227,7 +227,7 @@ const ManagementAssessmentStore = (nav) => {
       </div>
       <div className="p-5 px-2 sm:p-5 border-2 border-default rounded-xl bg-[#fefefe] shadow-sm"> 
       <div>
-        <h1 className="text-xl font-bold text-[#6366F1] text-left">Danh sách Assessment Đã ẩn</h1>
+        <h1 className="text-xl font-bold text-[#6366F1] text-left">Danh sách đánh giá đã ẩn</h1>
       </div>
       <div className="w-full my-5">
         {selectedRowKeys.length !== 0 && (

@@ -22,3 +22,14 @@ Dự án này xây dựng hệ thống API và giao diện trực tuyến giúp 
 - npm i
 - cd frontend
 - npm i
+
+## Tạo file `.env` cho Backend
+Tạo một file `.env` trong thư mục `backend` với nội dung sau:
+
+```env
+JWT_SECRET=my_secret_key
+DB_NAME=demo_database
+DB_USER=demo_user
+DB_PASSWORD=demo_password
+DB_HOST=localhost
+DB_DIALECT=mysql

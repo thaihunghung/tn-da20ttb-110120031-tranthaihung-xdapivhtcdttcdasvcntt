@@ -14,7 +14,4 @@ const { ensureAuthenticated } = require('../middlewares/authMiddleware');
 router.post('/assessment-item', ensureAuthenticated, assessmentItemsController.create);
 router.put('/assessment-item/:id', ensureAuthenticated, assessmentItemsController.update);
 
-
-
-
 module.exports = router;

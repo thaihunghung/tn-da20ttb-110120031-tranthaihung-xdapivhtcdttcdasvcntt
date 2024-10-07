@@ -581,11 +581,14 @@ router.get('/rubric-items', ensureAuthenticated, RubricItemController.index);
 router.post('/rubric-item', ensureAuthenticated, RubricItemController.create);
 router.get('/rubric-item/:id', ensureAuthenticated, RubricItemController.getByID);
 router.post('/rubric-item/checkScore', ensureAuthenticated, RubricItemController.checkScore);
+
 router.put('/rubric-item/:id', ensureAuthenticated, RubricItemController.update);
 router.delete('/rubric-item/:id', ensureAuthenticated, RubricItemController.delete);
+
 router.delete('/rubric-items/multiple', ensureAuthenticated, RubricItemController.deleteMultiple);
 router.put('/rubric-items/softDelete', ensureAuthenticated, RubricItemController.softDeleteMultiple);
 router.put('/rubric-item/:id/softDelete', ensureAuthenticated, RubricItemController.toggleSoftDeleteById);
+
 router.get('/rubric-items/isDelete/true', ensureAuthenticated, RubricItemController.isDeleteTotrue);
 router.get('/rubric-items/isDelete/false', ensureAuthenticated, RubricItemController.isDeleteTofalse);
 

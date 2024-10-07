@@ -212,7 +212,6 @@ const AssessmentsController = {
                 }]
               }
             ],
-  
           },
           {
             model: TeacherModel,
@@ -271,10 +270,6 @@ const AssessmentsController = {
         }
         
 
-
-
-
-        
         const AssessmentIdMetas = assessments.map(assessment => assessment.meta_assessment_id);
         console.log('AssessmentIdMetas')
         console.log(AssessmentIdMetas)
@@ -308,26 +303,19 @@ const AssessmentsController = {
         });
 
         const metaAssessmentIds = assessments.map(assessment => assessment.meta_assessment_id);
-
-
-        // Lọc các MetaAssessments dựa trên metaAssessmentIds
         const filteredMetaAssessments = metaAssessments.filter(metaAssessment =>
           metaAssessmentIds.includes(metaAssessment.meta_assessment_id)
         );
         const result = filteredMetaAssessments.map(metaAssessment => {
-          // Tìm Assessment tương ứng với metaAssessment
           const associatedAssessment = assessments.find(assessment =>
             assessment.dataValues.meta_assessment_id === metaAssessment.dataValues.meta_assessment_id
           );
-
           return {
             ...metaAssessment.dataValues,
             assessment: associatedAssessment ? associatedAssessment.dataValues : null
           };
         });
-
         return res.status(200).json(result);
-
       } else if (teacher_id) {
         const teacherId = parseInt(teacher_id);
         const assessments = await AssessmentModel.findAll({
@@ -368,9 +356,7 @@ const AssessmentsController = {
               meta_assessment_id: metaAssessment.meta_assessment_id
             }
           });
-
           const teacherIds = assessments.map(assessment => assessment.teacher_id);
-
           res.json({
             assessments,
             teacherIds
@@ -379,7 +365,6 @@ const AssessmentsController = {
           res.status(404).json({ message: 'assessment không tìm thấy' });
         }
       } else {
-        // Logic for index
         const assessments = await AssessmentModel.findAll();
         return res.status(200).json(assessments);
       }
@@ -392,7 +377,6 @@ const AssessmentsController = {
   GetitemsByID: async (req, res) => {
     try {
       const { id } = req.params;
-
       // Step 1: Fetch the assessment with basic associations
       const assessments = await AssessmentModel.findOne({
         where: {
@@ -419,7 +403,6 @@ const AssessmentsController = {
               }
             }
           ],
-
         },
         {
           model: TeacherModel,
@@ -427,7 +410,6 @@ const AssessmentsController = {
             isDelete: false
           },
         }]
-
       });
 
       if (!assessments || !assessments.MetaAssessment.Rubric) {
@@ -470,12 +452,7 @@ const AssessmentsController = {
           assessmentItem => assessmentItem.rubricsItem_id === rubricItem.rubricsItem_id
         );
       });
-
-      // Step 6: Manually merge the fetched rubric items into the assessment object
       assessments.dataValues.MetaAssessment.Rubric.dataValues.RubricItems = rubricItems;
-      // assessments.dataValues.Rubric.dataValues.RubricItems.dataValues.AssessmentItems = assessmentItems;
-
-      // Step 4: Send the combined result in the response
       res.status(200).json(assessments);
     } catch (error) {
       console.error('Error fetching assessments:', error);
@@ -488,8 +465,6 @@ const AssessmentsController = {
       const { data } = req.body;
       console.log(data);
       const Assessment = await AssessmentModel.create(data);
-
-
       res.json(Assessment);
     } catch (error) {
       console.error('Lỗi tạo Assessment:', error);
@@ -587,13 +562,6 @@ const AssessmentsController = {
     const { assessment_id } = req.query;
     try {
       const assessmentIds = assessment_id.map(id => parseInt(id));
-      // for (const id of assessmentIds) {        
-      //   const RubricItems = await RubricItemModel.findAll({ where: { assessment_id: id } });
-      //   for (const RubricItem of RubricItems) {
-      //     await RubricItemModel.destroy({ where: { assessmentsItem_id: RubricItem.assessmentsItem_id } });
-      //   }
-      // }
-
       await AssessmentModel.destroy({ where: { assessment_id: assessment_id } });
       res.status(200).json({ message: 'Xóa nhiều assessment thành công' });
     } catch (error) {
@@ -605,21 +573,15 @@ const AssessmentsController = {
   deleteByTeacherId: async (req, res) => {
     const { teacherId } = req.params;
     try {
-      // Step 1: Fetch the assessments associated with the teacher
       const assessments = await AssessmentModel.findAll({ where: { teacher_id: teacherId } });
-  
-      // Extract assessment_ids from the fetched assessments
       const assessmentIds = assessments.map(assessment => assessment.assessment_id);
   
       if (assessmentIds.length > 0) {
-        // Step 2: Delete related items from AssessmentItemModel
         await AssessmentItemModel.destroy({
           where: {
             assessment_id: assessmentIds
           }
         });
-  
-        // Step 3: Delete the assessments
         const result = await AssessmentModel.destroy({
           where: { teacher_id: teacherId }
         });

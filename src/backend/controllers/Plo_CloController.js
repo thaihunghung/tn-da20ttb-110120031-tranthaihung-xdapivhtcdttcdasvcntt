@@ -9,8 +9,6 @@ const Plo_CloController = {
       const { id_clos, clo_id } = req.query;
 
       if (id_clos) {
-        // Handle request for multiple CLO IDs
-        
         const ids = JSON.parse(id_clos);
         const ploClos = await PloCloModel.findAll({
           where: {
@@ -21,7 +19,6 @@ const Plo_CloController = {
         if (ploClos.length === 0) {
           return res.status(404).json({ message: 'No PLO-CLOs found for the given CLO IDs' });
         }
-
         return res.status(200).json(ploClos);
       } else if (clo_id) {
         // Handle request for a single CLO ID
@@ -38,7 +35,6 @@ const Plo_CloController = {
         const plos = await PloModel.findAll({
           where: { plo_id: ploIds },
         });
-
         return res.status(200).json(plos);
       } else {
         // Handle request for all PLO-CLOs

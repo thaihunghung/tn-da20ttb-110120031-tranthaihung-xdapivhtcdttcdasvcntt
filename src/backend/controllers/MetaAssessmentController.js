@@ -25,7 +25,6 @@ const MetaAssessmentController = {
       const { isDelete, teacher_id, generalDescription } = req.query;
 
       if (teacher_id && generalDescription) {
-        // Logic for GetByDescriptionByUser
         const assessments = await MetaAssessmentModel.findAll({
           where: {
             teacher_id: parseInt(teacher_id),
@@ -53,9 +52,7 @@ const MetaAssessmentController = {
             }
           ]
         });
-
         return res.status(200).json(assessments);
-
       } else if (teacher_id) {
         const teacherId = parseInt(teacher_id);
         const assessments = await MetaAssessmentModel.findAll({
@@ -101,20 +98,11 @@ const MetaAssessmentController = {
             attributes: ["meta_assessment_id", "teacher_id", "rubric_id", "course_id", "generalDescription", "date", "place", "isDelete", "createdAt"],
             include: [{
               model: RubricModel,
-              // where: {
-              //   isDelete: isDelete === 'true'
-              // },
               include: [{
                 model: SubjectModel,
-                // where: {
-                //   isDelete: isDelete === 'true'
-                // }
               }]
             }, {
               model: CourseModel,
-              // where: {
-              //   isDelete: isDelete === 'true'
-              // }
             }]
           });
           const Assessment = await AssessmentModel.findAll({
@@ -212,6 +200,7 @@ const MetaAssessmentController = {
                   assessment.dataValues.Assessment = Assessment;
           return assessment;
         }));
+
         result.forEach(resItem => {
           resItem.ViewMetaAssessments = ResultViewMetaAssessments.filter(viewMetaAssessment => 
             viewMetaAssessment.generalDescription === resItem.generalDescription
@@ -239,12 +228,10 @@ const MetaAssessmentController = {
             }
           ]
         });
-
         const updatedMetaAssessments = metaAssessments.map(meta => {
           meta.dataValues.assessments = assessments.filter(assessment => assessment.meta_assessment_id === meta.meta_assessment_id);
           return meta;
         });
-
         return res.status(200).json({
           meta_assessment_ids: metaAssessmentIds,
           assessments: assessments,
@@ -252,7 +239,6 @@ const MetaAssessmentController = {
         });
       }
       else {
-        // Logic for index
         const assessments = await MetaAssessmentModel.findAll();
         return res.status(200).json(assessments);
       }
@@ -300,7 +286,7 @@ const MetaAssessmentController = {
 
 
 
-      MetaAssessmentModel
+      
 
 
 
@@ -338,7 +324,6 @@ const MetaAssessmentController = {
         { description: description },
         { where: { meta_assessment_id: id } }
       );
-
       res.status(200).json({ message: 'MetaAssessment updated successfully' });
     } catch (error) {
       console.error('Error updating MetaAssessment:', error);
@@ -510,8 +495,6 @@ const MetaAssessmentController = {
       const { id } = data;
       const workbook = new ExcelJS.Workbook();
       const worksheet = workbook.addWorksheet('Tên đề tài');
-
-      // Lấy danh sách student_id từ MetaAssessmentModel dựa trên meta_assessment_id
       const enrollments = await MetaAssessmentModel.findAll({
         attributes: ['meta_assessment_id', 'description'],
         where: {
@@ -555,9 +538,6 @@ const MetaAssessmentController = {
           }
         });
       });
-
-
-
       res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
       res.setHeader('Content-Disposition', 'attachment; filename="StudentsForm.xlsx"');
       await workbook.xlsx.write(res);
@@ -606,9 +586,6 @@ const MetaAssessmentController = {
           console.warn(`No MetaAssessment found with ID ${data.meta_assessment_id} for update`);
         }
       }));
-
-
-
       res.status(200).json({ message: 'description   updated successfully' });
     } catch (error) {
       console.error('Error updating description from Excel file:', error);
@@ -702,53 +679,23 @@ const MetaAssessmentController = {
       if (!Array.isArray(GeneralDescriptions) || GeneralDescriptions.length === 0) {
         return res.status(400).json({ message: 'Descriptions array is required and cannot be empty' });
       }
-
-      // Tìm tất cả meta_assessments dựa vào các description
-      const metaAssessments = await MetaAssessmentModel.findAll({
-        where: {
-          generalDescription: GeneralDescriptions
-        }
+      const metaAssessments = await MetaAssessmentModel.findAll({where: { generalDescription: GeneralDescriptions}
       });
-
       if (metaAssessments.length === 0) {
         return res.status(404).json({ message: 'No assessments found for the provided GeneralDescriptions' });
       }
-
-      // Lấy ra tất cả meta_assessment_ids
       const metaAssessmentIds = metaAssessments.map(meta => meta.meta_assessment_id);
-
-      // Lấy ra tất cả assessment_ids dựa vào meta_assessment_ids
-      const assessments = await AssessmentModel.findAll({
-        where: {
-          meta_assessment_id: metaAssessmentIds
-        }
-      });
+      const assessments = await AssessmentModel.findAll({ where: { meta_assessment_id: metaAssessmentIds
+      }});
 
       const assessmentIds = assessments.map(assessment => assessment.assessment_id);
-
-      // Xóa tất cả các assessment items trong AssessmentItemModel dựa vào assessment_ids
-      await AssessmentItemModel.destroy({
-        where: {
-          assessment_id: assessmentIds
-        }
+      await AssessmentItemModel.destroy({ where: {assessment_id: assessmentIds }
       });
-
-      // Xóa tất cả các assessments trong AssessmentModel dựa vào meta_assessment_ids
-      await AssessmentModel.destroy({
-        where: {
-          meta_assessment_id: metaAssessmentIds
-        }
+      await AssessmentModel.destroy({ where: { meta_assessment_id: metaAssessmentIds}
       });
-
-      // Xóa tất cả các meta_assessments trong MetaAssessmentModel
-      const deletedCount = await MetaAssessmentModel.destroy({
-        where: {
-          meta_assessment_id: metaAssessmentIds
-        }
+      const deletedCount = await MetaAssessmentModel.destroy({where: {meta_assessment_id: metaAssessmentIds}
       });
-
       res.status(200).json({ message: 'Successfully deleted assessments, assessment items, and meta assessments', deletedCount });
-
     } catch (error) {
       console.error('Error deleting assessments:', error);
       res.status(500).json({ message: 'Server error' });

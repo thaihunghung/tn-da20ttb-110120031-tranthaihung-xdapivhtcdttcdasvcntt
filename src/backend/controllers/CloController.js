@@ -9,15 +9,15 @@ const path = require('path');
 const CloController = {
   index: async (req, res) => {
     try {
-      const { subject_id, isDelete } = req.query; // Sử dụng query parameters để lấy subject_id và trạng thái isDelete
-
+      // Sử dụng query parameters để lấy subject_id và trạng thái isDelete
+      const { subject_id, isDelete } = req.query; 
       // Xây dựng điều kiện where
       const whereCondition = {};
       if (subject_id) {
         whereCondition.subject_id = subject_id;
       }
       if (isDelete !== undefined) {
-        whereCondition.isDelete = JSON.parse(isDelete); // Chuyển đổi chuỗi thành boolean
+        whereCondition.isDelete = JSON.parse(isDelete); 
       }
 
       const clos = await CloModel.findAll({

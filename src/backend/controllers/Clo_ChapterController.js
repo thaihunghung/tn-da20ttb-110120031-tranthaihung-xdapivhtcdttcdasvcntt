@@ -9,7 +9,6 @@ const Clo_ChapterController = {
       const { clo_id, chapter_ids } = req.query;
 
       if (clo_id) {
-        // Lấy các Chapter dựa trên CLO ID
         const cloChapters = await CloChapterModel.findAll({ where: { clo_id: clo_id } });
 
         if (!cloChapters.length) {
@@ -20,20 +19,15 @@ const Clo_ChapterController = {
         const chapters = await ChapterModel.findAll({ where: { chapter_id: chapterIds } });
         return res.status(200).json(chapters);
       } 
-
       if (chapter_ids) {
-        // Lấy CLO-Chapter dựa trên nhiều Chapter IDs
         const ids = JSON.parse(chapter_ids); // Convert JSON string to array
         const cloChapters = await CloChapterModel.findAll({ where: { chapter_id: ids } });
 
         if (!cloChapters.length) {
           return res.status(404).json({ message: 'No CLO-Chapters found for the given Chapter IDs' });
         }
-
         return res.status(200).json(cloChapters);
       }
-
-      // Nếu không có tham số nào, trả về tất cả CLO-Chapters
       const allCloChapters = await CloChapterModel.findAll();
       return res.status(200).json(allCloChapters);
     } catch (error) {

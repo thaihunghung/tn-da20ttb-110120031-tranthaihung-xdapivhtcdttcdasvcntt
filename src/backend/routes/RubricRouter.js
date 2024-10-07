@@ -727,7 +727,9 @@ router.put('/rubric/:id', ensureAuthenticated, RubricController.update);
 router.get('/rubrics/isDelete/true', ensureAuthenticated, RubricController.isDeleteTotrue);
 router.get('/rubrics/isDelete/false', ensureAuthenticated, RubricController.isDeleteTofalse);
 router.get('/rubric/:id/items', ensureAuthenticated, RubricController.getItemsByRubricId);
+
 router.get('/rubrics/checkScore', ensureAuthenticated, RubricController.getRubricsForCheckScore);
+
 router.put('/rubrics/softDelete', ensureAuthenticated, RubricController.softDeleteMultiple);
 router.put('/rubric/:id/softDelete', ensureAuthenticated, RubricController.toggleSoftDeleteById);
 router.delete('/rubric/:id', ensureAuthenticated, RubricController.delete);

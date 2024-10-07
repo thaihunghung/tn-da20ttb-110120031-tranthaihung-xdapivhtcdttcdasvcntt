@@ -285,15 +285,22 @@ const { ensureAuthenticated } = require('../middlewares/authMiddleware');
  */
 
 router.get('/clos', ensureAuthenticated, CloController.index);
+
 router.post('/clo', ensureAuthenticated, CloController.create);
+
 router.get('/clo/:id', ensureAuthenticated, CloController.getByID);
+
 router.put('/clo/:id', ensureAuthenticated, CloController.update);
+
 router.delete('/clo/:id', ensureAuthenticated, CloController.delete);
 router.delete('/clos/multiple', ensureAuthenticated, CloController.deleteMultiple);
+
 router.put('/clo/:id/softDelete', ensureAuthenticated, CloController.toggleSoftDeleteById);
+router.put('/clos/softDelete', ensureAuthenticated, CloController.softDeleteMultiple);
+
 router.get('/clos/isDelete/true', ensureAuthenticated, CloController.isDeleteTotrue);
 router.get('/clos/isDelete/false', ensureAuthenticated, CloController.isDeleteTofalse);
-router.put('/clos/softDelete', ensureAuthenticated, CloController.softDeleteMultiple);
+//api dư
 router.get('/clo/templates/post', ensureAuthenticated, CloController.getFormPost);
 router.post('/clo/templates/update', ensureAuthenticated, CloController.getFormUpdate);
 

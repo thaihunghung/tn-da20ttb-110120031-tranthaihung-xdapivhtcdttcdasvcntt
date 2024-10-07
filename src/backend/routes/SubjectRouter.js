@@ -1,6 +1,8 @@
 const express = require('express');
 const SubjectController = require('../controllers/SubjectController');
 const { ensureAuthenticated } = require('../middlewares/authMiddleware');
+const checkPermission = require('../middlewares/permissionMiddleware');
+
 const router = express.Router();
 
 /**
@@ -736,18 +738,21 @@ const router = express.Router();
 
 router.get('/subjects',ensureAuthenticated, SubjectController.getSubjects);
 router.get('/subject/:id', ensureAuthenticated, SubjectController.getByID);
+
 router.get('/subject/:id/rubrics', ensureAuthenticated, SubjectController.getRubricsBySubjectId);
-router.put('/subject/:id', ensureAuthenticated, SubjectController.update);
-router.delete('/subject/:id', ensureAuthenticated, SubjectController.delete);
+router.put('/subject/:id', ensureAuthenticated, checkPermission(3), SubjectController.update);
+router.delete('/subject/:id', ensureAuthenticated, checkPermission(3), SubjectController.delete);
 router.post('/subject', ensureAuthenticated, SubjectController.create);
 router.get('/subjects/isDelete/false', ensureAuthenticated, SubjectController.isDeleteTofalse);
 router.get('/subjects/isDelete/true', ensureAuthenticated, SubjectController.isDeleteTotrue);
-router.delete('/subjects/multiple', ensureAuthenticated, SubjectController.deleteMultiple);
-router.put('/subjects/softDelete', ensureAuthenticated, SubjectController.softDeleteMultiple);
-router.put('/subject/:id/softDelete', ensureAuthenticated, SubjectController.toggleSoftDeleteById);
+router.delete('/subjects/multiple', ensureAuthenticated, checkPermission(3), SubjectController.deleteMultiple);
+router.put('/subjects/softDelete', ensureAuthenticated, checkPermission(3), SubjectController.softDeleteMultiple);
+router.put('/subject/:id/softDelete', ensureAuthenticated, checkPermission(3), SubjectController.toggleSoftDeleteById);
 router.get('/subject/templates/post', ensureAuthenticated, SubjectController.getFormPost);
-router.post('/subject/templates/update', ensureAuthenticated, SubjectController.getFormUpdate);
 
+
+// api dư
+router.post('/subject/templates/update', ensureAuthenticated, checkPermission(3), SubjectController.getFormUpdate);
 // router.get('/subjects', SubjectController.index);
 // router.get('/subjects/teacher/:teacher_id', SubjectController.isDeleteTofalseByteacher);
 // router.get('/subjects/archive/teacher/:teacher_id', SubjectController.isDeleteTotrueByteacher);

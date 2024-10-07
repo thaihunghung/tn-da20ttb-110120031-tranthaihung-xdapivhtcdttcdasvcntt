@@ -30,14 +30,12 @@ const SubjectController = {
   getSubjects: async (req, res) => {
     try {
       const { teacher_id, isDelete, course_id } = req.query;
-
-      // Điều kiện lọc subjects
       const whereCondition = {};
       if (teacher_id) {
         whereCondition.teacher_id = teacher_id;
       }
       if (isDelete !== undefined) {
-        whereCondition.isDelete = JSON.parse(isDelete); // Chuyển đổi chuỗi thành boolean
+        whereCondition.isDelete = JSON.parse(isDelete); 
       }
 
       // Nếu có course_id, tìm subject dựa trên course_id
@@ -51,10 +49,8 @@ const SubjectController = {
         if (!subject) {
           return res.status(404).json({ message: 'Subject not found' });
         }
-
         return res.status(200).json(subject);
       }
-
       // Lấy subjects theo điều kiện lọc
       const subjects = await SubjectModel.findAll({
         where: whereCondition
@@ -103,8 +99,6 @@ const SubjectController = {
       if (!subject) {
         return res.status(404).json({ message: 'Subject not found' });
       }
-
-      // Khởi tạo response với thông tin subject
       const response = { subject };
 
       // Nếu query include_clos = true, thêm CLOs vào response
@@ -125,7 +119,6 @@ const SubjectController = {
         response.chapters = chapters.length ? chapters : [];
       }
 
-      // Nếu query only_clo_ids = true, chỉ trả về IDs của CLOs
       if (only_clo_ids === 'true') {
         const cloIds = await CloModel.findAll({
           where: { subject_id: id, isDelete: false },
@@ -134,7 +127,6 @@ const SubjectController = {
         response.clo_ids = cloIds.map(clo => clo.clo_id);
       }
 
-      // Nếu query only_chapter_ids = true, chỉ trả về IDs của Chapters
       if (only_chapter_ids === 'true') {
         const chapterIds = await ChapterModel.findAll({
           where: { subject_id: id, isDelete: false },
@@ -233,7 +225,6 @@ const SubjectController = {
     try {
       const { id } = req.params;
       const { teacher_id } = req.query;
-
       const subject = await SubjectModel.findOne({ where: { subject_id: id } });
       if (!subject) {
         return res.status(404).json({ message: 'Subject not found' });
@@ -243,7 +234,6 @@ const SubjectController = {
       if (teacher_id) {
         whereConditions.teacher_id = teacher_id;
       }
-
       const rubrics = await RubricModel.findAll({ where: whereConditions });
       if (!rubrics.length) {
         return res.status(404).json({ message: 'Rubrics not found' });
@@ -324,8 +314,7 @@ const SubjectController = {
       console.error('Error deleting subject:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
-  }
-  ,
+  },
   deleteMultiple: async (req, res) => {
     const { subject_id } = req.query;
     try {
@@ -378,18 +367,12 @@ const SubjectController = {
       const subjectIds = activeSubjects.map(subject => subject.subject_id);
       const Clos = await CloModel.findAll({ where: { subject_id: subjectIds } });
       const Chapter = await ChapterModel.findAll({ where: { subject_id: subjectIds } });
-
-
       for (const subject of activeSubjects) {
         const closForSubject = Clos.filter(clos => clos.subject_id === subject.subject_id);
         const ChapterForSubject = Chapter.filter(Chapter => Chapter.subject_id === subject.subject_id);
         subject.dataValues.CLO = closForSubject;
         subject.dataValues.CHAPTER = ChapterForSubject;
       }
-
-      //activeSubjects.dataValues.CLO = Clos;
-      //activeSubjects.dataValues.CHAPTER = Chapter;
-
       res.status(200).json(activeSubjects);
     } catch (error) {
       console.error('Error fetching active subjects:', error);
@@ -623,7 +606,6 @@ const SubjectController = {
         return res.status(404).json({ message: 'Teacher not found' });
       }
 
-      // Define paths and load the Excel workbook
       const uploadDirectory = path.join(__dirname, '../uploads');
       const filename = req.files[0].filename;
       const filePath = path.join(uploadDirectory, filename);
@@ -631,7 +613,6 @@ const SubjectController = {
       const workbook = new ExcelJS.Workbook();
       await workbook.xlsx.readFile(filePath);
 
-      // Fetch existing data
       const [subjects, clos, chapters, PloClos, CloChapters] = await Promise.all([
         SubjectModel.findAll({ attributes: ['subject_id', 'subjectCode'] }),
         CloModel.findAll({ attributes: ['cloName'] }),
@@ -650,7 +631,6 @@ const SubjectController = {
         }),
       ]);
 
-      // Prepare data from the database
       const PloClosCodes = PloClos.map(item => ({
         cloName: item.CLO.cloName,
         ploName: item.PLO.ploName,
@@ -660,7 +640,6 @@ const SubjectController = {
         chapterName: item.Chapter.chapterName,
       }));
 
-      // Extract data from the Excel sheets
       const SubjectWorksheet = workbook.getWorksheet('Subject');
       const CLOWorksheet = workbook.getWorksheet('CLO');
       const ChapterWorksheet = workbook.getWorksheet('Chapter');
@@ -673,7 +652,6 @@ const SubjectController = {
       const CLO_PLOData = [];
       const CLO_CHAPTERData = [];
 
-      // Read each row and push to respective arrays
       SubjectWorksheet.eachRow((row, rowNumber) => {
         if (rowNumber > 1) {
           SubjectData.push({

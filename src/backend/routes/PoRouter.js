@@ -362,6 +362,10 @@ router.get('/pos/isDelete/true', ensureAuthenticated, PO.isDeleteToTrue);
 router.get('/pos/isDelete/false', ensureAuthenticated, PO.isDeleteToFalse);
 router.put('/pos/softDelete', ensureAuthenticated, checkPermission(3), PO.softDeleteMultiple);
 router.put('/po/:id/softDelete', ensureAuthenticated, checkPermission(3), PO.toggleSoftDeleteById);
+
+
+
+//api dư
 router.get('/po/templates/post', ensureAuthenticated, PO.getFormPost);
 router.post('/po/templates/update', ensureAuthenticated, checkPermission(3), PO.getFormUpdate);
 

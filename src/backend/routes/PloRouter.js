@@ -296,6 +296,9 @@ router.get('/plos/isDelete/true', ensureAuthenticated, PLO.isDeleteTotrue);
 router.get('/plos/isDelete/false', ensureAuthenticated, PLO.isDeleteTofalse);
 router.put('/plos/softDelete', ensureAuthenticated, checkPermission(3), PLO.softDeleteMultiple);
 router.put('/plo/:id/softDelete', ensureAuthenticated, checkPermission(3), PLO.toggleSoftDeleteById);
+
+
+//api dư
 router.get('/plo/templates/post', ensureAuthenticated, PLO.getFormPost);
 router.post('/plo/templates/update', ensureAuthenticated, checkPermission(3), PLO.getFormUpdate);
 

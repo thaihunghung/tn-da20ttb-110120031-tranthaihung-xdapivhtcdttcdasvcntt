@@ -833,12 +833,14 @@ const { ensureAuthenticated } = require('../middlewares/authMiddleware');
 router.get('/assessment/checkTeacher', ensureAuthenticated, assessmentsController.checkTeacherInAssessment);
 router.get('/assessment', ensureAuthenticated, assessmentsController.getAssessments);
 router.patch('/assessment/:id/totalScore', ensureAuthenticated, assessmentsController.updateStotalScore);
+
 router.get('/assessment/:id', ensureAuthenticated, assessmentsController.getByID);
-router.get('/assessment/:id/items', ensureAuthenticated, assessmentsController.GetitemsByID);
+router.get('/assessment/:id/items', ensureAuthenticated, assessmentsController.GetitemsByID); //r
 router.post('/assessment', ensureAuthenticated, assessmentsController.create);
 router.put('/assessment/:id', ensureAuthenticated, assessmentsController.update);
 router.delete('/assessment/:id', ensureAuthenticated, assessmentsController.delete);
 router.delete('/assessments/multiple', ensureAuthenticated, assessmentsController.deleteMultiple);
+
 router.delete('/assessment/teacher/:teacherId', ensureAuthenticated, assessmentsController.deleteByTeacherId);
 
 

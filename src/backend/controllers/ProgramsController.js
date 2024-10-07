@@ -143,8 +143,6 @@ const programController = {
   },
   getFormPost: async (req, res) => {
     const workbook = new ExcelJS.Workbook();
-
-    // Tạo worksheet Program
     const programWorksheet = workbook.addWorksheet('Program');
     programWorksheet.columns = [
       { header: 'Mã chương trình', key: 'program_id', width: 20 },
@@ -154,7 +152,6 @@ const programController = {
     programWorksheet.addRow({ program_id: 'IT', programName: 'Chương trình mẫu', description: '<p>Mô tả HTML mẫu</p>' });
     await protectWorksheet(programWorksheet, ['program_id']);
 
-    // Tạo worksheet PO
     const poWorksheet = workbook.addWorksheet('PO');
     poWorksheet.columns = [
       { header: 'Tên Mục tiêu', key: 'poName', width: 20 },
@@ -163,7 +160,6 @@ const programController = {
     ];
     poWorksheet.addRow({ poName: 'PO1', description: 'PO1', program_id: 'IT' });
 
-    // Tạo worksheet PLO
     const ploWorksheet = workbook.addWorksheet('PLO');
     ploWorksheet.columns = [
       { header: 'Tên Chuẩn đầu ra', key: 'ploName', width: 20 },
@@ -172,18 +168,14 @@ const programController = {
     ];
     ploWorksheet.addRow({ ploName: 'PLO1', description: '', program_id: 'IT' });
 
-    // Tạo worksheet PLO_PO
     const ploPoWorksheet = workbook.addWorksheet('PLO_PO');
-
     ploPoWorksheet.columns = [
       { header: 'PLO', key: 'ploName', width: 20 },
       { header: 'PO', key: 'poName', width: 20 },
 
     ];
-
     ploPoWorksheet.addRow({ ploName: 'PLO1', poName: 'PLO2' });
 
-    // Bảo vệ các worksheet
     const protectOptions = {
       selectLockedCells: true,
       selectUnlockedCells: true
@@ -193,7 +185,6 @@ const programController = {
       programWorksheet.protect('yourpassword', protectOptions),
     ]);
 
-    // Đặt header cho file Excel
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     res.setHeader('Content-Disposition', 'attachment; filename="ProgramsForm.xlsx"');
     await workbook.xlsx.write(res);
@@ -307,31 +298,21 @@ const programController = {
     };
   
     try {
-      // Save Programs first
       const createdPrograms = await ProgramModel.bulkCreate(jsonProgramData);
-  
-      // Save Plo and Po simultaneously
+
       const [createdPlos, createdPos] = await Promise.all([
         PloModel.bulkCreate(jsonPloData),
         PoModel.bulkCreate(jsonPoData),
       ]);
-  
-      // Get ids for Plo and Po
       const ploIds = createdPlos.map(plo => plo.plo_id);
       const poIds = createdPos.map(po => po.po_id);
-  
-      // Map ploName and poName to their corresponding ids
       const ploPoIds = await Promise.all(
         jsonPloPoData.map(async (item) => {
           const ids = await fetchPloPoIds(item.ploName, item.poName);
           return ids;
         })
       );
-  
-      // Filter out null values
       const filteredPloPoIds = ploPoIds.filter(id => id !== null);
-  
-      // Save PloPo relationships
       await PoPloModel.bulkCreate(filteredPloPoIds);
   
       fs.unlinkSync(filePath);
@@ -340,7 +321,6 @@ const programController = {
       console.error('Error saving data to the database:', error);
       res.status(500).json({ message: 'Error saving data to the database' });
     }
-  
   }
 }
 

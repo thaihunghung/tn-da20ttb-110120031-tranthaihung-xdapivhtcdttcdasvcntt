@@ -371,6 +371,11 @@ router.get('/chapters/isDelete/true', ensureAuthenticated, ChapterController.isD
 router.get('/chapters/isDelete/false', ensureAuthenticated, ChapterController.isDeleteTofalse);
 router.put('/chapters/softDelete', ensureAuthenticated, ChapterController.softDeleteMultiple);
 router.put('/chapter/:id/softDelete', ensureAuthenticated, ChapterController.toggleSoftDeleteById);
+
+
+
+
+//api dư
 router.get('/chapter/templates/post', ensureAuthenticated, ChapterController.getFormPost);
 router.post('/chapter/templates/update', ensureAuthenticated, ChapterController.getFormUpdate);
 

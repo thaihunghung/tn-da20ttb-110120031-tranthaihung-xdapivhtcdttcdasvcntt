@@ -30,7 +30,6 @@ const ChapterController = {
 
         return res.status(200).json(chapters);
       } else if (subject_id) {
-        // Handle request for chapters by subject ID
         const chapters = await ChapterModel.findAll({
           where: { subject_id: subject_id, isDelete: false },
           include: [{
@@ -45,7 +44,6 @@ const ChapterController = {
 
         return res.status(200).json(chapters);
       } else {
-        // Handle request for all chapters
         const chapters = await ChapterModel.findAll();
         return res.status(200).json(chapters);
       }
@@ -157,7 +155,6 @@ const ChapterController = {
         await CloChapterModel.destroy({ where: { chapter_id: id } });
         await RubricItemModel.destroy({ where: { chapter_id: id } });
       }
-
       await ChapterModel.destroy({ where: { chapter_id: chapter_id } });
       res.status(200).json({ message: 'Successfully deleted multiple chapters' });
     } catch (error) {

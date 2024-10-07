@@ -215,15 +215,12 @@ const RubricController = {
   getRubricsForCheckScore: async (req, res) => {
     try {
       const { teacher_id, isDelete } = req.query;
-
       const whereCondition = { teacher_id: teacher_id };
-
       if (isDelete !== undefined) {
         whereCondition.isDelete = isDelete === 'true';
       } else {
         whereCondition.isDelete = false;
       }
-
       const rubrics = await RubricModel.findAll({ where: whereCondition });
       const rubricIds = rubrics.map(rubric => rubric.rubric_id);
 
@@ -242,7 +239,6 @@ const RubricController = {
         const rubricsItemsForRubricItem = rubricScores.filter(rubricsItem => rubricsItem.rubric_id === rubric.rubric_id);
         rubric.dataValues.RubricItem = rubricsItemsForRubricItem;
       }
-
       res.json({ rubric: rubrics });
     } catch (error) {
       console.error('Error getting all rubrics:', error);
@@ -451,16 +447,6 @@ const RubricController = {
       if (include_clos === 'true') {
         const Clos = await CloModel.findAll({ where: { subject_id: rubric.subject_id, isDelete: isDelete === 'true'} });
         rubric.dataValues.CloData = Clos;
-        
-        // const cloChapters = await CloChapterModel.findAll({ where: { clo_id: rubric.clo_id } });
-
-        // if (!cloChapters.length) {
-        //   return res.status(404).json({ message: 'No chapters found for the given CLO ID' });
-        // }
-
-        // const chapterIds = cloChapters.map(item => item.chapter_id);
-        // const chapters = await ChapterModel.findAll({ where: { chapter_id: chapterIds } });
-        // return res.status(200).json(chapters);
       }
 
       const Clos = await CloModel.findAll({ where: { subject_id: rubric.subject_id } });

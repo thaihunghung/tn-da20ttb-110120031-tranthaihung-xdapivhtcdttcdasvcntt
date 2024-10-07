@@ -85,20 +85,57 @@ const RubricItemController = {
 
   update: async (req, res) => {
     try {
-      const { id } = req.params;
-      const { data } = req.body;
-      console.log(data);
-      const rubrics_item = await RubricItemModel.findOne({ where: { rubricsitem_id: id } });
-      if (!rubrics_item) {
-        return res.status(404).json({ message: 'rubrics_item not found' });
-      }
-      await RubricItemModel.update(data, { where: { rubricsitem_id: id } });
-      res.status(200).json({ message: `Successfully updated rubrics_item with ID: ${id}` });
+        const { id } = req.params;
+        const { data } = req.body;
+        console.log(data);
+        
+        // Lấy rubrics_item dựa trên rubricsitem_id
+        const rubrics_item = await RubricItemModel.findOne({ where: { rubricsitem_id: id } });
+        if (!rubrics_item) {
+            return res.status(404).json({ message: 'Không tìm thấy rubrics_item' });
+        }
+
+        // Lấy rubric_id từ rubrics_item
+        const rubric_id = rubrics_item.rubric_id;
+
+        // Fetch rubric items với rubric_id hiện tại
+        const RubricsItem = await RubricItemModel.findAll({
+            where: { rubric_id: rubric_id, isDelete: false }
+        });
+
+        // Tính tổng điểm tối đa
+        const length = RubricsItem.length;
+        if (length > 0) {
+            const results = await RubricItemModel.findAll({
+                attributes: [
+                    'rubric_id', 
+                    [Sequelize.fn('SUM', Sequelize.col('maxScore')), 'total_maxScore']
+                ],
+                where: { rubric_id: rubric_id, isDelete: false }
+            });
+
+            const total_maxScore = parseFloat(results[0].dataValues.total_maxScore || 0);
+            const maxScore = parseFloat(data.maxScore || 0);
+            const totalScore = total_maxScore - (rubrics_item.maxScore || 0) + maxScore; // Cập nhật tổng điểm
+
+            // Kiểm tra nếu tổng điểm không vượt quá 10
+            if (totalScore <= 10) {
+                await RubricItemModel.update(data, { where: { rubricsitem_id: id } });
+                res.status(200).json({ message: `Cập nhật rubrics_item với ID: ${id} thành công` });
+            } else {
+                res.status(400).json({ message: "Cập nhật thất bại: Tổng maxScore vượt quá 10" });
+            }
+        } else {
+            // Nếu không có mục rubrics hiện tại, chỉ cần cập nhật
+            await RubricItemModel.update(data, { where: { rubricsitem_id: id } });
+            res.status(200).json({ message: `Cập nhật rubrics_item với ID: ${id} thành công` });
+        }
     } catch (error) {
-      console.error('Error updating rubrics_item:', error);
-      res.status(500).json({ message: 'Server error' });
+        console.error('Lỗi khi cập nhật rubrics_item:', error);
+        res.status(500).json({ message: 'Lỗi máy chủ' });
     }
-  },
+},
+
 
   delete: async (req, res) => {
     try {

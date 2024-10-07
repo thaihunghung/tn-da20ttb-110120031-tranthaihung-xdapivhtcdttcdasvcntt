@@ -155,7 +155,9 @@ const columns = [
 ];
 
 const statusOptions = [
-  { name: "SV chưa chấm", totalScore: 0 },
+  { name: "Tất cả", key: null }, // Trạng thái không chọn
+  { name: "SV đã chấm", key: 1 },
+  { name: "SV chưa chấm", key: 0 },
 ];
 
 export { columns, statusOptions };

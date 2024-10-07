@@ -81,7 +81,7 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [filterValue, setFilterValue] = useState('');
   const [filterClass, setClassFilter] = useState('all');
-  const [filterStatus, setStatusFilter] = useState('all');
+  const [filterStatus, setStatusFilter] = useState(null);
 
   const hasSearchFilter = Boolean(filterValue);
 
@@ -102,7 +102,7 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
   const loadStudentAllCourse = async (Couse_id) => {
     try {
       const response = await fetchStudentDataByCourseId(Couse_id);
-     // console.log("loadStudentAllCourse", response);
+      // console.log("loadStudentAllCourse", response);
       setStudentAll(response);
 
     } catch (error) {
@@ -118,7 +118,7 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
       setClasses(Classes);
       setRubricArray(RubricArray);
       setCourseArray(CourseArray);
-      if(parseInt(metaAssessment[0]?.teacher_id)===parseInt(teacher_id)){
+      if (parseInt(metaAssessment[0]?.teacher_id) === parseInt(teacher_id)) {
         setCurrentTeacher(true)
       }
     } catch (error) {
@@ -178,7 +178,7 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
       const filtered = StudentAll.filter(student =>
         !assessments.some(assessment => assessment.student.student_id === student.student_id)
       );
-     // console.log("filtered")
+      // console.log("filtered")
       //console.log(filtered)
       setFilteredStudents(filtered);
     }
@@ -216,7 +216,7 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
     // console.log("assessments?.teacher_id")
     // console.log(assessments[0]?.teacher_id)
     // console.log(teacher_id)
-    if(parseInt(assessments[0]?.teacher_id)===parseInt(teacher_id)){
+    if (parseInt(assessments[0]?.teacher_id) === parseInt(teacher_id)) {
       setCurrentTeacher(true)
     }
   }, [teacher_id, assessments]);
@@ -224,18 +224,24 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
 
 
   const uniqueSortedDisription = useMemo(() => {
-    const desriptionSet = new Set();
-    assessments.forEach(item => desriptionSet.add(item.description));
-    const uniqueDesriptionsArray = Array.from(desriptionSet);
+    const descriptionSet = new Set();
+    assessments.forEach(item => descriptionSet.add(item.description));
+    const uniqueDescriptionsArray = Array.from(descriptionSet);
+
+    // Lọc ra các giá trị rỗng
+    const filteredDescriptionsArray = uniqueDescriptionsArray.filter(description => description !== '');
 
     // Hàm so sánh tùy chỉnh để sắp xếp theo phần số cuối
-    uniqueDesriptionsArray.sort((a, b) => {
+    filteredDescriptionsArray.sort((a, b) => {
       const numA = parseInt(a.match(/\d+$/));
       const numB = parseInt(b.match(/\d+$/));
       return numA - numB;
     });
-    return uniqueDesriptionsArray;
+
+    return filteredDescriptionsArray;
   }, [assessments]);
+
+
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === 'all') return columns;
     return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
@@ -249,14 +255,12 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
       );
     }
 
-    if (filterStatus !== 'all') {
-      // Chuyển đổi filterStatus thành số
-      const filterStatusNumber = parseInt(filterStatus, 10);
-
-      // Lọc các đối tượng dựa trên totalScore
-      filteredAssessment = filteredAssessment.filter((teacher) =>
-        teacher.totalScore === filterStatusNumber
-      );
+    if (filterStatus === 0) {
+      // Lọc ra những giáo viên có totalScore bằng 0
+      filteredAssessment = filteredAssessment.filter((teacher) => teacher.totalScore === 0);
+    } else if (filterStatus === 1) {
+      // Lọc ra những giáo viên có totalScore lớn hơn 0
+      filteredAssessment = filteredAssessment.filter((teacher) => teacher.totalScore > 0);
     }
 
     if (filterClass !== 'all') {
@@ -273,6 +277,7 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
 
     return filteredAssessment;
   }, [assessments, filterValue, filterStatus, filterClass, filterDescription, hasSearchFilter]);
+
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
@@ -318,103 +323,103 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
           />
           <div className='flex-1 flex items-center justify-start sm:justify-end'>
             <div className='flex gap-2 h-fit justify-center flex-wrap justify-end  sm:justify-start items-center'>
-            <Dropdown>
-              <DropdownTrigger className="sm:flex">
-                <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
-                  Cột
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={visibleColumns}
-                selectionMode="multiple"
-                onSelectionChange={setVisibleColumns}
-              >
-                {columns.map((column) => (
-                  <DropdownItem key={column.uid} className="capitalize">
-                    {capitalize(column.name)}
+              <Dropdown>
+                <DropdownTrigger className="sm:flex">
+                  <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
+                    Cột
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  disallowEmptySelection
+                  aria-label="Table Columns"
+                  closeOnSelect={false}
+                  selectedKeys={visibleColumns}
+                  selectionMode="multiple"
+                  onSelectionChange={setVisibleColumns}
+                >
+                  {columns.map((column) => (
+                    <DropdownItem key={column.uid} className="capitalize">
+                      {capitalize(column.name)}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+              <Dropdown>
+                <DropdownTrigger className="sm:flex">
+                  <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
+                    Lọc theo trạng thái
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  aria-label="Filter by Status"
+                  closeOnSelect={true}
+                  selectedKeys={new Set([filterStatus !== null ? filterStatus.toString() : ''])} // Chọn filterStatus hiện tại
+                  selectionMode="single"
+                  onSelectionChange={(keys) => {
+                    const selectedKey = Array.from(keys)[0] || null; // Đảm bảo chọn giá trị rỗng nếu không có lựa chọn
+                    setStatusFilter(selectedKey ? parseInt(selectedKey, 10) : null); // Đặt filterStatus về null nếu không có gì được chọn
+                  }}
+                >
+                  {statusOptions.map((option) => (
+                    <DropdownItem key={option.key} className="capitalize">
+                      {option.name}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+              <Dropdown>
+                <DropdownTrigger className="sm:flex">
+                  <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
+                    Lọc theo lớp
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  aria-label="Class Filter"
+                  closeOnSelect={true}
+                  selectedKeys={new Set([filterClass])} // Chuyển đổi filterClass thành Set
+                  selectionMode="single"
+                  onSelectionChange={(keys) => {
+                    const selectedKey = Array.from(keys)[0] || 'all';
+                    setClassFilter(selectedKey);
+                  }}
+                >
+                  <DropdownItem key="all" className="capitalize">Tất cả lớp</DropdownItem>
+                  {classes.map((classOption) => (
+                    <DropdownItem key={classOption.value} className="capitalize">
+                      {classOption.label}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+
+
+              <Dropdown>
+                <DropdownTrigger className="sm:flex">
+                  <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
+                    Lọc theo nhóm
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  aria-label="Lọc nhóm"
+                  closeOnSelect={true}
+                  selectedKeys={new Set([filterDescription])} // Chuyển đổi filterDescription thành Set
+                  selectionMode="single"
+                  onSelectionChange={(keys) => {
+                    const selectedKey = Array.from(keys)[0] || ''; // Đảm bảo chọn giá trị rỗng nếu không có lựa chọn
+                    setDescriptionFilter(selectedKey);
+                  }}
+                >
+                  <DropdownItem key="" className="capitalize">
+                    Tất cả nhóm
                   </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            <Dropdown>
-              <DropdownTrigger className="sm:flex">
-                <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
-                  Lọc theo điểm
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Status Filter"
-                closeOnSelect={true}
-                selectedKeys={new Set([filterStatus === 'all' ? 'all' : filterStatus.toString()])} // Chuyển đổi thành Set
-                selectionMode="single"
-                onSelectionChange={(keys) => {
-                  const selectedKey = Array.from(keys)[0] || 'all';
-                  setStatusFilter(selectedKey === 'all' ? 'all' : parseInt(selectedKey, 10));
-                }}
-              >
-                <DropdownItem key="all" className="capitalize">Tất cả</DropdownItem>
-                {statusOptions.map((option) => (
-                  <DropdownItem key={option.totalScore} className="capitalize">
-                    {option.name}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            <Dropdown>
-              <DropdownTrigger className="sm:flex">
-                <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
-                  Lọc theo lớp
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                aria-label="Class Filter"
-                closeOnSelect={true}
-                selectedKeys={new Set([filterClass])} // Chuyển đổi filterClass thành Set
-                selectionMode="single"
-                onSelectionChange={(keys) => {
-                  const selectedKey = Array.from(keys)[0] || 'all';
-                  setClassFilter(selectedKey);
-                }}
-              >
-                <DropdownItem key="all" className="capitalize">Tất cả lớp</DropdownItem>
-                {classes.map((classOption) => (
-                  <DropdownItem key={classOption.value} className="capitalize">
-                    {classOption.label}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            <Dropdown>
-              <DropdownTrigger className="sm:flex">
-                <Button endContent={<ChevronDownIcon className="text-small" />} size="sm" variant="flat">
-                  Lọc theo nhóm
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                aria-label="Lọc nhóm"
-                closeOnSelect={true}
-                selectedKeys={new Set([filterDescription])} // Chuyển đổi filterDescription thành Set
-                selectionMode="single"
-                onSelectionChange={(keys) => {
-                  const selectedKey = Array.from(keys)[0] || ''; // Đảm bảo chọn giá trị rỗng nếu không có lựa chọn
-                  setDescriptionFilter(selectedKey);
-                }}
-              >
-                <DropdownItem key="" className="capitalize">
-                  Tất cả nhóm
-                </DropdownItem>
-                {uniqueSortedDisription.map((ploName) => (
-                  <DropdownItem key={ploName} className="capitalize">
-                    {ploName}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            
+                  {uniqueSortedDisription.map((ploName) => (
+                    <DropdownItem key={ploName} className="capitalize">
+                      {ploName}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+
 
 
 
@@ -555,12 +560,12 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
                 </Button>
               </Tooltip>
             )}
-            <Tooltip content={action.totalScore === 0? 'Chấm điểm trước':"In Điểm"}>
+            <Tooltip content={action.totalScore === 0 ? 'Chấm điểm trước' : "In Điểm"}>
               <Button
                 isIconOnly className="bg-[#fefefe] shadow-sm border-3 border-default"
                 disabled={action.totalScore === 0}
-                onClick={() => { 
-                  handleAddPDFOneStudent(assessment?.Assessment) 
+                onClick={() => {
+                  handleAddPDFOneStudent(assessment?.Assessment)
                 }}
               >
                 <i className="fa-regular fa-file-pdf text-xl text-[#020401]"></i>
@@ -639,14 +644,14 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
       });
       const responses = await Promise.all(promises);
       const metaAssessmentIds = responses.map(response => response.data.meta_assessment_id);
-     // console.log("metaAssessmentIds", metaAssessmentIds)
+      // console.log("metaAssessmentIds", metaAssessmentIds)
       // Gửi yêu cầu GET đến '/assessments' để lấy danh sách teacher_id
       const getTeacherIDAssessment = axiosAdmin.get(`/assessment?generalDescription=${editRubric.generalDescription}&isDelete=false`);
 
       // Chờ kết quả từ GET yêu cầu
       const teacherData = await getTeacherIDAssessment;
       const teacherIds = teacherData.data.teacherIds;
-     // console.log("teacherIds", teacherIds)
+      // console.log("teacherIds", teacherIds)
       // Tạo và gửi tất cả các yêu cầu POST đến '/assessment'
       const postData = metaAssessmentIds.flatMap(meta_assessment_id =>
         teacherIds.map(teacher_id => ({
@@ -717,20 +722,20 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
 
   const handleGetDescriptionsByIds = (assessments, ids) => {
     return assessments
-      .filter(assessment => ids.includes(assessment.id)) 
-      .map(assessment => assessment?.description || 'N/A'); 
+      .filter(assessment => ids.includes(assessment.id))
+      .map(assessment => assessment?.description || 'N/A');
   };
 
   const handleGetAllAssessment = (assessments, ids) => {
     return assessments
-      .filter(assessment => ids.includes(assessment.id)) 
-      .map(assessment => assessment?.Assessment || {}); 
+      .filter(assessment => ids.includes(assessment.id))
+      .map(assessment => assessment?.Assessment || {});
   };
 
   const allDescriptionsMatch = (descriptions) => {
     return descriptions.every(description => description === descriptions[0]);
   };
-  
+
   const handleNavigateGradingGroup = () => {
     setTimeout(() => {
       const selectedItems = handleTakeSelectedItems();
@@ -761,7 +766,7 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
         return;
       }
 
-     
+
 
       const descriptions = handleGetDescriptionsByIds(assessments, ids);
 
@@ -801,7 +806,7 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
         return;
       }
 
-      const ids = selectedItems.map(item => item.id);     
+      const ids = selectedItems.map(item => item.id);
 
       const descriptions = handleGetDescriptionsByIds(assessments, ids);
       if (!allDescriptionsMatch(descriptions)) {
@@ -812,53 +817,53 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
 
       const transformAssessmentData = (assessments) => {
         return assessments.map(assessment => {
-            const { MetaAssessment, teacher } = assessment;
-            const { Rubric, Student } = MetaAssessment;
-    
-            return {
-                description: MetaAssessment.description,
-                subject: {
-                    subjectName: Rubric.subject.subjectName,
-                    subjectCode: Rubric.subject.subjectCode
-                },
-                students: {
-                    name: Student.name,
-                    studentCode: Student.studentCode
-                },
-                RubricItems: Rubric.RubricItems.map(rubricItem => ({
-                    rubricsItem_id: rubricItem.rubricsItem_id,
-                    description: rubricItem.description,
-                    maxScore: rubricItem.maxScore,
-                    CLO: rubricItem.CLO,
-                    AssessmentItems: rubricItem.AssessmentItems[0]
-                })),
-                totalScore: assessment.totalScore,
-                teacher: teacher.name
-            };
+          const { MetaAssessment, teacher } = assessment;
+          const { Rubric, Student } = MetaAssessment;
+
+          return {
+            description: MetaAssessment.description,
+            subject: {
+              subjectName: Rubric.subject.subjectName,
+              subjectCode: Rubric.subject.subjectCode
+            },
+            students: {
+              name: Student.name,
+              studentCode: Student.studentCode
+            },
+            RubricItems: Rubric.RubricItems.map(rubricItem => ({
+              rubricsItem_id: rubricItem.rubricsItem_id,
+              description: rubricItem.description,
+              maxScore: rubricItem.maxScore,
+              CLO: rubricItem.CLO,
+              AssessmentItems: rubricItem.AssessmentItems[0]
+            })),
+            totalScore: assessment.totalScore,
+            teacher: teacher.name
+          };
         });
-    };
-    
-    const alldata = transformAssessmentData(handleGetAllAssessment(assessments, ids));
-    
-    const fiterAlldata = {
-      description: alldata[0]?.description || '',
-      students: alldata?.map(item => item?.students) || [],
-      subject: alldata[0]?.subject || {},
-      teacher: alldata[0]?.teacher || '',
-      data1: alldata[0]?.RubricItems || [],
-      data2: alldata[1]?.RubricItems || [],
-      data3: alldata[2]?.RubricItems || [],
-      totalScore: alldata.map(item => item?.totalScore) || [],
-  };
-  
-    
-   
+      };
+
+      const alldata = transformAssessmentData(handleGetAllAssessment(assessments, ids));
+
+      const fiterAlldata = {
+        description: alldata[0]?.description || '',
+        students: alldata?.map(item => item?.students) || [],
+        subject: alldata[0]?.subject || {},
+        teacher: alldata[0]?.teacher || '',
+        data1: alldata[0]?.RubricItems || [],
+        data2: alldata[1]?.RubricItems || [],
+        data3: alldata[2]?.RubricItems || [],
+        totalScore: alldata.map(item => item?.totalScore) || [],
+      };
+
+
+
 
       console.log(fiterAlldata)
-  
+
 
       setAllMutiAssessment(fiterAlldata)
-     setIsAddModalOpenMutiPDF(true)
+      setIsAddModalOpenMutiPDF(true)
 
     }, 100);
   };
@@ -906,14 +911,14 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
     <>
       <div className='w-full flex justify-between items-center'>
         <div className='h-full my-auto p-5 hidden sm:block'>
-        <div>
+          <div>
             <h1 className="text-2xl pb-2 font-bold text-[#4F46E5]">Danh sách sinh viên cần đánh giá</h1>
           </div>
           <BackButton path={'/admin/management-grading/list'} />
         </div>
         <div className='w-full sm:w-auto bg-[#fefefe] border-2 border-[#4F46E5] mb-2 shadow-sm rounded-xl p-4 flex gap-4 flex-col sm:flex-row items-center'>
           <div className='flex flex-wrap justify-center gap-2'>
-              <Button
+            <Button
               className='bg-transparent  shadow-sm border-2 border-[#FF9908] hover:bg-[#FF9908]'
               onClick={() => {
                 handleNavigateGradingGroup();
@@ -929,16 +934,16 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
             >
               Tạo mới
             </Button>
-     
-            <Button 
-                disabled={!CurrentTeacher}
-                className='bg-transparent shadow-sm border-2 border-[#FF8077]  hover:bg-[#FF8077]'
-                endContent={<i className="fas fa-eye-slash"></i>}
-                onClick={() => {
-                  handleOpenModalUpdateDiscClick()
-                }}>
-                Cập nhật đề tài
-              </Button>
+
+            <Button
+              disabled={!CurrentTeacher}
+              className='bg-transparent shadow-sm border-2 border-[#FF8077]  hover:bg-[#FF8077]'
+              endContent={<i className="fas fa-eye-slash"></i>}
+              onClick={() => {
+                handleOpenModalUpdateDiscClick()
+              }}>
+              Cập nhật đề tài
+            </Button>
             <Button
               className='bg-transparent shadow-sm border-2 border-[#6B7280] hover:bg-[#6B7280]'
               endContent={<i className="fa-regular fa-file-pdf"></i>}
@@ -955,17 +960,17 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
         isOpen={isAddModalOpenOnePDF}
         onOpenChange={setIsAddModalOpenOnePDF}
         AllAssessment={AllAssessment}
-        //DataRubric={DataRubricPDF}
-        //DataRubricItems={DataRubricItems}
+      //DataRubric={DataRubricPDF}
+      //DataRubricItems={DataRubricItems}
       />
-       <ModalOpenPdfMutiStudent
+      <ModalOpenPdfMutiStudent
         isOpen={isAddModalOpenMutiPDF}
-        onOpenChange={setIsAddModalOpenMutiPDF} 
+        onOpenChange={setIsAddModalOpenMutiPDF}
         AllMutiAssessment={AllMutiAssessment}
-        //DataRubric={DataRubricPDF}
-        //DataRubricItems={DataRubricItems}
+      //DataRubric={DataRubricPDF}
+      //DataRubricItems={DataRubricItems}
       />
-       
+
 
       <ConfirmAction
         onOpenChange={onOpenChange}

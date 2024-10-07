@@ -192,7 +192,7 @@ function ModalUpdateRubicItems({
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1 text-[#FF9908]">Edit Rubric items</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1 text-[#FF9908]">Cập nhật tiêu chí</ModalHeader>
               <ModalBody>
                 <form
                   className="flex flex-col gap-3"
@@ -299,7 +299,7 @@ function ModalUpdateRubicItems({
                 </form>
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" onClick={onClose}>Cancel</Button>
+                <Button variant="light" onClick={onClose}>Hủy</Button>
                 <Button
                   type="submit"
                   color="primary"
@@ -309,7 +309,7 @@ function ModalUpdateRubicItems({
                     onClose();
                   }}
                 >
-                  Update
+                  Cập nhật
                 </Button>
               </ModalFooter>
             </>

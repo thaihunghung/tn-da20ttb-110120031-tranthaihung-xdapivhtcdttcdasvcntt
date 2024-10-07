@@ -20,6 +20,7 @@ Dự án này xây dựng hệ thống API và giao diện trực tuyến giúp 
 ```env
 git clone https://github.com/thaihunghung/tn-da20ttb-110120031-tranthaihung-xdapivhtcdttcdasvcntt.git
 cd tn-da20ttb-110120031-tranthaihung-xdapivhtcdttcdasvcntt
+cd scr
 ```
 ```env
 cd backend
@@ -104,3 +105,83 @@ npm start
 - **Login quyền 1**: 
   - Tài khoản: `123457` 
   - Mật khẩu: `password123`
+#
+# Docker
+## Bước 1: Cài đặt Docker và Docker Compose
+
+Trước tiên, hãy đảm bảo rằng Docker và Docker Compose đã được cài đặt trên hệ thống của bạn. Nếu chưa, bạn có thể tải về từ các trang chính thức:
+
+- [Cài đặt Docker](https://www.docker.com/get-started)
+- [Cài đặt Docker Compose](https://docs.docker.com/compose/install/)
+
+## Bước 2: Tạo và chỉnh sửa file `docker-compose.yml`
+
+Tạo file `docker-compose.yml` với cấu hình như sau:
+```env
+version: '3'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: Hunghung123@
+      MYSQL_DATABASE: TVU
+      MYSQL_USER: AdminTVU
+      MYSQL_PASSWORD: CongNgheThongTin-DA20TTB
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./tvu.sql:/docker-entrypoint-initdb.d/TVU.sql
+      - ./my.txt:/etc/mysql/my.cnf  # Nếu sử dụng file .txt
+    restart: always
+    command: --log-bin-trust-function-creators=1
+    networks:
+      - TVU_Network  # Thêm vào mạng
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - "8081:80"
+    restart: always
+    networks:
+      - TVU_Network  # Thêm vào mạng
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "1509:1509"
+    depends_on:
+      - mysql
+    environment:
+      - DATABASE_URL=mysql://AdminTVU:CongNgheThongTin-DA20TTB@mysql:3306/TVU
+    restart: always
+    networks:
+      - TVU_Network  # Thêm vào mạng
+    
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - TVU_Network  # Thêm vào mạng
+
+volumes:
+  mysqldata:
+
+networks:
+  TVU_Network:
+    driver: bridge  # Định nghĩa mạng với driver bridge
+```
+## Bước 3: Chạy lệnh Docker Compose để build và khởi động
+```env
+docker-compose up --build
+```

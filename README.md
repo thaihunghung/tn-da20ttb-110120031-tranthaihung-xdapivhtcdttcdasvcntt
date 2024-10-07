@@ -17,12 +17,18 @@ Dự án này xây dựng hệ thống API và giao diện trực tuyến giúp 
 - **MySQL**
 
 ## Hướng dẫn cài đặt
-- git clone
-- cd backend
-- npm i
-- cd frontend
-- npm i
-
+```env
+git clone https://github.com/thaihunghung/tn-da20ttb-110120031-tranthaihung-xdapivhtcdttcdasvcntt.git
+cd tn-da20ttb-110120031-tranthaihung-xdapivhtcdttcdasvcntt
+```
+```env
+cd backend
+npm i
+```
+```env
+cd frontend
+npm i
+```
 ## Tạo file `.env` cho Backend
 Tạo một file `.env` trong thư mục `backend` với nội dung sau:
 

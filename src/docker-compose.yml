@@ -1,4 +1,4 @@
-version: '1'
+version: '3'
 
 services:
   mysql:
@@ -12,8 +12,12 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - mysqldata:/var/lib/mysql
+      - ./tvu.sql:/docker-entrypoint-initdb.d/TVU.sql
+      - ./my.txt:/etc/mysql/my.cnf  # Nếu sử dụng file .txt
     restart: always
+    command: --log-bin-trust-function-creators=1
+    networks:
+      - TVU_Network  # Thêm vào mạng
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
@@ -24,6 +28,8 @@ services:
     ports:
       - "8081:80"
     restart: always
+    networks:
+      - TVU_Network  # Thêm vào mạng
 
   backend:
     build:
@@ -36,6 +42,8 @@ services:
     environment:
       - DATABASE_URL=mysql://AdminTVU:CongNgheThongTin-DA20TTB@mysql:3306/TVU
     restart: always
+    networks:
+      - TVU_Network  # Thêm vào mạng
     
   frontend:
     build:
@@ -43,6 +51,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    networks:
+      - TVU_Network  # Thêm vào mạng
 
 volumes:
   mysqldata:
+
+networks:
+  TVU_Network:
+    driver: bridge  # Định nghĩa mạng với driver bridge

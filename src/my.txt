@@ -1,0 +1,1 @@
+--log-bin-trust-function-creators=1

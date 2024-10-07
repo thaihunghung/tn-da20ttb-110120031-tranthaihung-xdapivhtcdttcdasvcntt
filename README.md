@@ -75,3 +75,32 @@ REACT_APP_API_DOMAIN_ADMIN=http://localhost:1509/api/admin
 - **`REACT_APP_MEASUREMENT_ID`**: ID đo lường cho Google Analytics.
 - **`REACT_APP_API_DOMAIN_CLIENT`**: Địa chỉ API dành cho người dùng.
 - **`REACT_APP_API_DOMAIN_ADMIN`**: Địa chỉ API dành cho quản trị viên.
+
+## Chạy ứng dụng
+
+### Bước 1: Khởi động backend
+```env
+cd backend
+npm start
+```
+### Bước 1: Khởi động frontend
+```env
+cd frontend
+npm start
+```
+# Kiểm tra 
+## Địa chỉ Backend và Frontend
+
+- **Backend**: [http://localhost:1509/](http://localhost:1509/)
+- **Swagger**: [http://localhost:1509/api/docs/](http://localhost:1509/api/docs/)
+- **Frontend**: [http://localhost:3000/admin](http://localhost:3000/admin)
+
+## Thông tin đăng nhập
+
+- **Login quyền 3**: 
+  - Tài khoản: `121214` 
+  - Mật khẩu: `admin`
+  
+- **Login quyền 1**: 
+  - Tài khoản: `123457` 
+  - Mật khẩu: `password123`

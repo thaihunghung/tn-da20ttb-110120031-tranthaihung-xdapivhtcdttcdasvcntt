@@ -36,27 +36,36 @@ DB_DIALECT=mysql
 ```
 ### Giải thích các biến môi trường cho Backend
 
-- **`JWT_SECRET`**: 
-  - Chuỗi bí mật dùng để mã hóa và giải mã JSON Web Token (JWT). 
-  - Thường được sử dụng để xác thực người dùng và bảo mật thông tin trong ứng dụng.
+- **`JWT_SECRET`**: Chuỗi bí mật dùng để mã hóa và giải mã JSON Web Token (JWT). 
+- **`DB_NAME`**: Tên của cơ sở dữ liệu mà ứng dụng sẽ kết nối tới. 
+- **`DB_USER`**: Tên người dùng của cơ sở dữ liệu. 
+- **`DB_PASSWORD`**: Mật khẩu cho người dùng cơ sở dữ liệu. 
+- **`DB_HOST`**:  Địa chỉ IP hoặc tên miền của máy chủ cơ sở dữ liệu. 
+- **`DB_DIALECT`**: Loại cơ sở dữ liệu đang sử dụng. 
 
-- **`DB_NAME`**: 
-  - Tên của cơ sở dữ liệu mà ứng dụng sẽ kết nối tới. 
-  - Ở đây là `TVU`.
+## Tạo file `.env` cho 
+Tạo một file `.env` trong thư mục `frontend` với nội dung sau:
 
-- **`DB_USER`**: 
-  - Tên người dùng của cơ sở dữ liệu. 
-  - Ở đây là `demo_user`, người dùng sẽ có quyền truy cập vào cơ sở dữ liệu.
+```env
+REACT_APP_APIKEY=AIzaSyCZPdWAoY1kZ3PGy_02JQP4bHe4EAyVn2M
+REACT_APP_AUTH_DOMAIN=ploclo-fd713.firebaseapp.com
+REACT_APP_PROJECT_ID=ploclo-fd713
+REACT_APP_STORAGE_BUCKET=ploclo-fd713.appspot.com
+REACT_APP_MESSAGING_SENDER_ID=857065623701
+REACT_APP_APP_ID=1:857065623701:web:19f5ea47b15996b4fccb9c
+REACT_APP_MEASUREMENT_ID=G-Y40B4ZXLTQ
 
-- **`DB_PASSWORD`**: 
-  - Mật khẩu cho người dùng cơ sở dữ liệu. 
-  - Ở đây là `demo_password`, mật khẩu này cần phải được bảo mật.
+REACT_APP_API_DOMAIN_CLIENT=http://localhost:1509/api
+REACT_APP_API_DOMAIN_ADMIN=http://localhost:1509/api/admin
+```
+### Giải thích các biến môi trường cho Frontend
 
-- **`DB_HOST`**: 
-  - Địa chỉ IP hoặc tên miền của máy chủ cơ sở dữ liệu. 
-  - Ở đây là `localhost`, nghĩa là cơ sở dữ liệu đang chạy trên cùng một máy chủ với ứng dụng.
-
-- **`DB_DIALECT`**: 
-  - Loại cơ sở dữ liệu đang sử dụng. 
-  - Ở đây là `mysql`, xác định rằng ứng dụng sẽ sử dụng MySQL làm hệ quản trị cơ sở dữ liệu.
-
+- **`REACT_APP_APIKEY`**: Khóa API để kết nối với Firebase.
+- **`REACT_APP_AUTH_DOMAIN`**: Miền xác thực Firebase của bạn.
+- **`REACT_APP_PROJECT_ID`**: ID của dự án Firebase.
+- **`REACT_APP_STORAGE_BUCKET`**: Nơi lưu trữ tệp trong Firebase Storage.
+- **`REACT_APP_MESSAGING_SENDER_ID`**: ID người gửi cho Firebase Cloud Messaging.
+- **`REACT_APP_APP_ID`**: ID của ứng dụng Firebase.
+- **`REACT_APP_MEASUREMENT_ID`**: ID đo lường cho Google Analytics.
+- **`REACT_APP_API_DOMAIN_CLIENT`**: Địa chỉ API dành cho người dùng.
+- **`REACT_APP_API_DOMAIN_ADMIN`**: Địa chỉ API dành cho quản trị viên.

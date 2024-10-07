@@ -8,7 +8,7 @@
 Dự án này xây dựng hệ thống API và giao diện trực tuyến giúp giảng viên chấm điểm đồ án sinh viên CNTT dễ dàng, tự động hóa các quy trình chấm điểm và theo dõi tiến độ.
 
 ## Công nghệ sử dụng
-- **Backend**: Node.js, Express.js, MySQL, Sequelize, Puppeteer (để tạo PDF)
+- **Backend**: Node.js, Express.js, MySQL, Sequelize, Puppeteer (để tạo PDF), Swagger
 - **Frontend**: React.js, NextUI, Axios, Tailwind CSS, Ant Design
 
 ## Yêu cầu hệ thống

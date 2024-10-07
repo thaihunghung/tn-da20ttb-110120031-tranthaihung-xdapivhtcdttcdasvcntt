@@ -33,7 +33,7 @@ DB_USER=demo_user
 DB_PASSWORD=demo_password
 DB_HOST=localhost
 DB_DIALECT=mysql
-
+```
 ### Giải thích các biến môi trường cho Backend
 
 - **`JWT_SECRET`**: 

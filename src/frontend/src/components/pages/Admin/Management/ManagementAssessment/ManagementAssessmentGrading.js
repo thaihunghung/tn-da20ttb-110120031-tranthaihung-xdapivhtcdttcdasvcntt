@@ -34,6 +34,9 @@ import { handleReplaceCharacters } from '../../Utils/handleReplaceCharacters';
 import ModalUpdateDisc from './Modal/ModalUpdateDisc';
 import ModalOpenPdfOneStudent from './Modal/ModalOpenPdfOneStudent';
 import ModalOpenPdfMutiStudent from './Modal/ModalOpenPdfMutiStudent';
+import Chart from './Chart';
+import Cookies from 'js-cookie';
+import ModalChart from './Modal/ModalChart';
 
 const statusColorMap = {
   active: 'success',
@@ -46,7 +49,7 @@ const COMPACT_VISIBLE_COLUMNS = ['student', 'action', 'description'];
 const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
   UseTeacherAuth();
   const descriptionURL = UseDescriptionFromURL();
-  const teacher_id = UseTeacherId();
+  const teacher_id = Cookies.get('teacher_id');
   const handleNavigate = UseNavigate();
 
   const [CurrentTeacher, setCurrentTeacher] = useState(false);
@@ -65,6 +68,7 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
   const [rubric_id, setRubric_id] = useState();
   const [isUpdateDiscModalOpen, setIsUpdateDiscModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isChartModalOpen, setIsChartModalOpen] = useState(false);
   const [editRubric, setEditRubric] = useState({
     teacher_id: "",
     course_id: "",
@@ -87,6 +91,7 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
 
 
   const [page, setPage] = useState(1);
+  const [listScore, setlistScore] = useState([]);
   const [fileList, setFileList] = useState([]);
   const [deleteId, setDeleteId] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -109,22 +114,36 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
       console.error("Error loading student data:", error);
     }
   };
-  const LoadData = React.useCallback(async () => {
+  const LoadData = async () => {
     try {
       const { metaAssessment, Rubric_id, Course_id, Classes, RubricArray, CourseArray } = await fetchAssessmentDataGrading(teacher_id, descriptionURL, filterValue);
       setAssessment(metaAssessment);
+      console.log(metaAssessment);
+      const totalScores = metaAssessment.map(item => item.action.totalScore);
+      console.log(totalScores);
+      const sortedTotalScoresAsc = totalScores.sort((a, b) => a - b);
+      console.log(sortedTotalScoresAsc);
+      setlistScore(sortedTotalScoresAsc)
       setRubric_id(Rubric_id);
       setCouse_id(Course_id);
       setClasses(Classes);
       setRubricArray(RubricArray);
       setCourseArray(CourseArray);
       if (parseInt(metaAssessment[0]?.teacher_id) === parseInt(teacher_id)) {
-        setCurrentTeacher(true)
+        setCurrentTeacher(true);
       }
     } catch (error) {
       console.error("Error loading assessment data:", error);
     }
-  }, [teacher_id, descriptionURL, filterValue]);
+  };
+  useEffect(() => {
+    LoadData();
+  }, [])
+
+  useEffect(() => {
+    LoadData();
+  }, [page, rowsPerPage, filterValue, teacher_id])
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 1024) {
@@ -148,9 +167,8 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
       window.removeEventListener("resize", handleResize);
     };
   }, [setCollapsedNav]);
-  useEffect(() => {
-    LoadData();
-  }, [LoadData, page, rowsPerPage, filterValue, teacher_id]);
+
+
   useEffect(() => {
     const checkTeacherExistence = async () => {
       try {
@@ -681,6 +699,10 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
     setIsEditModalOpen(true);
   };
 
+  const handleChartClick = () => {
+    //console.log(editRubric);
+    setIsChartModalOpen(true);
+  };
   const handleOpenModalUpdateDiscClick = () => {
     setIsUpdateDiscModalOpen(true);
   };
@@ -916,6 +938,7 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
           </div>
           <BackButton path={'/admin/management-grading/list'} />
         </div>
+
         <div className='w-full sm:w-auto bg-[#fefefe] border-2 border-[#4F46E5] mb-2 shadow-sm rounded-xl p-4 flex gap-4 flex-col sm:flex-row items-center'>
           <div className='flex flex-wrap justify-center gap-2'>
             <Button
@@ -953,6 +976,22 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
             >
               PDF nhóm
             </Button>
+
+            <Button
+              className='bg-transparent shadow-sm border-2 border-[#6B7280] hover:bg-[#6B7280]'
+              endContent={<i class="fas fa-chart-pie"></i>}
+              onClick={() => {
+                handleChartClick()
+              }}
+            >
+              Biểu đồ
+            </Button>
+
+
+            
+
+
+            
           </div>
         </div>
       </div>
@@ -970,6 +1009,15 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
       //DataRubric={DataRubricPDF}
       //DataRubricItems={DataRubricItems}
       />
+<ModalChart
+        isOpen={isChartModalOpen}
+        onOpenChange={setIsChartModalOpen}
+        score={listScore}
+      //DataRubric={DataRubricPDF}
+      //DataRubricItems={DataRubricItems}
+      />
+
+
 
 
       <ConfirmAction

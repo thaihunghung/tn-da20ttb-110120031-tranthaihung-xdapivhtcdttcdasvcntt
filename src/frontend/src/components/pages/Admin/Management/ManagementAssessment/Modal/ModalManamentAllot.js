@@ -42,9 +42,16 @@ function ModalManamentAllot({ isOpen, onOpenChange, metaAssessment }) {
             );
           }
           const uniqueAssessments = getUniqueAssessments(filteredAssessments);
-          console.log(uniqueAssessments);
 
-          setAssessments(uniqueAssessments);
+
+          const filteredUniqueAssessments = uniqueAssessments.filter(
+            (assessment) => assessment.isDelete === 0 && assessment.MetaAssessment?.isDelete === 0
+          );
+          
+          // In ra kết quả sau khi lọc
+          console.log("Filtered Unique Assessments:", filteredUniqueAssessments);
+
+          setAssessments(filteredUniqueAssessments);
         }
       } catch (error) {
         console.error('Error fetching assessments:', error);

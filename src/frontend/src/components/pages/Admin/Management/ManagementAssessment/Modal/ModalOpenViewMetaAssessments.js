@@ -7,101 +7,116 @@ import { UseNavigate, UseTeacherAuth, UseTeacherId } from '../../../../../../hoo
 import { fetchAssessmentsByidTeacher } from '../Data/DataAssessmentGrading';
 import { Table } from '@nextui-org/react';
 import { handleReplaceCharacters } from '../../../Utils/Utils';
+import PieChart from '../PieChart';
 
-function ModalOpenViewMetaAssessments({ isOpen, onOpenChange, metaAssessment }) {
+function ModalOpenViewMetaAssessments({ isOpen, onOpenChange, metaAssessment, jsonResult }) {
+  UseTeacherAuth();
 
+  console.log(jsonResult)
   return (
     <Modal
-    size="5xl"
-    isOpen={isOpen}
-    onOpenChange={onOpenChange}
-    scrollBehavior="outside"
-    motionProps={{
-      variants: {
-        enter: {
-          y: 0,
-          opacity: 1,
-          transition: {
-            duration: 0.2,
-            ease: "easeOut",
+      size="5xl"
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      scrollBehavior="outside"
+      motionProps={{
+        variants: {
+          enter: {
+            y: 0,
+            opacity: 1,
+            transition: {
+              duration: 0.2,
+              ease: "easeOut",
+            },
+          },
+          exit: {
+            y: -20,
+            opacity: 0,
+            transition: {
+              duration: 0.1,
+              ease: "easeIn",
+            },
           },
         },
-        exit: {
-          y: -20,
-          opacity: 0,
-          transition: {
-            duration: 0.1,
-            ease: "easeIn",
-          },
-        },
-      },
-    }}
-  >
-    <ModalContent>
-      {(onClose) => (
-        <>
-     <ModalHeader className="text-[#FF9908] flex flex-col">
-  <span className="text-lg font-semibold">Xem điểm cuối</span>
-  <span className="text-lg text-gray-600 mt-1">
-    Lớp: {metaAssessment[0]?.course?.courseName || 'N/A'}
-  </span>
-</ModalHeader>
+      }}
+    >
+      <ModalContent>
+        {(onClose) => (
+          <>
+            <ModalHeader className="text-[#FF9908] flex flex-col">
+              <span className="text-lg font-semibold">Xem điểm cuối</span>
+              <span className="text-lg text-gray-600 mt-1">
+                Lớp: {metaAssessment[0]?.course?.courseName || 'N/A'}
+              </span>
+            </ModalHeader>
 
-          <ModalBody>
-          <div className="flex flex-col items-center w-full">
-  <div className="overflow-x-auto w-full min-w-[300px]">
-    <div className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-      <table className="w-full border-collapse">
-        <thead>
-          <tr className="bg-gray-100 border-b border-gray-200">
-            <th className="p-4 font-semibold text-gray-700 text-left">Sinh viên</th>
-            <th className="p-4 font-semibold text-gray-700 text-left">Điểm từ giáo viên</th>
-            <th className="p-4 font-semibold text-gray-700 text-left">Điểm cuối</th>
-          </tr>
-        </thead>
-        <tbody>
-          {metaAssessment.map((assessment) => (
-            <tr key={assessment.meta_assessment_id} className="divide-y divide-gray-200">
-              <td className="p-4 text-gray-600">
-                {assessment?.Student?.name || 'N/A'}
-              </td>
-              <td className="p-4 text-gray-600">
-                {assessment?.Assessment?.length > 0 ? (
-                  assessment.Assessment.map((assess, index) => (
-                    <div key={index}>
-                      GV {index + 1}: {assess.teacher?.name || 'N/A'} - {assess.totalScore}
-                    </div>
-                  ))
-                ) : (
-                  'N/A'
-                )}
-              </td>
-              <td className="p-4 text-gray-600">
-                {assessment?.FinalScore || 'N/A'}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+            <ModalBody>
+              <div className="flex flex-col items-center w-full">
 
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              variant="light"
-              onClick={() => {
-                onClose();
-              }}
-            >
-              Đóng
-            </Button>
-          </ModalFooter>
-        </>
-      )}
-    </ModalContent>
-  </Modal>
+                <div className="flex flex-col lg:flex-row justify-center items-center w-full">
+                  {jsonResult.map((teacher) => (
+                    <PieChart
+                      TeacherName={teacher.name} // Tên giáo viên
+                      Grading={teacher.grading} // Số điểm đã chấm
+                      NoGrading={teacher.noGrading} // Số điểm chưa chấm, mặc định là 0 nếu không có
+                    />
+                  ))}
+                </div>
+                <div className="overflow-x-auto w-full min-w-[300px]">
+                  <div className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+                    <table className="w-full border-collapse">
+                      <thead>
+                        <tr className="bg-gray-100 border-b border-gray-200">
+                          <th className="p-4 font-semibold text-gray-700 text-left">Sinh viên</th>
+                          <th className="p-4 font-semibold text-gray-700 text-left">Điểm từ giáo viên</th>
+                          <th className="p-4 font-semibold text-gray-700 text-left">Điểm cuối</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {metaAssessment.map((assessment) => (
+                          <tr key={assessment.meta_assessment_id} className="divide-y divide-gray-200">
+                            <td className="p-4 text-gray-600">
+                              {assessment?.Student?.name || 'N/A'}
+                            </td>
+                            <td className="p-4 text-gray-600">
+                              {assessment?.Assessment?.length > 0 ? (
+                                assessment.Assessment
+                                  .sort((a, b) => (a.teacher?.teacher_id === assessment.teacher_id ? -1 : 1))
+                                  .map((assess, index) => (
+                                    <div key={index}>
+                                      GV {index + 1}: {assess.teacher?.name || 'N/A'} - {assess.totalScore}
+                                    </div>
+                                  ))
+                              ) : (
+                                'N/A'
+                              )}
+                            </td>
+                            <td className="p-4 text-gray-600">
+                              {assessment?.FinalScore || 'N/A'}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                variant="light"
+                onClick={() => {
+                  onClose();
+                }}
+              >
+                Đóng
+              </Button>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
   );
 };
 

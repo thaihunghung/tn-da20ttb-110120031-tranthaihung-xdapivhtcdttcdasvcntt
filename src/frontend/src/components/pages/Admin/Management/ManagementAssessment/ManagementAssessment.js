@@ -386,69 +386,12 @@ const ManagementAssessment = ({ setCollapsedNav }) => {
     setOldDescription(generalDescription)
     setIsEditModalOpen(true);
   };
-  const gradingCount = {};
-  const noGradingCount = {};
-  const JsonResultTeacherScore = [];
+
   const handleViewMetaAssessmentsClick = (viewMetaAssessments) => {
     console.log("viewMetaAss1", viewMetaAssessments[0]);
     console.log("viewMetaAss2", viewMetaAssessments[1]);
     setViewMetaAssessments(viewMetaAssessments)
-   
-    viewMetaAssessments.forEach((assessment) => {
-      if (assessment?.Assessment?.length > 0) {
-        assessment.Assessment.forEach((assess) => {
-          const teacherName = assess.teacher?.name || 'N/A'; // Lấy tên giáo viên
-          const teacherId = assess.teacher?.teacher_id || 'N/A'; // Lấy mã ID giáo viên
-    
-          // Kiểm tra totalScore và cập nhật đối tượng tương ứng
-          if (assess.totalScore > 0) {
-            if (!gradingCount[teacherName]) {
-              gradingCount[teacherName] = {
-                count: 0,
-                id: teacherId // Lưu mã ID giáo viên
-              };
-            }
-            gradingCount[teacherName].count++;
-          } else {
-            if (!noGradingCount[teacherName]) {
-              noGradingCount[teacherName] = {
-                count: 0,
-                id: teacherId // Lưu mã ID giáo viên
-              };
-            }
-            noGradingCount[teacherName].count++;
-          }
-        });
-      }
-    });
-    const GVGD = viewMetaAssessments[0].teacher_id
-    // Tạo JSON kết quả
-    for (const teacher in gradingCount) {
-      JsonResultTeacherScore.push({
-        name: teacher,
-        id: gradingCount[teacher].id, // Thêm mã ID giáo viên
-        grading: gradingCount[teacher].count,
-        noGrading: noGradingCount[teacher]?.count || null, // Mặc định là 0 nếu không có điểm chưa chấm
-      });
-    }
-    
-    // Kết quả
-    
-    JsonResultTeacherScore.sort((a, b) => {
-      const isATeacherGVGD = a.id === GVGD; // Kiểm tra xem a có phải là GVGD không
-      const isBTeacherGVGD = b.id === GVGD; // Kiểm tra xem b có phải là GVGD không
-    
-      if (isATeacherGVGD && !isBTeacherGVGD) {
-        return -1; // a là GVGD, đặt a lên trước
-      }
-      if (!isATeacherGVGD && isBTeacherGVGD) {
-        return 1; // b là GVGD, đặt b lên trước
-      }
-      return 0; // Nếu cả hai đều là hoặc đều không phải, giữ nguyên thứ tự
-    });
-    //console.log("JsonResultTeacherScore", JsonResultTeacherScore);
-   // console.log("Kết quả JSON:", JSON.stringify(JsonResultTeacherScore, null, 2));
-    setJsonResultTeacherScore(JsonResultTeacherScore)
+
     setIsViewMetaAssessmentsModalOpen(true);
   };
   const handleAllotClick = (generalDescription) => {
@@ -570,7 +513,6 @@ const ManagementAssessment = ({ setCollapsedNav }) => {
         isOpen={isViewMetaAssessmentsModalOpen}
         onOpenChange={setIsViewMetaAssessmentsModalOpen}
         metaAssessment={viewMetaAssessments}
-        jsonResult={jsonResultTeacherScore}
       />
       <ModalOpenPdf
         isOpen={isAddModalOpenPDF}

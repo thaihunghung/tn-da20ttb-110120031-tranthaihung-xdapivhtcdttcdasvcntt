@@ -37,7 +37,7 @@ const ModalCreateAssessment = ({
     const [defaultRubric, setDefaultRubric] = useState("Chọn Rubric");
     const [DataCourse, setCourseByTeacher] = useState([]);
     const [fileList, setFileList] = useState([]);
-    const [newRubric, setNewRubric] = useState({
+    const [newAssessment, setNewAssessment] = useState({
         teacher_id: Cookies.get('teacher_id'),
         course_id: "",
         rubric_id: "",
@@ -47,7 +47,7 @@ const ModalCreateAssessment = ({
         date: "",
     });
     const today = new Date();
-  const [selectedDate, setSelectedDate] = useState(new CalendarDate(today.getFullYear(), today.getMonth() + 1, today.getDate()));
+    const [selectedDate, setSelectedDate] = useState(new CalendarDate(today.getFullYear(), today.getMonth() + 1, today.getDate()));
     const navigate = useNavigate();
     const teacher_id = Cookies.get('teacher_id');
 
@@ -59,7 +59,7 @@ const ModalCreateAssessment = ({
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setNewRubric((prev) => ({
+        setNewAssessment((prev) => ({
             ...prev,
             [name]: value,
         }));
@@ -69,7 +69,7 @@ const ModalCreateAssessment = ({
         const Value = e.target.value;
         console.log("value");
         console.log(Value);
-        setNewRubric((prev) => ({
+        setNewAssessment((prev) => ({
             ...prev,
             course_id: Value,
         }));
@@ -82,7 +82,7 @@ const ModalCreateAssessment = ({
             setCourse_id(selectedCourse.course_id);
             setCourseName(selectedCourse.courseCode + "_" + selectedCourse.courseName);
 
-            setNewRubric((prev) => ({
+            setNewAssessment((prev) => ({
                 ...prev,
                 courseName: selectedCourse.courseCode + "_" + selectedCourse.courseName,
             }));
@@ -94,7 +94,7 @@ const ModalCreateAssessment = ({
 
     const handleRubricSelectChange = (e) => {
         const Value = e.target.value;
-        setNewRubric((prev) => ({
+        setNewAssessment((prev) => ({
             ...prev,
             rubric_id: Value,
         }));
@@ -102,7 +102,7 @@ const ModalCreateAssessment = ({
 
     const handleDateChange = (newDate) => {
         const formattedDate = `${newDate.year}-${newDate.month}-${newDate.day}`;
-        setNewRubric((prev) => ({
+        setNewAssessment((prev) => ({
             ...prev,
             date: formattedDate,
         }));
@@ -128,6 +128,14 @@ const ModalCreateAssessment = ({
         setDefaultRubric('Chọn Rubric');
         console.log("Filtered Data:", filteredData);
     }, [DataRubric, filterRubicData]);
+    useEffect(() => {
+        const today = new Date();
+        const formattedDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+        setNewAssessment((prev) => ({
+            ...prev,
+            date: formattedDate,
+        }));
+    }, []);
 
     useEffect(() => {
         const getAllRubricIsDeleteFalse = async () => {
@@ -235,19 +243,19 @@ const ModalCreateAssessment = ({
                         <ModalHeader className="text-[#FF9908]">Tạo mới đánh giá</ModalHeader>
                         <ModalBody>
                             <div className="flex flex-col h-full pb-10">
-                                {/* <Button onClick={() => { console.log(newRubric) }}> tesst</Button> */}
+                                {/* <Button onClick={() => { console.log(newAssessment) }}> tesst</Button> */}
                                 <form
                                     className="flex flex-col gap-3 h-full"
                                     onSubmit={(e) => {
                                         e.preventDefault();
-                                        // onSubmit(newRubric);
+                                        // onSubmit(newAssessment);
                                         onClose();
                                     }}
                                 >
                                     <Select
                                         label="Chọn lớp môn học"
                                         name="course_id"
-                                        value={newRubric.course_id || ''}
+                                        value={newAssessment.course_id || ''}
                                         onChange={handleCourseChange}
                                         fullWidth
                                     >
@@ -262,7 +270,7 @@ const ModalCreateAssessment = ({
                                     <Select
                                         label="Chọn bảng tiêu chí"
                                         name="rubric_id"
-                                        value={newRubric.rubric_id || ''}
+                                        value={newAssessment.rubric_id || ''}
                                         onChange={handleRubricSelectChange}
                                         fullWidth
                                     >
@@ -279,7 +287,7 @@ const ModalCreateAssessment = ({
                                         label="mô tả chung"
                                         name="description"
                                         placeholder="nhận mô tả chung"
-                                        value={newRubric.description || ''}
+                                        value={newAssessment.description || ''}
                                         onChange={handleChange}
                                         rows={4}
                                         minRows={4}
@@ -290,7 +298,7 @@ const ModalCreateAssessment = ({
                                         fullWidth
                                         label="Địa điểm"
                                         name="place"
-                                        value={newRubric.place || ''}
+                                        value={newAssessment.place || ''}
                                         onChange={handleChange}
                                         required
                                     />
@@ -311,7 +319,7 @@ const ModalCreateAssessment = ({
                                             <Button
                                                 className="bg-sky-500 text-white w-[125px] disabled:opacity-50"
                                                 onClick={handleDownloadTemplateExcel}
-                                                disabled={!newRubric.rubric_id}
+                                                disabled={!newAssessment.rubric_id}
                                             >
                                                 Tải Sinh viên
                                             </Button>
@@ -359,13 +367,13 @@ const ModalCreateAssessment = ({
 
                                         <div className="flex flex-col bg-white shadow-md rounded-lg p-4 justify-center items-center w-full md:w-auto">
                                             <h3 className="text-lg font-semibold text-gray-700 mb-2">Lưu file</h3>
-                                            {newRubric.course_id && newRubric.rubric_id && newRubric.description && newRubric.courseName && newRubric.place && newRubric.date ? (
+                                            {newAssessment.course_id && newAssessment.rubric_id && newAssessment.description && newAssessment.courseName && newAssessment.place && newAssessment.date ? (
                                                 <CustomUpload
                                                     endpoint={'/meta-assessment'}
                                                     method="POST"
                                                     fileList={fileList}
                                                     setFileList={setFileList}
-                                                    Data={newRubric}
+                                                    Data={newAssessment}
                                                     LoadData={load}
                                                 />
                                             ) : (

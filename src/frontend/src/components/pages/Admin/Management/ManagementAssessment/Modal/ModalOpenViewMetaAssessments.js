@@ -9,10 +9,80 @@ import { Table } from '@nextui-org/react';
 import { handleReplaceCharacters } from '../../../Utils/Utils';
 import PieChart from '../PieChart';
 
-function ModalOpenViewMetaAssessments({ isOpen, onOpenChange, metaAssessment, jsonResult }) {
+function ModalOpenViewMetaAssessments({ isOpen, onOpenChange, metaAssessment }) {
   UseTeacherAuth();
+  const [charts, setCharts] = useState([]);
+  const gradingCount = {};
+  const noGradingCount = {};
+  
+  useEffect(() => {
+    if (isOpen) {
+      const JsonResultTeacherScore = [];
+      metaAssessment.forEach((assessment) => {
+        if (assessment?.Assessment?.length > 0) {
+          assessment.Assessment.forEach((assess) => {
+            const teacherName = assess.teacher?.name || 'N/A'; // Lấy tên giáo viên
+            const teacherId = assess.teacher?.teacher_id || 'N/A'; // Lấy mã ID giáo viên
+      
+            // Kiểm tra totalScore và cập nhật đối tượng tương ứng
+            if (assess.totalScore > 0) {
+              if (!gradingCount[teacherName]) {
+                gradingCount[teacherName] = {
+                  count: 0,
+                  id: teacherId // Lưu mã ID giáo viên
+                };
+              }
+              gradingCount[teacherName].count++;
+            } else {
+              if (!noGradingCount[teacherName]) {
+                noGradingCount[teacherName] = {
+                  count: 0,
+                  id: teacherId // Lưu mã ID giáo viên
+                };
+              }
+              noGradingCount[teacherName].count++;
+            }
+          });
+        }
+      });
+      
+      const GVGD = metaAssessment[0].teacher_id
+      // Tạo JSON kết quả
+      for (const teacher in gradingCount) {
+        JsonResultTeacherScore.push({
+          name: teacher,
+          id: gradingCount[teacher].id, // Thêm mã ID giáo viên
+          grading: gradingCount[teacher].count,
+          noGrading: noGradingCount[teacher]?.count || null, // Mặc định là 0 nếu không có điểm chưa chấm
+        });
+      }
+      
+      // Kết quả
+      JsonResultTeacherScore.sort((a, b) => {
+        const isATeacherGVGD = a.id === GVGD; // Kiểm tra xem a có phải là GVGD không
+        const isBTeacherGVGD = b.id === GVGD; // Kiểm tra xem b có phải là GVGD không
+      
+        if (isATeacherGVGD && !isBTeacherGVGD) {
+          return -1; // a là GVGD, đặt a lên trước
+        }
+        if (!isATeacherGVGD && isBTeacherGVGD) {
+          return 1; // b là GVGD, đặt b lên trước
+        }
+        return 0; // Nếu cả hai đều là hoặc đều không phải, giữ nguyên thứ tự
+      });
 
-  console.log(jsonResult)
+      const newCharts = JsonResultTeacherScore.map((teacher) => (
+        <PieChart
+          key={teacher.name} // Thêm key để tránh cảnh báo
+          TeacherName={teacher.name} // Tên giáo viên
+          Grading={teacher.grading} // Số điểm đã chấm
+          NoGrading={teacher.noGrading} // Số điểm chưa chấm, mặc định là 0 nếu không có
+        />
+      ));
+      setCharts(newCharts);
+    }
+  }, [isOpen, metaAssessment]);
+
   return (
     <Modal
       size="5xl"
@@ -54,13 +124,7 @@ function ModalOpenViewMetaAssessments({ isOpen, onOpenChange, metaAssessment, js
               <div className="flex flex-col items-center w-full">
 
                 <div className="flex flex-col lg:flex-row justify-center items-center w-full">
-                  {jsonResult.map((teacher) => (
-                    <PieChart
-                      TeacherName={teacher.name} // Tên giáo viên
-                      Grading={teacher.grading} // Số điểm đã chấm
-                      NoGrading={teacher.noGrading} // Số điểm chưa chấm, mặc định là 0 nếu không có
-                    />
-                  ))}
+                  {charts}
                 </div>
                 <div className="overflow-x-auto w-full min-w-[300px]">
                   <div className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">

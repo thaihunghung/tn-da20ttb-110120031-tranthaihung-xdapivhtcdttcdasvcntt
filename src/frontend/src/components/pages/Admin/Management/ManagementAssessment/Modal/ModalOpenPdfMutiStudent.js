@@ -276,16 +276,15 @@ const ModalOpenPdfMutiStudent = ({
                                                 )}
                                             </tbody>
                                             <tfoot>
-                                                <tr className="h-[20px]">
+                                                <tr className="h-[60px]">
                                                     <td className="border border-black border-r-0"></td>
-                                                    <td className="border border-black border-x-0"></td>
-                                                    <td className="border border-black border-x-0 w-[10px]"></td>
-                                                    <td className={`border border-black border-x-0 `}></td>
+                                                    <td className="border border-black border-x-1 text-center font-bold" colSpan={2}>Tổng điểm:</td>
+                                                    <td className={`border border-black border-x-0 font-bold text-center`}>{AllMutiAssessment?.totalScore[0]}</td>
                                                     {checkData2 && (
-                                                        <td className={`border border-black border-x-0 ${checkData3 ? '' : 'w-[20px]'}`}></td>
+                                                        <td className={`border border-black font-bold text-center ${checkData3 ? '' : 'w-[20px]'}`}>{AllMutiAssessment?.totalScore[1]}</td>
                                                     )}
                                                     {checkData3 && (
-                                                        <td className="border border-black border-l-0 border-r-[1px]"></td>
+                                                        <td className="border border-black font-bold text-center">{AllMutiAssessment?.totalScore[2]}</td>
                                                     )}
                                                 </tr>
                                             </tfoot>
@@ -294,7 +293,6 @@ const ModalOpenPdfMutiStudent = ({
                                             <div className="flex-1 flex mt-4 border border-black rounded-lg">
                                                 <div className="w-full gap-2 p-4 flex flex-col justify-center items-center text-lg">
                                                     <div className="w-full  border-b border-black pb-2 mb-2">
-                                                        <span className="font-bold text-lg">Tổng điểm:</span>
                                                     </div>
                                                     <div className="w-full h-[100px] flex justify-between items-stretch ">
                                                         {AllMutiAssessment?.students.map((student, index) => (

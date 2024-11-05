@@ -95,7 +95,8 @@ npm start
 - **Backend**: [http://localhost:1509/](http://localhost:1509/)
 - **Swagger**: [http://localhost:1509/api/docs/](http://localhost:1509/api/docs/)
 - **Frontend**: [http://localhost:3000/admin](http://localhost:3000/admin)
-
+- **Student**: [http://localhost:3000/](http://localhost:3000/)
+  
 ## Thông tin đăng nhập
 
 - **Login quyền 3**: 

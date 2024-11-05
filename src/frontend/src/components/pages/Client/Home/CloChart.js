@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { PolarArea } from 'react-chartjs-2';
-import 'chart.js/auto';
+import Plot from 'react-plotly.js';
 import { Card, CardBody } from '@nextui-org/react';
 import { Button, Select } from 'antd';
 import { AxiosClient } from '../../../../service/AxiosClient';
@@ -53,88 +52,34 @@ const CloChart = ({ studentCode }) => {
     setCourseId(value);
   };
 
-  const generateColors = (count) => {
-    const colors = [];
-    for (let i = 0; i < count; i++) {
-      const color = `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.6)`;
-      colors.push(color);
+  const radarData = [
+    {
+      type: 'scatterpolar',
+      r: percentages,
+      theta: cloNames,
+      fill: 'toself',
+      name: 'CLO Achievement',
+      text: descriptions.map((desc, index) => `${desc}: ${percentages[index]}%`),
+      hoverinfo: 'text'
     }
-    return colors;
-  };
+  ];
 
-  const backgroundColors = generateColors(data.length);
-  const borderColors = backgroundColors.map(color => color.replace('0.6', '1'));
-
-  const chartData = {
-    labels: cloNames,
-    datasets: [{
-      label: 'Percentage Achieved',
-      data: percentages,
-      backgroundColor: backgroundColors,
-      borderColor: borderColors,
-      borderWidth: 1
-    }]
-  };
-
-  const customGridLinePlugin = {
-    id: 'customGridLine',
-    afterDraw: (chart) => {
-      if (chart.config.type !== 'polarArea') return;
-
-      const { ctx, chartArea: { top, left, bottom, right }, scales: { r } } = chart;
-
-      const yAxis = r;
-      const ticks = yAxis.ticks;
-      const valueIndex = ticks.findIndex(tick => tick.value === 50);
-
-      if (valueIndex >= 0) {
-        const tick = ticks[valueIndex];
-        const y = yAxis.getDistanceFromCenterForValue(tick.value);
-
-        ctx.save();
-        ctx.strokeStyle = 'red';
-        ctx.beginPath();
-        ctx.arc(yAxis.xCenter, yAxis.yCenter, y, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.restore();
-      }
-    }
-  };
-
-  const options = {
-    scales: {
-      r: {
-        min: 0,
-        max: 100,
-        ticks: {
-          stepSize: 10,
-          callback: function (value) {
-            return value;
-          }
-        }
+  const layout = {
+    polar: {
+      radialaxis: {
+        visible: true,
+        range: [0, 100]
       }
     },
-    plugins: {
-      title: {
-        display: true,
-        text: 'CLO Achievement Percentages'
-      },
-      tooltip: {
-        callbacks: {
-          label: function (context) {
-            const description = descriptions[context.dataIndex];
-            const percentage = context.raw;
-            return `${description}: ${percentage}%`;
-          }
-        }
-      },
-      customGridLine: {}
-    }
+    width: 630,
+    height: 440,
+    showlegend: false,
+    title: 'CLO Achievement Percentages'
   };
 
   return (
     <div className="flex justify-center items-center">
-      <Card className="w-[700px]">
+      <Card className="w-full">
         <CardBody>
           <div className="flex items-center">
             <Button
@@ -159,10 +104,12 @@ const CloChart = ({ studentCode }) => {
               </div>
             </div>
           )}
-          <h3 className="text-center mb-4">
-            CLO Achievement Percentages
-          </h3>
-          <PolarArea data={chartData} options={options} plugins={[customGridLinePlugin]} />
+          <Plot
+            data={radarData}
+            layout={layout}
+            useResizeHandler
+            style={{ width: "100%", height: "100%" }}
+          />
         </CardBody>
       </Card>
     </div>

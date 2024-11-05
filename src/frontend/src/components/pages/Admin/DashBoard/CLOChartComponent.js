@@ -26,11 +26,10 @@ export default function CLOChartComponent({ descriptions, setDescriptions, user,
     if (!teacherId) return;
 
     try {
-      console.log("teacher_id", teacherId);
       const response = await axiosAdmin.post('/achieved-rate/clo/percentage', {
         teacher_id: teacherId,
         permission: permission
-       });
+      });
       const data = response.data;
 
       const labelsSet = new Set();
@@ -75,7 +74,6 @@ export default function CLOChartComponent({ descriptions, setDescriptions, user,
       setAllLabels(labelsArray);
       setDescriptions(descriptionsMap);
 
-      // Set default selected radar datasets to 3 subjects
       setSelectedRadar(datasets.slice(0, 3).map(dataset => dataset.label));
 
       setRadarChartData({ labels: labelsArray, datasets: datasets.slice(0, 3) });
@@ -138,7 +136,7 @@ export default function CLOChartComponent({ descriptions, setDescriptions, user,
           label: function (context) {
             const value = context.raw;
             const cloName = context.label;
-            const description = descriptions[cloName] || '';
+            const description = descriptions[cloName];
             return `Tỉ lệ đạt được là ${value} %\n\n${description}`;
           }
         }
@@ -178,7 +176,7 @@ export default function CLOChartComponent({ descriptions, setDescriptions, user,
         </div>
         <h2 className="text-xl font-semibold mb-4">Tỉ lệ đạt của chuẩn đầu ra của môn học</h2>
         <div className='h-[600px] w-full'>
-        <Radar data={radarChartData} options={radarChartOptions} />
+          <Radar data={radarChartData} options={radarChartOptions} />
         </div>
       </div>
     </div>

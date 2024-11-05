@@ -23,20 +23,30 @@ const PLOChartComponent = ({ user }) => {
   useEffect(() => {
     const fetchData = async () => {
       if (!teacherId || !permission) return;
-      
+
       try {
         const response = await axiosAdmin.post('/achieved-rate/plo/percentage', {
           teacher_id: teacherId,
-          permission: permission
+          permission: permission,
         });
 
-        const ploData = response.data[0].plos.map((plo) => ({
-          name: plo.ploName,
-          percentage: (plo.percentage_score * 100).toFixed(2),
-        }));
-        setData(ploData);
-        setOriginalData(ploData);
-        setSelectedPLO(ploData.map(plo => plo.name));
+        const ploData = response.data.flatMap(subject =>
+          subject.plos.map(plo => ({
+            name: plo.ploName,
+            percentage: (plo.percentage_score * 100).toFixed(2),
+            description: plo.description
+          }))
+        );
+
+        const uniquePLOData = Array.from(new Set(ploData.map(plo => plo.name)))
+          .map(name => ploData.find(plo => plo.name === name));
+
+        // Sort the uniquePLOData by name
+        uniquePLOData.sort((a, b) => a.name.localeCompare(b.name));
+
+        setData(uniquePLOData);
+        setOriginalData(uniquePLOData);
+        setSelectedPLO(uniquePLOData.map(plo => plo.name));
       } catch (error) {
         console.error('Error fetching PLO data:', error);
       }
@@ -56,15 +66,20 @@ const PLOChartComponent = ({ user }) => {
 
   const ploNames = data.map(plo => plo.name);
   const ploPercentages = data.map(plo => plo.percentage);
+  const ploDescriptions = data.map(plo => plo.description);
 
   const chartData = [
     {
       type: 'bar',
       x: ploNames,
       y: ploPercentages,
-      text: ploPercentages.map(String),
-      textposition: 'auto',
-      hoverinfo: 'x+y',
+      text: ploDescriptions.map((desc, index) => `${desc}`),
+      textposition: 'none',
+      hovertemplate:
+        '<b>PLO:</b> %{x}<br>' +
+        '<b>Percentage:</b> %{y:.2f}%<br>' +
+        '<b>Description:</b> %{text}<br>' +
+        '<extra></extra>',
       marker: {
         color: 'rgba(75, 192, 192, 0.6)',
         line: {
@@ -93,6 +108,7 @@ const PLOChartComponent = ({ user }) => {
     },
     yaxis: {
       title: {
+        text: 'Phần trăm (%)',
         font: {
           size: 18,
         },
@@ -104,6 +120,16 @@ const PLOChartComponent = ({ user }) => {
     height: 600,
     plot_bgcolor: 'rgba(240, 240, 240, 0.9)',
     paper_bgcolor: 'rgba(255, 255, 255, 1)',
+    hoverlabel: {
+      bgcolor: "white",
+      bordercolor: "black",
+      font: {
+        size: 12,
+        color: "black"
+      },
+      align: "left",
+      wraplength: 300
+    },
   };
 
   return (
@@ -111,7 +137,8 @@ const PLOChartComponent = ({ user }) => {
       <div className="mb-4">
         <Button
           onClick={() => setShowFilter(!showFilter)}
-          className="flex justify-start rounded mb-3">
+          className="flex justify-start rounded mb-3"
+        >
           {showFilter ? 'Hide Filter' : 'Show Filter'}
         </Button>
         {showFilter && (
@@ -133,7 +160,6 @@ const PLOChartComponent = ({ user }) => {
           </div>
         )}
       </div>
-      <h2 className="text-xl font-semibold mb-4">Tỉ lệ đạt của chuẩn đầu ra của chương trình</h2>
       <div className="">
         <Plot data={chartData} layout={chartLayout} />
       </div>

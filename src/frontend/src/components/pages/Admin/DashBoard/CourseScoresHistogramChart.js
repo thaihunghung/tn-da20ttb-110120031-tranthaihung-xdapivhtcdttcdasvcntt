@@ -9,7 +9,7 @@ const CourseScoresHistogramChart = ({ user }) => {
   const [courseData, setCourseData] = useState([]);
   const [scoreData, setScoreData] = useState([]);
   const [selectedCourses, setSelectedCourses] = useState([]);
-  const [showFilter, setShowFilter] = useState(true);
+  const [showFilter, setShowFilter] = useState(false);
   const [teacherId, setTeacherId] = useState();
   const [permission, setPermission] = useState();
 
@@ -60,44 +60,34 @@ const CourseScoresHistogramChart = ({ user }) => {
   };
 
   const processData = (data) => {
-    const totalScores = data.length;
     const scoreCounts = data.reduce((acc, score) => {
-      acc[score.score] = acc[score.score] || { count: 0, students: [] };
-      acc[score.score].count += 1;
-      acc[score.score].students.push(score.studentName);
+      acc[score.course_id] = acc[score.course_id] || [];
+      acc[score.course_id].push(score.score);
       return acc;
     }, {});
-    return Object.keys(scoreCounts).map(score => ({
-      x: parseFloat(score),
-      y: (scoreCounts[score].count / totalScores) * 100,
-      students: scoreCounts[score].students
-    })).sort((a, b) => a.x - b.x); // Sort scores in ascending order
+    return scoreCounts;
   };
 
   const processedData = processData(scoreData);
 
-  const barTrace = {
-    type: 'bar',
-    x: processedData.map(dataPoint => dataPoint.x),
-    y: processedData.map(dataPoint => dataPoint.y),
-    name: 'Percentage of Scores',
-    marker: {
-      color: 'rgba(75, 192, 192, 0.5)'
-    },
-    hovertemplate: 'Điểm: %{x}, Tỉ lệ: %{y:.3f}%<extra></extra>'
+  const generateColor = (index) => {
+    const colors = ['#ff9999', '#66b3ff', '#99ff99', '#ffcc99', '#c2c2f0', '#ffb3e6', '#c4e17f', '#76D7C4', '#e77b9c', '#8e8c82', '#5e8b7e', '#f0ad4e', '#f06b8b', '#89cff0'];
+    return colors[index % colors.length];
   };
 
-  const lineTrace = {
-    type: 'scatter',
-    mode: 'lines+markers',
-    x: processedData.map(dataPoint => dataPoint.x),
-    y: processedData.map(dataPoint => dataPoint.y),
-    name: 'Trend of Scores',
-    line: {
-      color: 'rgba(75, 192, 192, 1)'
-    },
-    hovertemplate: 'Điểm: %{x}, Tỉ lệ: %{y:.3f}%<extra></extra>'
-  };
+  const histogramTraces = Object.keys(processedData).map((courseId, index) => {
+    const courseName = courseData.find(course => course.course_id === parseInt(courseId))?.courseName;
+    return {
+      type: 'histogram',
+      x: processedData[courseId],
+      name: courseName,
+      marker: {
+        color: generateColor(index)
+      },
+      opacity: 0.75,
+      hovertemplate: `Điểm: %{x}, Tỉ lệ: %{y:.3f}%, ${courseName}<extra></extra>`
+    };
+  });
 
   const layout = {
     title: 'Phân bố điểm',
@@ -108,11 +98,11 @@ const CourseScoresHistogramChart = ({ user }) => {
       dtick: 1
     },
     yaxis: {
-      title: 'Tỉ lệ %',
-      // range: [0, 100],
+      title: 'Số lượng',
       tick0: 0,
       dtick: 1
     },
+    barmode: 'overlay',
     width: 1100,
     height: 600
   };
@@ -140,9 +130,8 @@ const CourseScoresHistogramChart = ({ user }) => {
           </Select>
         )}
       </div>
-      <h2 className="text-xl font-bold text-[#6366F1]">Phân bố điểm</h2>
       <Plot
-        data={[barTrace, lineTrace]}
+        data={histogramTraces}
         layout={layout}
       />
     </div>

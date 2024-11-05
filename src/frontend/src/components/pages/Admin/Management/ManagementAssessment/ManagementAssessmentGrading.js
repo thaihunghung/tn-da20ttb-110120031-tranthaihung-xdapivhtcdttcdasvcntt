@@ -592,7 +592,7 @@ const ManagementAssessmentGrading = ({ setCollapsedNav }) => {
             <Tooltip content="Xoá">
               <Button
                 isIconOnly className="bg-[#fefefe] shadow-sm border-3 border-[#FF8077]"
-                disabled={!CurrentTeacher}
+                //disabled={!CurrentTeacher}
                 onClick={() => { onOpen(); setDeleteId(assessment.meta_assessment_id ?? null) }}
               >
                 <i className="fa-solid fa-trash-can text-xl text-[#020401]"></i>

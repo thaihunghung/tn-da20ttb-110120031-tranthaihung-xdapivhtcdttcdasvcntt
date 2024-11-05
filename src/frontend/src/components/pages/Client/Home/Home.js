@@ -128,6 +128,12 @@ const Home = () => {
       {/* <Sidebar /> */}
       <div className="flex-grow p-6">
         <Header studentCode={studentCode} setStudentCode={setStudentCode} />
+        
+        <div className="grid grid-cols-3 gap-6 mt-4">
+          <DashboardCard title="Điểm trung bình" value={student?.averageScore} icon="🎓" />
+          <DashboardCard title="Số tín chỉ" value={student?.totalCredits} icon="📚" />
+          <DashboardCard title="Số môn học" value={student?.courseCount} icon="📋" />
+        </div>
         <div className='mt-4 '>
           <div className="flex items-center">
             <Button
@@ -177,16 +183,11 @@ const Home = () => {
             </div>
           )}
         </div>
-        <div className="grid grid-cols-3 gap-6">
-          <DashboardCard title="Điểm trung bình" value={student?.averageScore} icon="🎓" />
-          <DashboardCard title="Số tín chỉ" value={student?.totalCredits} icon="📚" />
-          <DashboardCard title="Số môn học" value={student?.courseCount} icon="📋" />
-        </div>
         <div className="grid grid-cols-2">
           <div>
             <Chart studentCode={studentCode} filters={filters} />
           </div>
-          <div className='mt-6'>
+          <div className='mt-2'>
             <CloChart
               studentCode={studentCode}
             />

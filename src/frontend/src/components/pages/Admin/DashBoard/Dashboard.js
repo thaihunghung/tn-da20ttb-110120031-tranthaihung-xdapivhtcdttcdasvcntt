@@ -6,7 +6,7 @@ import PLOChartComponent from './PLOChartComponent';
 import CourseScoresScatterChart from './CourseScoresHistogramChart';
 import StackedBarChart from './StackedBarChart';
 import StudentScore from './StudentScore';
-import ParallelCoordinatesChartComponent from './ParallelCoordinatesChartComponent';
+import HeatMapComponent from './HeatMapComponent';
 
 export default function Dashboard() {
   const [user, setUser] = useState({});
@@ -38,7 +38,6 @@ export default function Dashboard() {
 
   return (
     <div className="p-8">
-      
       <header className="flex flex-col mb-6">
         <div>
           <h1 className="text-3xl font-bold text-[#6366F1]">Trang chủ</h1>
@@ -62,13 +61,20 @@ export default function Dashboard() {
           user={user}
         />
         <div className='col-span-2'>
-          <ParallelCoordinatesChartComponent
+          <HeatMapComponent
             permission={permission}
             user={user}
             descriptions={descriptions}
             setDescriptions={setDescriptions}
           />
         </div>
+        {permission > 1 && (
+          <div className='col-span-2'>
+            <StackedBarChart
+              user={user}
+            />
+          </div>
+        )}
         {permission == 1 && (
           <div className='col-span-2'>
             <StudentScore
@@ -84,14 +90,13 @@ export default function Dashboard() {
           showFilters={showFilters}
           setShowFilters={setShowFilters}
         />
-      </div> 
+      </div>
 
       <div>
         <CourseScoresScatterChart
           user={user}
         />
-      </div> 
-
+      </div>
     </div>
   );
 }

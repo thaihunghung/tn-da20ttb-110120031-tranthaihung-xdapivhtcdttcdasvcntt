@@ -98,6 +98,8 @@ const BoxPlotComponent = ({ filters, setFilters, showFilters, setShowFilters, us
             y: scores,
             boxpoints: 'all', // Display all points
             text: studentNames, // Display student names
+            // jitter: 0.2,
+            // pointpos: 0,
           };
         });
 
@@ -213,17 +215,17 @@ const BoxPlotComponent = ({ filters, setFilters, showFilters, setShowFilters, us
           </div>
         </div>
       )}
-      <h2 className="text-xl font-semibold mb-4">Điểm trung bình của khóa học</h2>
+      {/* <h2 className="text-xl font-semibold mb-4">Điểm trung bình của khóa học</h2> */}
       <Plot
         data={boxPlotData}
         layout={{
-          title: 'Box Plot of Course Scores',
+          title: 'Box Plot của điểm khóa học',
           yaxis: {
             range: [0, 10],  // Set y-axis range
             title: '',  // Hide y-axis title
           },
           xaxis: { showticklabels: false },  // Hide x-axis tick labels
-          width: 1100, 
+          width: 1100,
           height: 600
         }}
       />

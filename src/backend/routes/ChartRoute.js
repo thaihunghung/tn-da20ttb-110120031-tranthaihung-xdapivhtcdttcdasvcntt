@@ -238,15 +238,204 @@ const router = express.Router();
  *         description: Server error
  */
 
+/**
+ * @openapi
+ * /api/admin/getCloAchievedByCourse:
+ *   post:
+ *     summary: Get CLO achieved by course
+ *     description: Returns the Course Learning Outcomes (CLO) achieved by course.
+ *     tags: [Charts]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               courseId:
+ *                 type: integer
+ *                 description: The ID of the course.
+ *                 example: 1
+ *     responses:
+ *       200:
+ *         description: CLO achieved by course.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 courseId:
+ *                   type: integer
+ *                   description: The course ID.
+ *                   example: 1
+ *                 cloAchieved:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       cloId:
+ *                         type: integer
+ *                         description: The CLO ID.
+ *                         example: 1
+ *                       achievement:
+ *                         type: number
+ *                         description: The achievement rate.
+ *                         example: 85.0
+ *       500:
+ *         description: Server error
+ */
+
+/**
+ * @openapi
+ * /api/admin/getPloPercentageContainSubject:
+ *   post:
+ *     summary: Get PLO percentage containing subject
+ *     description: Returns the Program Learning Outcomes (PLO) percentage containing a specific subject.
+ *     tags: [Charts]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               subject:
+ *                 type: string
+ *                 description: The subject name.
+ *                 example: Mathematics
+ *     responses:
+ *       200:
+ *         description: PLO percentage containing subject.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 subject:
+ *                   type: string
+ *                   description: The subject name.
+ *                   example: Mathematics
+ *                 ploPercentage:
+ *                   type: number
+ *                   description: The PLO percentage.
+ *                   example: 78.2
+ *       500:
+ *         description: Server error
+ */
+
+/**
+ * @openapi
+ * /api/admin/getScoreStudentByCourseAndTeacher:
+ *   post:
+ *     summary: Get score of student by course and teacher
+ *     description: Returns the score of a student by course and teacher.
+ *     tags: [Charts]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               studentId:
+ *                 type: integer
+ *                 description: The ID of the student.
+ *                 example: 1
+ *               courseId:
+ *                 type: integer
+ *                 description: The ID of the course.
+ *                 example: 1
+ *               teacherId:
+ *                 type: integer
+ *                 description: The ID of the teacher.
+ *                 example: 1
+ *     responses:
+ *       200:
+ *         description: Score of student by course and teacher.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 studentId:
+ *                   type: integer
+ *                   description: The student ID.
+ *                   example: 1
+ *                 courseId:
+ *                   type: integer
+ *                   description: The course ID.
+ *                   example: 1
+ *                 teacherId:
+ *                   type: integer
+ *                   description: The teacher ID.
+ *                   example: 1
+ *                 score:
+ *                   type: number
+ *                   description: The student's score.
+ *                   example: 89.5
+ *       500:
+ *         description: Server error
+ */
+
+/**
+ * @openapi
+ * /api/admin/getAverageCourseScoresByStudent:
+ *   post:
+ *     summary: Get average course scores by student
+ *     description: Returns the average course scores by student.
+ *     tags: [Charts]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               studentId:
+ *                 type: integer
+ *                 description: The ID of the student.
+ *                 example: 1
+ *     responses:
+ *       200:
+ *         description: Average course scores by student.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 studentId:
+ *                   type: integer
+ *                   description: The student ID.
+ *                   example: 1
+ *                 averageScores:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       courseId:
+ *                         type: integer
+ *                         description: The course ID.
+ *                         example: 1
+ *                       averageScore:
+ *                         type: number
+ *                         description: The average score.
+ *                         example: 85.0
+ *       500:
+ *         description: Server error
+ */
+
 router.post('/achieved-rate/clo/percentage', ChartController.getCloPercentage);
 router.post('/achieved-rate/plo/percentage', ChartController.getPloPercentage);
 router.get('/subject/average/subject', ChartController.averageScoresPerSubject);
 router.get('/students/performance/:student_id', ChartController.getStudentPerformanceByCourse);
 router.post('/course/arg-score', ChartController.getAverageCourseScores);
+
+
 router.post('/getAverageCourseScores', ChartController.getAverageCourseScoresOfStudents);
 router.post('/getStudentStatistics', ChartController.getStudentStatistics);
 router.post('/getCloAchievedByCourse', ChartController.getCloAchievedByCourse);
 router.post('/getPloPercentageContainSubject', ChartController.getPloPercentageContainSubject);
 router.post('/getScoreStudentByCourseAndTeacher', ChartController.getScoreStudentByCourseAndTeacher);
+router.post('/getAverageCourseScoresByStudent', ChartController.getAverageCourseScoresByStudent);
 
 module.exports = router;

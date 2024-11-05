@@ -189,3 +189,9 @@ networks:
 ```env
 docker-compose up --build
 ```
+
+# Thông tin liên lạc
+## Trần Thái Hưng
+## 0363215490
+## tranthaibobo@gmail.com
+ 

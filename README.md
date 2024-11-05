@@ -192,6 +192,7 @@ docker-compose up --build
 ```
 ### Note: 
 - Có thể phiên bản mysql và phpadmin khác nhau có thể làm cho câu lệnh CREATE TABLE lỗi. Cách sửa hãy thay đổi COLLATE **([ChatGPT](https://chatgpt.com/))**
+- package có thể sẽ có gói nâng cấp, chú ý khi chạy check terminal để nâng cấp gói.
 
 ## Thông tin liên lạc
 ### Trần Thái Hưng

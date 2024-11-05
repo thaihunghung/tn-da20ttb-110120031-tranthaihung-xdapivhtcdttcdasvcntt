@@ -105,6 +105,10 @@ npm start
 - **Login quyền 1**: 
   - Tài khoản: `123457` 
   - Mật khẩu: `password123`
+
+- **Login Sinh viên**: 
+  - MSSV: `110120125` 
+  - MK (ngày sinh): `01012002`
 #
 # Docker
 ## Bước 1: Cài đặt Docker và Docker Compose

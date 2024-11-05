@@ -95,7 +95,8 @@ npm start
 - **Backend**: [http://localhost:1509/](http://localhost:1509/)
 - **Swagger**: [http://localhost:1509/api/docs/](http://localhost:1509/api/docs/)
 - **Frontend**: [http://localhost:3000/admin](http://localhost:3000/admin)
-
+- **Student**: [http://localhost:3000/](http://localhost:3000/)
+  
 ## Thông tin đăng nhập
 
 - **Login quyền 3**: 
@@ -105,6 +106,10 @@ npm start
 - **Login quyền 1**: 
   - Tài khoản: `123457` 
   - Mật khẩu: `password123`
+
+- **Login Sinh viên**: 
+  - MSSV: `110120125` 
+  - MK (ngày sinh): `01012002`
 #
 # Docker
 ## Bước 1: Cài đặt Docker và Docker Compose
@@ -185,3 +190,12 @@ networks:
 ```env
 docker-compose up --build
 ```
+### Note: 
+- Có thể phiên bản mysql và phpadmin khác nhau có thể làm cho câu lệnh CREATE TABLE lỗi. Cách sửa hãy thay đổi COLLATE **([ChatGPT](https://chatgpt.com/))**
+- package có thể sẽ có gói nâng cấp, chú ý khi chạy check terminal để nâng cấp gói.
+
+## Thông tin liên lạc
+### Trần Thái Hưng
+### 0363215490
+### tranthaibobo@gmail.com
+ 

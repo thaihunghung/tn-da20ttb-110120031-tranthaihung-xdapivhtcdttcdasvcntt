@@ -190,6 +190,7 @@ networks:
 ```env
 docker-compose up --build
 ```
+### Note: Có thể phiên bản mysql và phpadmin khác nhau có thể làm cho câu lệnh CREATE TABLE lỗi. Cách sửa hãy thay đổi COLLATE ([Chatgpt/](https://chatgpt.com/))
 
 ## Thông tin liên lạc
 ### Trần Thái Hưng

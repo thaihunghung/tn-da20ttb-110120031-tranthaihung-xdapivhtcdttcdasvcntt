@@ -1,20 +1,23 @@
-# Sử dụng một image có sẵn của Node.js với phiên bản bạn muốn
 FROM node:18.18.0
 
-# Thiết lập thư mục làm việc trong container
 WORKDIR /usr/src/app
 
-# Sao chép file package.json và package-lock.json (nếu có) vào thư mục làm việc
+# Sao chép package.json và package-lock.json, rồi cài đặt dependencies
 COPY package*.json ./
+RUN npm install && npm rebuild bcrypt --build-from-source
 
-# Cài đặt các dependencies từ package.json
-RUN npm install
-
-# Sao chép toàn bộ mã nguồn của ứng dụng vào thư mục làm việc
+# Sao chép toàn bộ mã nguồn vào container
 COPY . .
 
-# Mở cổng mà ứng dụng sẽ lắng nghe trên container
+# Xóa file .env cũ (nếu tồn tại) và tạo file .env mới
+RUN rm -f .env && echo "JWT_SECRET=your_jwt_secret" >> .env \
+    && echo "DB_NAME=TVU" >> .env \
+    && echo "DB_USER=AdminTVU" >> .env \
+    && echo "DB_PASSWORD=CongNgheThongTin-DA20TTB" >> .env \
+    && echo "DB_HOST=mysql" >> .env \
+    && echo "DB_DIALECT=mysql" >> .env \
+    && echo "DB_PORT=3306" >> .env
+
 EXPOSE 1509
 
-# Khởi chạy ứng dụng khi container được chạy
 CMD ["npm", "start"]

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -20,6 +20,8 @@ function ModalAddChapter({
   onSubmit,
   editData,
   setEditData,
+  subjectCode,
+  lastChapterNumber
 }) {
   const [fileList, setFileList] = useState([]);
   const [activeTab, setActiveTab] = useState('Form'); // Trạng thái để theo dõi tab hiện tại
@@ -33,37 +35,16 @@ function ModalAddChapter({
   };
 
 
-  const handleDownloadTemplateExcel = async () => {
-    try {
-      const response = await axiosAdmin.get("/chapter/templates/post", {
-        responseType: "blob",
-      });
-
-      if (response && response.data) {
-        const url = window.URL.createObjectURL(
-          new Blob([response.data])
-        );
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "chapter.xlsx";
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-      }
-    } catch (error) {
-      console.error("Error downloading file:", error);
+  useEffect(() => {
+    console.log(lastChapterNumber)
+    console.log(subjectCode)
+    if (subjectCode) {
+      setEditData((prev) => ({
+        ...prev,
+        chapterName: `${subjectCode}_C0${isNaN(lastChapterNumber) ? 1 : lastChapterNumber + 1}`,
+      }));
     }
-  };
-
-  const handleFileChange = (e) => {
-    setFileList([...e.target.files]);
-  };
-
-  const handleRemoveFile = (indexToRemove) => {
-    setFileList((currentFiles) =>
-      currentFiles.filter((_, index) => index !== indexToRemove)
-    );
-  };
+  }, [subjectCode, lastChapterNumber]);
 
   return (
     <Modal
@@ -114,6 +95,7 @@ function ModalAddChapter({
                         value={editData.chapterName || ''}
                         onChange={handleChange}
                         required
+                        disabled = 'true'
                       />
                       <Textarea
                         fullWidth

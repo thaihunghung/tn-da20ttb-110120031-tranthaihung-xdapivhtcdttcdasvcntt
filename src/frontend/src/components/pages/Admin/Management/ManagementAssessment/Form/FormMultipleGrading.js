@@ -17,7 +17,7 @@ import { ChevronDownIcon } from "../../../../../../public/ChevronDownIcon";
 
 
 const FormMultipleGrading = ({ setCollapsedNav }) => {
-
+  const [loading, setLoading] = useState(true);
   const { Option } = Select;
   const [selectedValues1, setSelectedValues1] = useState([]);
   const [selectedValues2, setSelectedValues2] = useState([]);
@@ -103,7 +103,7 @@ const FormMultipleGrading = ({ setCollapsedNav }) => {
   const showAllThree = showCLO && showPLO && showChapter;
   const isContainerHidden = !showAny;
 
-  
+
   const [Student, setStudent] = useState(listStudentCodes);
   const { description } = useParams();
   const columns = [
@@ -162,10 +162,10 @@ const FormMultipleGrading = ({ setCollapsedNav }) => {
     return null;
   };
 
-  
 
 
-  
+
+
 
   const handleSelectionChange = (keys) => {
     // Update state variables based on visible columns
@@ -223,14 +223,14 @@ const FormMultipleGrading = ({ setCollapsedNav }) => {
         maxScore: value,
         CheckGrading: true,
       };
-     
+
       const newTotalScore = updatedValues.reduce((acc, curr) => {
         if (curr && typeof curr.maxScore === 'number') {
           return acc + curr.maxScore;
         }
         return acc;
       }, 0);
-      console.log("check1:",updatedValues);
+      console.log("check1:", updatedValues);
       const Check = updatedValues.reduce((acc, curr) => {
         // Check if curr is an object and CheckGrading is true
         if (curr && curr.CheckGrading === true) {
@@ -238,7 +238,7 @@ const FormMultipleGrading = ({ setCollapsedNav }) => {
         }
         return acc; // Otherwise, return the accumulated count
       }, 0);
-      
+
       setCheck1(Check)
       setTotalScore1(newTotalScore);
       return updatedValues;
@@ -436,13 +436,13 @@ const FormMultipleGrading = ({ setCollapsedNav }) => {
           const findAssessment1 = updateSelectedValues(result.studentIds[0], selectedValues1, Assessment)
 
           const items = [findAssessment1]
-          console.log('items',findAssessment1)
+          console.log('items', findAssessment1)
           const check = CheckSave(items)
 
 
           const studentCode1 = findStudentById(result.studentIds[0])
 
-          
+
 
           setStudent1(studentCode1)
 
@@ -494,7 +494,7 @@ const FormMultipleGrading = ({ setCollapsedNav }) => {
           setStudent2(studentCode2)
 
           setStudent1(studentCode1)
-          console.log('studentCode1',studentCode1)
+          console.log('studentCode1', studentCode1)
           const Score1 = totalScore1
           const Score2 = totalScore2
 
@@ -539,8 +539,8 @@ const FormMultipleGrading = ({ setCollapsedNav }) => {
           const findAssessment3 = updateSelectedValues(result3.studentIds[0], selectedValues3, Assessment)
 
           const items = [findAssessment1, findAssessment2, findAssessment3]
-          console.log('items',items)
-  
+          console.log('items', items)
+
           const check = CheckSave(items)
 
           const studentCode1 = findStudentById(result1.studentIds[0])
@@ -549,11 +549,11 @@ const FormMultipleGrading = ({ setCollapsedNav }) => {
           setStudent1(studentCode1)
           setStudent2(studentCode2)
           setStudent3(studentCode3)
-          console.log('studentCode1',studentCode1)
+          console.log('studentCode1', studentCode1)
           const Score1 = totalScore1
           const Score2 = totalScore2
           const Score3 = totalScore3
-          console.log('Score1',Score1)
+          console.log('Score1', Score1)
           setOpenTotalScore1(Score1)
           setOpenTotalScore2(Score2)
           setOpenTotalScore3(Score3)
@@ -617,8 +617,8 @@ const FormMultipleGrading = ({ setCollapsedNav }) => {
           const Score2 = totalScore2
           const Score3 = totalScore3
           const Score4 = totalScore4
-          console.log('studentCode1',studentCode1)
-          console.log('Score1',Score1)
+          console.log('studentCode1', studentCode1)
+          console.log('Score1', Score1)
           setOpenTotalScore1(Score1)
           setOpenTotalScore2(Score2)
           setOpenTotalScore3(Score3)
@@ -730,12 +730,23 @@ const FormMultipleGrading = ({ setCollapsedNav }) => {
   }, []);
 
   useEffect(() => {
+    setLoading(true); // Start loading
+    const timeout = setTimeout(() => {
+      setLoading(false); // Set loading to false after 10 seconds
+    }, 3000); // 3 seconds
+
+    return () => {
+      clearTimeout(timeout); // Cleanup timeout if component unmounts
+    };
+  }, []);
+
+  useEffect(() => {
     if (Student) {
       const listStudentIds = Student.map(code => getStudentBySelect(Assessment, code));
       const assessment = Student.map(code => getAssesmentByStudent(Assessment, code));
 
       setAssessmentByStudent(assessment)
-      
+
       setListStudentOJ(listStudentIds)
       console.log("Student:", listStudentIds)
       GetRubricData()
@@ -756,7 +767,7 @@ const FormMultipleGrading = ({ setCollapsedNav }) => {
         <h1 className="text-xl font-bold mb-2 text-[#6366F1] uppercase">{Assessment[0]?.generalDescription}</h1>
         <div className="flex items-center text-lg flex-col font-bold justify-center">
           <Textarea
-          isDisabled
+            isDisabled
             className="max-w-[700px]"
             label="Đề tài"
             value={AssessmentByStudent[0]?.description}
@@ -985,259 +996,268 @@ const FormMultipleGrading = ({ setCollapsedNav }) => {
           )}
         </div>
       </div>
-
-      <div className="flex flex-col items-start justify-start relative">
-        <div className="w-full flex flex-col p-2 py-0 mb-2 text-base  sm:p-5 sm:mb-2 sm:py-0 sm:flex-col lg:flex-row lg:mb-0 xl:flex-row xl:mb-0">
-          <div className={`
+      {loading ? (
+  
+  <div className="flex justify-start w-full h-[50px] items-end">
+    <Button color="primary" radius='full' isLoading>
+          Loading
+        </Button>
+  </div>
+        
+      ) : (
+        <div className="flex flex-col items-start justify-start relative">
+          <div className="w-full flex flex-col p-2 py-0 mb-2 text-base  sm:p-5 sm:mb-2 sm:py-0 sm:flex-col lg:flex-row lg:mb-0 xl:flex-row xl:mb-0">
+            <div className={`
         ${isContainerHidden ? 'lg:w-[50%]' : ''}   ${showAny ? 'lg:w-[70%]' : ''} ${showAtLeastTwo ? 'lg:w-[70%]' : ''} ${showAllThree ? 'lg:w-[70%]' : ''} 
         w-full text-justify   flex flex-col sm:flex-col lg:flex-row xl:flex-row`}>
-            <div className={`${showAny ? 'lg:w-[40%]' : ''} ${showAtLeastTwo ? 'lg:w-[40%]' : ''} ${showAllThree ? 'lg:w-[80%]' : ''} flex justify-center items-center`}>
-              <div className={`hidden p-2 bg-[#475569] ${showChapter ? 'lg:block xl:block' : 'hidden'} sm:hidden flex-1`}>
-                <p className=" text-[#fefefe] text-center font-bold">CHAPTER</p>
+              <div className={`${showAny ? 'lg:w-[40%]' : ''} ${showAtLeastTwo ? 'lg:w-[40%]' : ''} ${showAllThree ? 'lg:w-[80%]' : ''} flex justify-center items-center`}>
+                <div className={`hidden p-2 bg-[#475569] ${showChapter ? 'lg:block xl:block' : 'hidden'} sm:hidden flex-1`}>
+                  <p className=" text-[#fefefe] text-center font-bold">CHAPTER</p>
+                </div>
+                <div className={`hidden p-2 bg-[#475569] ${showPLO ? 'lg:block xl:block' : 'hidden'} sm:hidden flex-1`}>
+                  <p className=" text-[#fefefe] text-center font-bold">PLO</p>
+                </div>
+                <div className={`hidden p-2 bg-[#475569] ${showCLO ? 'lg:block xl:block' : 'hidden'} sm:hidden flex-1`}>
+                  <p className=" text-[#fefefe] text-center font-bold">CLO</p>
+                </div>
               </div>
-              <div className={`hidden p-2 bg-[#475569] ${showPLO ? 'lg:block xl:block' : 'hidden'} sm:hidden flex-1`}>
-                <p className=" text-[#fefefe] text-center font-bold">PLO</p>
-              </div>
-              <div className={`hidden p-2 bg-[#475569] ${showCLO ? 'lg:block xl:block' : 'hidden'} sm:hidden flex-1`}>
-                <p className=" text-[#fefefe] text-center font-bold">CLO</p>
+
+              <div className={`w-full ${isContainerHidden ? 'lg:w-full' : ''} ${showAtLeastTwo ? 'lg:w-[60%]' : ''} ${showAllThree ? 'lg:w-[20%]' : ''} p-0 sm:p-0 lg:p-2 xl:p-2 bg-[#475569]`}>
+                <p className="text-center font-bold hidden sm:hidden lg:block xl:block text-[#fefefe] p-5 sm:p-5 lg:p-0 xl:p-0">Nội dung</p>
+                <p className="text-center font-bold block sm:block lg:hidden xl:hidden text-[#fefefe] p-5 sm:p-5 lg:p-0 xl:p-0">Chấm điểm</p>
               </div>
             </div>
-
-            <div className={`w-full ${isContainerHidden ? 'lg:w-full' : ''} ${showAtLeastTwo ? 'lg:w-[60%]' : ''} ${showAllThree ? 'lg:w-[20%]' : ''} p-0 sm:p-0 lg:p-2 xl:p-2 bg-[#475569]`}>
-              <p className="text-center font-bold hidden sm:hidden lg:block xl:block text-[#fefefe] p-5 sm:p-5 lg:p-0 xl:p-0">Nội dung</p>
-              <p className="text-center font-bold block sm:block lg:hidden xl:hidden text-[#fefefe] p-5 sm:p-5 lg:p-0 xl:p-0">Chấm điểm</p>
+            <div className={`hidden w-full bg-[#475569] sm:hidden ${isContainerHidden ? 'lg:w-[50%]' : ''}   ${showAny ? 'lg:w-[30%]' : ''} ${showAtLeastTwo ? 'lg:w-[30%]' : ''} ${showAllThree ? 'lg:w-[30%]' : ''}     lg:block xl:block text-justify p-5 pb-0 pt-2`}>
+              <p className="text-center font-bold  text-[#fefefe]">Chấm điểm</p>
             </div>
           </div>
-          <div className={`hidden w-full bg-[#475569] sm:hidden ${isContainerHidden ? 'lg:w-[50%]' : ''}   ${showAny ? 'lg:w-[30%]' : ''} ${showAtLeastTwo ? 'lg:w-[30%]' : ''} ${showAllThree ? 'lg:w-[30%]' : ''}     lg:block xl:block text-justify p-5 pb-0 pt-2`}>
-            <p className="text-center font-bold  text-[#fefefe]">Chấm điểm</p>
-          </div>
-        </div>
 
-        {
-          RubicItemsData.map((item, i) => (
-            <div className="w-full flex flex-col p-2 py-0 sm:p-5 sm:py-0 sm:flex-col lg:flex-row xl:flex-row" key={item.rubricsItem_id}>
-              {/* Left Side */}
-              <div className={`
+          {
+            RubicItemsData.map((item, i) => (
+              <div className="w-full flex flex-col p-2 py-0 sm:p-5 sm:py-0 sm:flex-col lg:flex-row xl:flex-row" key={item.rubricsItem_id}>
+                {/* Left Side */}
+                <div className={`
               ${isContainerHidden ? 'lg:w-[50%]' : ''}   ${showAny ? 'lg:w-[70%]' : ''} ${showAtLeastTwo ? 'lg:w-[70%]' : ''} ${showAllThree ? 'lg:w-[70%]' : ''}  
               w-full rounded-b-lg sm:rounded-b-lg lg:rounded-none xl:rounded-none 
               text-justify border-[1px] sm:border-t-[1px] lg:border-t-0 xl:border-t-0 border-[#020401]  
               flex flex-col sm:flex-col lg:flex-row xl:flex-row`}
-              >
+                >
 
-                <div className={`w-full ${showAny ? 'lg:w-[40%]' : ''} ${showAtLeastTwo ? 'lg:w-[40%]' : ''} ${showAllThree ? 'lg:w-[80%]' : ''} border-b-1 
+                  <div className={`w-full ${showAny ? 'lg:w-[40%]' : ''} ${showAtLeastTwo ? 'lg:w-[40%]' : ''} ${showAllThree ? 'lg:w-[80%]' : ''} border-b-1 
                       sm:border-b-1 border-r-0 sm:border-r-0 sm:px-0 lg:border-r-[1px] 
                       lg:border-b-0 xl:border-r-[1px] xl:border-b-0  border-[#020401] 
                       flex justify-center items-start leading-8 ${isContainerHidden ? 'hidden' : ''}`}>
 
-                  <div className={`w-full h-full flex-1 hidden sm:hidden ${showChapter ? 'lg:block xl:block' : ''}  
+                    <div className={`w-full h-full flex-1 hidden sm:hidden ${showChapter ? 'lg:block xl:block' : ''}  
                 border-b-1 sm:border-b-1 border-r-1 sm:border-r-1 sm:px-0 lg:border-r-[1px] lg:border-b-0 xl:border-r-[1px] xl:border-b-0  border-[#020401] `}>
-                    <div className="p-4 overflow-y-auto">
-                      <div className="text-center font-bold  max-h-[300px] sm:font-bold lg:font-normal xl:font-normal text-[#AF84DD] sm:text-[#AF84DD] lg:text-[#020401] xl:text-[#020401]">
-                        <div className="font-bold">{item.Chapter.chapterName}:</div>
-                        <div className="w-full text-wrap">{item.Chapter.description}</div>
+                      <div className="p-4 overflow-y-auto">
+                        <div className="text-center font-bold  max-h-[300px] sm:font-bold lg:font-normal xl:font-normal text-[#AF84DD] sm:text-[#AF84DD] lg:text-[#020401] xl:text-[#020401]">
+                          <div className="font-bold">{item.Chapter.chapterName}:</div>
+                          <div className="w-full text-wrap">{item.Chapter.description}</div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className={`w-full h-full flex-1 hidden sm:hidden ${showPLO ? 'lg:block xl:block' : 'hidden'}  border-b-1 sm:border-b-1 border-r-1 sm:border-r-1 sm:px-0 lg:border-r-[1px] lg:border-b-0 xl:border-r-[1px] xl:border-b-0  border-[#020401] `}>
-                    <div className="p-4 overflow-y-auto">
-                      <div className="text-center font-bold  max-h-[300px] sm:font-bold lg:font-normal xl:font-normal text-[#AF84DD] sm:text-[#AF84DD] lg:text-[#020401] xl:text-[#020401]">
-                        <div className="font-bold">{item.PLO.ploName}:</div>
-                        <div className="w-full text-wrap">{item.PLO.description}</div>
+                    <div className={`w-full h-full flex-1 hidden sm:hidden ${showPLO ? 'lg:block xl:block' : 'hidden'}  border-b-1 sm:border-b-1 border-r-1 sm:border-r-1 sm:px-0 lg:border-r-[1px] lg:border-b-0 xl:border-r-[1px] xl:border-b-0  border-[#020401] `}>
+                      <div className="p-4 overflow-y-auto">
+                        <div className="text-center font-bold  max-h-[300px] sm:font-bold lg:font-normal xl:font-normal text-[#AF84DD] sm:text-[#AF84DD] lg:text-[#020401] xl:text-[#020401]">
+                          <div className="font-bold">{item.PLO.ploName}:</div>
+                          <div className="w-full text-wrap">{item.PLO.description}</div>
 
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className={`block sm:block ${showCLO ? 'lg:block xl:block' : ''} flex-1 p-4  overflow-y-auto`}>
-                    <div className="text-center max-h-[300px] font-bold sm:font-bold lg:font-normal xl:font-normal 
+                    <div className={`block sm:block ${showCLO ? 'lg:block xl:block' : ''} flex-1 p-4  overflow-y-auto`}>
+                      <div className="text-center max-h-[300px] font-bold sm:font-bold lg:font-normal xl:font-normal 
                   text-[#475569]  sm:text-[#475569] lg:text-[#020401] xl:text-[#020401]">
-                      <div className="block lg:hidden">
-                        <div className={`font-bold ${showChapter ? 'lg:block xl:block' : 'hidden'}`}>{item.Chapter.chapterName}:</div>
-                        <div className={`w-full text-wrap ${showChapter ? 'lg:block xl:block' : 'hidden'}`}>{item.Chapter.description}</div>
+                        <div className="block lg:hidden">
+                          <div className={`font-bold ${showChapter ? 'lg:block xl:block' : 'hidden'}`}>{item.Chapter.chapterName}:</div>
+                          <div className={`w-full text-wrap ${showChapter ? 'lg:block xl:block' : 'hidden'}`}>{item.Chapter.description}</div>
 
-                        <div className={`font-bold ${showPLO ? 'lg:block xl:block' : 'hidden'}`}>{item.PLO.ploName}:</div>
-                        <div className={`w-full text-wrap ${showPLO ? 'lg:block xl:block' : 'hidden'}`}>{item.PLO.description}</div>
+                          <div className={`font-bold ${showPLO ? 'lg:block xl:block' : 'hidden'}`}>{item.PLO.ploName}:</div>
+                          <div className={`w-full text-wrap ${showPLO ? 'lg:block xl:block' : 'hidden'}`}>{item.PLO.description}</div>
+                        </div>
+
+
+                        <div className={`font-bold ${showCLO ? 'lg:block xl:block' : 'hidden'}`}>{item.CLO.cloName}:</div>
+                        <div className={`w-full text-wrap ${showCLO ? 'lg:block xl:block' : 'hidden'}`}>{item.CLO.description}</div>
                       </div>
+                    </div>
+                  </div>
 
-
-                      <div className={`font-bold ${showCLO ? 'lg:block xl:block' : 'hidden'}`}>{item.CLO.cloName}:</div>
-                      <div className={`w-full text-wrap ${showCLO ? 'lg:block xl:block' : 'hidden'}`}>{item.CLO.description}</div>
+                  <div className={`w-full ${isContainerHidden ? 'lg:w-full' : ''} ${showAtLeastTwo ? 'lg:w-[60%]' : ''} ${showAllThree ? 'lg:w-[20%]' : ''}`}>
+                    <div className="hidden sm:hidden lg:block xl:block text-justify leading-8 p-4" dangerouslySetInnerHTML={{ __html: item.description }} />
+                    <div className="block sm:block lg:hidden xl:hidden">
+                      <Collapse
+                        items={[
+                          {
+                            key: '1',
+                            label: <p className="text-justify text-base font-semibold">Nội dung</p>,
+                            children: (
+                              <div className="text-justify leading-8 flex flex-col text-base   p-2 px-5 sm:p-2 sm:px-5 lg:p-5 xl:p-5" dangerouslySetInnerHTML={{ __html: item.description }} />
+                            )
+                          }
+                        ]}
+                        colorBorder="#FFD700"
+                        className="Collapse"
+                        defaultActiveKey={['1']}
+                      />
                     </div>
                   </div>
                 </div>
-
-                <div className={`w-full ${isContainerHidden ? 'lg:w-full' : ''} ${showAtLeastTwo ? 'lg:w-[60%]' : ''} ${showAllThree ? 'lg:w-[20%]' : ''}`}>
-                  <div className="hidden sm:hidden lg:block xl:block text-justify leading-8 p-4" dangerouslySetInnerHTML={{ __html: item.description }} />
-                  <div className="block sm:block lg:hidden xl:hidden">
-                    <Collapse
-                      items={[
-                        {
-                          key: '1',
-                          label: <p className="text-justify text-base font-semibold">Nội dung</p>,
-                          children: (
-                            <div className="text-justify leading-8 flex flex-col text-base   p-2 px-5 sm:p-2 sm:px-5 lg:p-5 xl:p-5" dangerouslySetInnerHTML={{ __html: item.description }} />
-                          )
-                        }
-                      ]}
-                      colorBorder="#FFD700"
-                      className="Collapse"
-                      defaultActiveKey={['1']}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className={`w-full sm:w-full   
+                <div className={`w-full sm:w-full   
               ${isContainerHidden ? 'lg:w-[50%]' : ''}   ${showAny ? 'lg:w-[30%]' : ''} ${showAtLeastTwo ? 'lg:w-[30%]' : ''} ${showAllThree ? 'lg:w-[30%]' : ''}  
               text-justify pt-2 sm:pt-2 lg:p-5 xl:p-5 border-0 lg:border-1 lg:border-t-0 lg:border-l-0 xl:border-1 xl:border-t-0 xl:border-l-0 border-[#020401] `} key={i}>
-                {
-                  ListStudentOJ.length === 0 && (
-                    // Hiển thị 0 RubricSlider khi không có sinh viên được chọn
-                    <>
-                    </>
-                  )
-                }
-                {
-                  ListStudentOJ.length === 1 && (
-                    // Hiển thị 1 RubricSlider khi có 1 sinh viên được chọn
-                    <>
-                      <RubricSlider
-                        studentID={ListStudentOJ[0]?.student_id}
-                        studentCode={ListStudentOJ[0]?.studentCode}
-                        StudentName={ListStudentOJ[0]?.name}
-                        maxScore={item.maxScore}
-                        index={i}
-                        defaultValue={defaultValue}
-                        handleSliderChange={handleSliderChange1}
-                        rubricsItem_id={item.rubricsItem_id}
+                  {
+                    ListStudentOJ.length === 0 && (
+                      // Hiển thị 0 RubricSlider khi không có sinh viên được chọn
+                      <>
+                      </>
+                    )
+                  }
+                  {
+                    ListStudentOJ.length === 1 && (
+                      // Hiển thị 1 RubricSlider khi có 1 sinh viên được chọn
+                      <>
+                        <RubricSlider
+                          studentID={ListStudentOJ[0]?.student_id}
+                          studentCode={ListStudentOJ[0]?.studentCode}
+                          StudentName={ListStudentOJ[0]?.name}
+                          maxScore={item.maxScore}
+                          index={i}
+                          defaultValue={defaultValue}
+                          handleSliderChange={handleSliderChange1}
+                          rubricsItem_id={item.rubricsItem_id}
 
-                      />
-                    </>
-                  )
-                }
-                {
-                  ListStudentOJ.length === 2 && (
-                    // Hiển thị 2 RubricSlider khi có 2 sinh viên được chọn
-                    <>
-                      <RubricSlider
-                        studentID={ListStudentOJ[0]?.student_id}
-                        studentCode={ListStudentOJ[0]?.studentCode}
-                        StudentName={ListStudentOJ[0]?.name}
-                        maxScore={item.maxScore}
-                        index={i}
-                        defaultValue={defaultValue}
-                        handleSliderChange={handleSliderChange1}
-                        rubricsItem_id={item.rubricsItem_id}
+                        />
+                      </>
+                    )
+                  }
+                  {
+                    ListStudentOJ.length === 2 && (
+                      // Hiển thị 2 RubricSlider khi có 2 sinh viên được chọn
+                      <>
+                        <RubricSlider
+                          studentID={ListStudentOJ[0]?.student_id}
+                          studentCode={ListStudentOJ[0]?.studentCode}
+                          StudentName={ListStudentOJ[0]?.name}
+                          maxScore={item.maxScore}
+                          index={i}
+                          defaultValue={defaultValue}
+                          handleSliderChange={handleSliderChange1}
+                          rubricsItem_id={item.rubricsItem_id}
 
-                      />
-                      <RubricSlider
-                        studentID={ListStudentOJ[1]?.student_id}
-                        studentCode={ListStudentOJ[1]?.studentCode}
-                        StudentName={ListStudentOJ[1]?.name}
-                        maxScore={item.maxScore}
-                        index={i}
-                        defaultValue={defaultValue}
-                        handleSliderChange={handleSliderChange2}
-                        rubricsItem_id={item.rubricsItem_id}
+                        />
+                        <RubricSlider
+                          studentID={ListStudentOJ[1]?.student_id}
+                          studentCode={ListStudentOJ[1]?.studentCode}
+                          StudentName={ListStudentOJ[1]?.name}
+                          maxScore={item.maxScore}
+                          index={i}
+                          defaultValue={defaultValue}
+                          handleSliderChange={handleSliderChange2}
+                          rubricsItem_id={item.rubricsItem_id}
 
-                      />
-                    </>
-                  )
-                }
-                {
-                  ListStudentOJ.length === 3 && (
-                    // Hiển thị 3 RubricSlider khi có 3 hoặc nhiều hơn sinh viên được chọn
-                    <>
-                      <RubricSlider
-                        studentID={ListStudentOJ[0]?.student_id}
-                        studentCode={ListStudentOJ[0]?.studentCode}
-                        StudentName={ListStudentOJ[0]?.name}
-                        maxScore={item.maxScore}
-                        index={i}
-                        defaultValue={defaultValue}
-                        handleSliderChange={handleSliderChange1}
-                        rubricsItem_id={item.rubricsItem_id}
+                        />
+                      </>
+                    )
+                  }
+                  {
+                    ListStudentOJ.length === 3 && (
+                      // Hiển thị 3 RubricSlider khi có 3 hoặc nhiều hơn sinh viên được chọn
+                      <>
+                        <RubricSlider
+                          studentID={ListStudentOJ[0]?.student_id}
+                          studentCode={ListStudentOJ[0]?.studentCode}
+                          StudentName={ListStudentOJ[0]?.name}
+                          maxScore={item.maxScore}
+                          index={i}
+                          defaultValue={defaultValue}
+                          handleSliderChange={handleSliderChange1}
+                          rubricsItem_id={item.rubricsItem_id}
 
-                      />
-                      <RubricSlider
-                        studentID={ListStudentOJ[1]?.student_id}
-                        studentCode={ListStudentOJ[1]?.studentCode}
-                        StudentName={ListStudentOJ[1]?.name}
-                        maxScore={item.maxScore}
-                        index={i}
-                        defaultValue={defaultValue}
-                        handleSliderChange={handleSliderChange2}
-                        rubricsItem_id={item.rubricsItem_id}
+                        />
+                        <RubricSlider
+                          studentID={ListStudentOJ[1]?.student_id}
+                          studentCode={ListStudentOJ[1]?.studentCode}
+                          StudentName={ListStudentOJ[1]?.name}
+                          maxScore={item.maxScore}
+                          index={i}
+                          defaultValue={defaultValue}
+                          handleSliderChange={handleSliderChange2}
+                          rubricsItem_id={item.rubricsItem_id}
 
-                      />
-                      <RubricSlider
-                        studentID={ListStudentOJ[2]?.student_id}
-                        studentCode={ListStudentOJ[2]?.studentCode}
-                        StudentName={ListStudentOJ[2]?.name}
-                        maxScore={item.maxScore}
-                        index={i}
-                        defaultValue={defaultValue}
-                        handleSliderChange={handleSliderChange3}
-                        rubricsItem_id={item.rubricsItem_id}
+                        />
+                        <RubricSlider
+                          studentID={ListStudentOJ[2]?.student_id}
+                          studentCode={ListStudentOJ[2]?.studentCode}
+                          StudentName={ListStudentOJ[2]?.name}
+                          maxScore={item.maxScore}
+                          index={i}
+                          defaultValue={defaultValue}
+                          handleSliderChange={handleSliderChange3}
+                          rubricsItem_id={item.rubricsItem_id}
 
-                      />
-                    </>
-                  )
-                }
-                {
-                  ListStudentOJ.length === 4 && (
-                    // Hiển thị 3 RubricSlider khi có 3 hoặc nhiều hơn sinh viên được chọn
-                    <>
-                      <RubricSlider
-                        studentID={ListStudentOJ[0]?.student_id}
-                        studentCode={ListStudentOJ[0]?.studentCode}
-                        StudentName={ListStudentOJ[0]?.name}
-                        maxScore={item.maxScore}
-                        index={i}
-                        defaultValue={defaultValue}
-                        handleSliderChange={handleSliderChange1}
-                        rubricsItem_id={item.rubricsItem_id}
+                        />
+                      </>
+                    )
+                  }
+                  {
+                    ListStudentOJ.length === 4 && (
+                      // Hiển thị 3 RubricSlider khi có 3 hoặc nhiều hơn sinh viên được chọn
+                      <>
+                        <RubricSlider
+                          studentID={ListStudentOJ[0]?.student_id}
+                          studentCode={ListStudentOJ[0]?.studentCode}
+                          StudentName={ListStudentOJ[0]?.name}
+                          maxScore={item.maxScore}
+                          index={i}
+                          defaultValue={defaultValue}
+                          handleSliderChange={handleSliderChange1}
+                          rubricsItem_id={item.rubricsItem_id}
 
-                      />
-                      <RubricSlider
-                        studentID={ListStudentOJ[1]?.student_id}
-                        studentCode={ListStudentOJ[1]?.studentCode}
-                        StudentName={ListStudentOJ[1]?.name}
-                        maxScore={item.maxScore}
-                        index={i}
-                        defaultValue={defaultValue}
-                        handleSliderChange={handleSliderChange2}
-                        rubricsItem_id={item.rubricsItem_id}
+                        />
+                        <RubricSlider
+                          studentID={ListStudentOJ[1]?.student_id}
+                          studentCode={ListStudentOJ[1]?.studentCode}
+                          StudentName={ListStudentOJ[1]?.name}
+                          maxScore={item.maxScore}
+                          index={i}
+                          defaultValue={defaultValue}
+                          handleSliderChange={handleSliderChange2}
+                          rubricsItem_id={item.rubricsItem_id}
 
-                      />
-                      <RubricSlider
-                        studentID={ListStudentOJ[2]?.student_id}
-                        studentCode={ListStudentOJ[2]?.studentCode}
-                        StudentName={ListStudentOJ[2]?.name}
-                        maxScore={item.maxScore}
-                        index={i}
-                        defaultValue={defaultValue}
-                        handleSliderChange={handleSliderChange3}
-                        rubricsItem_id={item.rubricsItem_id}
+                        />
+                        <RubricSlider
+                          studentID={ListStudentOJ[2]?.student_id}
+                          studentCode={ListStudentOJ[2]?.studentCode}
+                          StudentName={ListStudentOJ[2]?.name}
+                          maxScore={item.maxScore}
+                          index={i}
+                          defaultValue={defaultValue}
+                          handleSliderChange={handleSliderChange3}
+                          rubricsItem_id={item.rubricsItem_id}
 
-                      />
-                      <RubricSlider
-                        studentID={ListStudentOJ[3]?.student_id}
-                        studentCode={ListStudentOJ[3]?.studentCode}
-                        StudentName={ListStudentOJ[3]?.name}
-                        maxScore={item.maxScore}
-                        index={i}
-                        defaultValue={defaultValue}
-                        handleSliderChange={handleSliderChange4}
-                        rubricsItem_id={item.rubricsItem_id}
+                        />
+                        <RubricSlider
+                          studentID={ListStudentOJ[3]?.student_id}
+                          studentCode={ListStudentOJ[3]?.studentCode}
+                          StudentName={ListStudentOJ[3]?.name}
+                          maxScore={item.maxScore}
+                          index={i}
+                          defaultValue={defaultValue}
+                          handleSliderChange={handleSliderChange4}
+                          rubricsItem_id={item.rubricsItem_id}
 
-                      />
-                    </>
-                  )
-                }
+                        />
+                      </>
+                    )
+                  }
+                </div>
               </div>
-            </div>
-          ))
-        }
-      </div>
+            ))
+          }
+        </div>
+      )}
     </div>
   )
 }

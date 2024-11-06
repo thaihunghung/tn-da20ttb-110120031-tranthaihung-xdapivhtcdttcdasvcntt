@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -24,6 +24,8 @@ function ModalAddPlo({
   editData,
   setEditData,
   loadData,
+  program_id,
+  lastPloNumber
 }) {
 
   const handleChange = (e) => {
@@ -33,6 +35,14 @@ function ModalAddPlo({
       [name]: value,
     }));
   };
+  useEffect(() => {
+    if (program_id) {
+      setEditData((prev) => ({
+        ...prev,
+        ploName: `${program_id}_PLO${isNaN(lastPloNumber) ? 1 : lastPloNumber + 1}`,
+      }));
+    }
+  }, [program_id, lastPloNumber]);
 
   return (
     <Modal
@@ -82,6 +92,7 @@ function ModalAddPlo({
                         value={editData.ploName || ''}
                         onChange={handleChange}
                         required
+                        disabled = 'true'
                       />
                       <Textarea
                         fullWidth

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -23,6 +23,8 @@ function ModalAddClo({
   onSubmit,
   editData,
   setEditData,
+  subjectCode,
+  lastCloNumber
 }) {
   const [fileList, setFileList] = useState([]);
   const [activeTab, setActiveTab] = useState('Form'); // Trạng thái để theo dõi tab hiện tại
@@ -35,38 +37,17 @@ function ModalAddClo({
     }));
   };
 
-
-  const handleDownloadTemplateExcel = async () => {
-    try {
-      const response = await axiosAdmin.get("/clo/templates/post", {
-        responseType: "blob",
-      });
-
-      if (response && response.data) {
-        const url = window.URL.createObjectURL(
-          new Blob([response.data])
-        );
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "clo.xlsx";
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-      }
-    } catch (error) {
-      console.error("Error downloading file:", error);
+  useEffect(() => {
+    console.log(lastCloNumber)
+    console.log(subjectCode)
+    if (subjectCode) {
+      setEditData((prev) => ({
+        ...prev,
+        cloName: `${subjectCode}_CLO${isNaN(lastCloNumber) ? 1 : lastCloNumber + 1}`,
+      }));
     }
-  };
+  }, [subjectCode, lastCloNumber]);
 
-  const handleFileChange = (e) => {
-    setFileList([...e.target.files]);
-  };
-
-  const handleRemoveFile = (indexToRemove) => {
-    setFileList((currentFiles) =>
-      currentFiles.filter((_, index) => index !== indexToRemove)
-    );
-  };
 
   const DataType = [
     { key: 'Kiến thức', Type: 'Kiến thức' },
@@ -132,6 +113,7 @@ function ModalAddClo({
                         value={editData.cloName || ''}
                         onChange={handleChange}
                         required
+                        disabled = 'true'
                       />
                       <Textarea
                         fullWidth

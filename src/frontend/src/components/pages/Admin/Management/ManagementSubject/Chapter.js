@@ -42,6 +42,8 @@ const Chapter = (nav) => {
     const [loading, setLoading] = useState(false);
     const [chapterListData, setChapterListData] = useState([]);
     const [deleteId, setDeleteId] = useState(null);
+    const [lastChapterNumber, setlastChapterNumber] = useState();
+
 
     const handleNavigate = (path) => {
         navigate(path);
@@ -136,7 +138,18 @@ const Chapter = (nav) => {
                 };
             });
             setChapterListData(updatedPoData);
-            console.log(response.data);
+            if (updatedPoData.length > 0) {
+                const PhanTuCuoi = updatedPoData[updatedPoData.length - 1];
+                const chapterNumber = parseInt(PhanTuCuoi.name.match(/\d+$/)[0], 10);
+                setlastChapterNumber(chapterNumber);
+                console.log(chapterNumber);
+                console.log(PhanTuCuoi);
+              } else {
+                setlastChapterNumber(0); // Set ploNumber to 0 if updatedPoData is empty
+                console.log(0);
+              }
+              
+              console.log(response.data);
         } catch (error) {
             console.error("Error: " + error.message);
             
@@ -290,6 +303,8 @@ const Chapter = (nav) => {
                 onSubmit={handleFormSubmit}
                 editData={newChapter}
                 setEditData={setNewChapter}
+                subjectCode={Subject?.subjectCode}
+                lastChapterNumber = {lastChapterNumber}
             />
             <div className='w-full flex justify-between'>
                 <div className='h-full my-auto p-5 hidden sm:block'>

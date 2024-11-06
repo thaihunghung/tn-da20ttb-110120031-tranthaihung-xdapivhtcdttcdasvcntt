@@ -32,7 +32,8 @@ const ManagePo = (nav) => {
     const [loading, setLoading] = useState(false);
     const [poListData, setPosListData] = useState([]);
     const [deleteId, setDeleteId] = useState(null);
-
+    const [programData, setProgramData] = useState({});
+    const [lastPoNumber, setlastPoNumber] = useState();
 
     const columns = [
         {
@@ -117,7 +118,18 @@ const ManagePo = (nav) => {
                 };
             });
             setPosListData(updatedPoData);
-            console.log(response.data);
+            if (updatedPoData.length > 0) {
+                const PhanTuCuoi = updatedPoData[updatedPoData.length - 1];
+                const ploNumber = parseInt(PhanTuCuoi.name.match(/\d+$/)[0], 10);
+                setlastPoNumber(ploNumber);
+                console.log(ploNumber);
+                console.log(PhanTuCuoi);
+              } else {
+                setlastPoNumber(0); // Set ploNumber to 0 if updatedPoData is empty
+                console.log(0);
+              }
+              
+              console.log(response.data);
         } catch (error) {
             console.error("Error: " + error.message);
             message.error('Error fetching PO data');
@@ -131,9 +143,10 @@ const ManagePo = (nav) => {
         console.log(data)
         try {
             const response = await axiosAdmin.put('/pos/softDelete', { data: data });
-            await getAllPo();
+            
             handleUnSelect();
             message.success(response.data.message);
+            getAllPo();
         } catch (error) {
             console.error("Error soft deleting POs:", error);
             message.error('Error soft deleting POs');
@@ -143,16 +156,15 @@ const ManagePo = (nav) => {
     const handleSoftDeleteById = async (_id) => {
         try {
             const response = await axiosAdmin.put(`/po/${_id}/softDelete`);
-            await getAllPo();
+            
             handleUnSelect();
             message.success(response.data.message);
+            getAllPo();
         } catch (error) {
             console.error(`Error toggling soft delete for PO with ID ${_id}:`, error);
             message.error(`Error toggling soft delete for PO with ID ${_id}`);
         }
     };
-
-    const [programData, setProgramData] = useState({});
 
     const allProgramNotIsDelete = async () => {
         try {
@@ -280,6 +292,8 @@ const ManagePo = (nav) => {
                 editData={newpo}
                 setEditData={setNewpo}
                 loadData={getAllPo}
+                program_id={programData?.program_id}
+                lastPoNumber={lastPoNumber}
             />
             <div className='w-full flex justify-between'>
                 <div className='h-full my-auto p-5 hidden sm:block'>

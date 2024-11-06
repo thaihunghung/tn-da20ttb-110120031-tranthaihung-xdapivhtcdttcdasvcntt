@@ -15,6 +15,7 @@ import BackButton from "../../Utils/BackButton/BackButton";
 import ModalUpdateClo from "./ModalUpdateClo";
 import ModalAddClo from "./ModalAddClo";
 import { PlusIcon } from "../../../../../public/PlusIcon";
+import { fetchClo } from "./data/DataClo";
 
 const Clo = (nav) => {
     const { id } = useParams();
@@ -37,6 +38,7 @@ const Clo = (nav) => {
     const [fileList, setFileList] = useState([]);
 
     const [Subject, setSubject] = useState({});
+    const [lastCloNumber, setlastCloNumber] = useState();
 
     const handleOnChangeTextName = (nameP) => {
         setCurrent(nameP);
@@ -44,7 +46,7 @@ const Clo = (nav) => {
 
     const columns = [
         {
-            title: "Tên PO",
+            title: "Tên CLO",
             dataIndex: "name",
             render: (record) => (
                 <div className="text-sm">
@@ -117,10 +119,26 @@ const Clo = (nav) => {
         setSelectedRowKeys([]);
         setSelectedRow([]);
     };
-
+    const loadClo = async () => {
+        const response = await fetchClo();
+        setPosListData(response);
+        if (response.length > 0) {
+            const PhanTuCuoi = response[response.length - 1];
+            const cloNumber = parseInt(PhanTuCuoi.name.match(/\d+$/)[0], 10);
+            setlastCloNumber(cloNumber);
+            console.log(cloNumber);
+            console.log(PhanTuCuoi);
+          } else {
+            setlastCloNumber(0); 
+            console.log(0);
+          }    
+          console.log(response);
+      };
     const getAllClo = async () => {
         try {
             const response = await axiosAdmin.get(`/clos?subject_id=${id}&isDelete=false`);
+            console.log('ddddddddđ');
+            console.log(response);
             const updatedPoData = response.data.map((clo) => ({
                 key: clo?.clo_id,
                 name: clo?.cloName,
@@ -139,16 +157,28 @@ const Clo = (nav) => {
                 }
             }));
             setPosListData(updatedPoData);
-            console.log(updatedPoData[0].action.CLO);
+            if (updatedPoData.length > 0) {
+                const PhanTuCuoi = updatedPoData[updatedPoData.length - 1];
+                const cloNumber = parseInt(PhanTuCuoi.name.match(/\d+$/)[0], 10);
+                setlastCloNumber(cloNumber);
+                console.log(cloNumber);
+                console.log(PhanTuCuoi);
+              } else {
+                setlastCloNumber(0); 
+                console.log(0);
+              }    
+              console.log(updatedPoData);
         } catch (error) {
             console.error("Error: " + error.message);
         }
     };
+
+      
     const getSubjectById = async () => {
         try {
             const response = await axiosAdmin.get(`/subject/${id}`);
-            console.log("response.data");
-            console.log(response.data);
+            //console.log("response.data");
+            //console.log(response.data);
             setSubject(response?.data?.subject)
         } catch (error) {
             console.error("Error: " + error.message);
@@ -158,10 +188,11 @@ const Clo = (nav) => {
     const handleSoftDelete = async () => {
         const data = { clo_id: selectedRowKeys };
         try {
-            const response = await axiosAdmin.put('/clos/softDelete', { data });
-            await getAllClo();
+            await axiosAdmin.put('/clos/softDelete', { data });
+            loadClo()
             handleUnSelect();
-            message.success(response.data.message);
+            
+
         } catch (error) {
             console.error("Error soft deleting Clos:", error);
             message.error('Error soft deleting Clos');
@@ -170,10 +201,9 @@ const Clo = (nav) => {
 
     const handleSoftDeleteById = async (_id) => {
         try {
-            const response = await axiosAdmin.put(`/clo/${_id}/softDelete`);
-            await getAllClo();
-            handleUnSelect();
-            message.success(response.data.message);
+            await axiosAdmin.put(`/clo/${_id}/softDelete`);
+            loadClo()
+            handleUnSelect();    
         } catch (error) {
             console.error(`Error toggling soft delete for Clo with ID ${_id}:`, error);
             message.error(`Error toggling soft delete for Clo with ID ${_id}`);
@@ -204,7 +234,7 @@ const Clo = (nav) => {
 
         try {
             const response = await axiosAdmin.put(`/clo/${clo_id}`, { data: values });
-            getAllClo();
+            loadClo()
             message.success(response.data.message);
         } catch (error) {
             console.error("Error updating clo:", error);
@@ -243,7 +273,7 @@ const Clo = (nav) => {
             } else {
                 message.error(response.data.message || 'Error saving data');
             }
-            getAllClo()
+            loadClo()
         } catch (error) {
             console.error(error);
             message.error('Error saving data');
@@ -261,7 +291,7 @@ const Clo = (nav) => {
 
     useEffect(() => {
         getSubjectById()
-        getAllClo();
+        loadClo()
         const handleResize = () => {
             setCollapsedNav(window.innerWidth < 1024);
         };
@@ -271,6 +301,20 @@ const Clo = (nav) => {
             window.removeEventListener("resize", handleResize);
         };
     }, []);
+    useEffect(() => {
+        getSubjectById()
+        loadClo()
+        const handleResize = () => {
+            setCollapsedNav(window.innerWidth < 1024);
+        };
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
+
 
     return (
         <div className="flex w-full h-fit flex-col justify-center leading-8 pt-5">
@@ -302,6 +346,8 @@ const Clo = (nav) => {
                 onSubmit={handleFormSubmit}
                 editData={newClo}
                 setEditData={setNewClo}
+                subjectCode={Subject?.subjectCode}
+                lastCloNumber={lastCloNumber}
             />
 
             {/* <DropdownAndNavClo /> */}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -24,6 +24,8 @@ function ModalAddPo({
   editData,
   setEditData,
   loadData,
+  program_id,
+  lastPoNumber
 }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,6 +34,15 @@ function ModalAddPo({
       [name]: value,
     }));
   };
+
+  useEffect(() => {
+    if (program_id) {
+      setEditData((prev) => ({
+        ...prev,
+        poName: `${program_id}_PO${isNaN(lastPoNumber) ? 1 : lastPoNumber + 1}`,
+      }));
+    }
+  }, [program_id, lastPoNumber]);
 
   return (
     <Modal
@@ -81,6 +92,7 @@ function ModalAddPo({
                         value={editData.poName || ''}
                         onChange={handleChange}
                         required
+                        disabled= 'true'
                       />
                       <Textarea
                         fullWidth

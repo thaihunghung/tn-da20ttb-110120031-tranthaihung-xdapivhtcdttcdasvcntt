@@ -34,11 +34,10 @@ const ManagePlo = (nav) => {
     const [current, setCurrent] = useState(0);
     const [deleteId, setDeleteId] = useState(null);
     const [fileList, setFileList] = useState([]);
+    const [programData, setProgramData] = useState({});
+    const [lastPloNumber, setlastPloNumber] = useState();
 
-    const handleOnChangeTextName = (nameP) => {
-        setCurrent(nameP);
-    };
-
+    
     const columns = [
         {
             title: "Mã CDR CT",
@@ -132,7 +131,18 @@ const ManagePlo = (nav) => {
                 };
             });
             setPosListData(updatedPoData);
-            console.log(response.data);
+            if (updatedPoData.length > 0) {
+                const PhanTuCuoi = updatedPoData[updatedPoData.length - 1];
+                const ploNumber = parseInt(PhanTuCuoi.name.match(/\d+$/)[0], 10);
+                setlastPloNumber(ploNumber);
+                console.log(ploNumber);
+                console.log(PhanTuCuoi);
+              } else {
+                setlastPloNumber(0); // Set ploNumber to 0 if updatedPoData is empty
+                console.log(0);
+              }
+              
+              console.log(response.data);
         } catch (error) {
             console.error("Error: " + error.message);
             message.error('Error fetching PO data');
@@ -166,9 +176,6 @@ const ManagePlo = (nav) => {
             message.error(`Error toggling soft delete for PO with ID ${_id}`);
         }
     };
-
-
-    const [programData, setProgramData] = useState({});
 
     const allProgramNotIsDelete = async () => {
         try {
@@ -291,6 +298,8 @@ const ManagePlo = (nav) => {
                 editData={newPlo}
                 setEditData={setNewPlo}
                 loadData={getAllPlo}
+                program_id={programData?.program_id}
+                lastPloNumber={lastPloNumber}
             />
             <div className='w-full flex justify-between'>
                 <div className='h-full my-auto p-5 hidden sm:block'>

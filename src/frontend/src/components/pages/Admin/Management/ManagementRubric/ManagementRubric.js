@@ -12,20 +12,12 @@ import { SearchIcon } from '../../../../../public/SearchIcon';
 import { ChevronDownIcon } from '../../../../../public/ChevronDownIcon';
 import { columns, fetchRubricData, } from './DataRubric';
 import { capitalize } from '../../Utils/capitalize';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Cookies from "js-cookie";
 import BackButton from '../../Utils/BackButton/BackButton';
 import { axiosAdmin } from '../../../../../service/AxiosAdmin';
 import ModalUpdateRubric from './ModalUpdateRubric';
 import CreateRubic from './CreateRubic';
-import DropdownAndNavRubric from '../../Utils/DropdownAndNav/DropdownAndNavRubric';
-import { PlusIcon } from '../../../../../public/PlusIcon';
-
-const statusColorMap = {
-    active: 'success',
-    paused: 'danger',
-    vacation: 'warning',
-};
 
 const INITIAL_VISIBLE_COLUMNS = ['name', 'point', 'Items', 'action'];
 const COMPACT_VISIBLE_COLUMNS = ['name', 'Items', 'action'];

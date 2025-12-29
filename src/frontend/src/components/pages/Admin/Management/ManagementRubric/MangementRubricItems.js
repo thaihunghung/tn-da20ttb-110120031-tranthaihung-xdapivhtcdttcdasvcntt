@@ -38,7 +38,6 @@ const MangementRubricItems = ({ setCollapsedNav, successNoti, errorNoti }) => {
     const [selectedRow, setSelectedRow] = useState([]);
 
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-    const [rubicItemsData, setRubicItemsData] = useState([]);
 
     const [cloFilter, setCloFilter] = useState('');
     const [ploFilter, setPloFilter] = useState('');

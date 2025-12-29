@@ -215,6 +215,7 @@ const RubricController = {
   getRubricsForCheckScore: async (req, res) => {
     try {
       const { teacher_id, isDelete } = req.query;
+      console.log(req.query)
       const whereCondition = { teacher_id: teacher_id };
       if (isDelete !== undefined) {
         whereCondition.isDelete = isDelete === 'true';

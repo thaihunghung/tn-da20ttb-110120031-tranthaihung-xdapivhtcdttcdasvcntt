@@ -3,9 +3,9 @@ import { Form, Input, Button, Typography, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { AxiosClient } from '../../../../service/AxiosClient';
-import Cookies from 'js-cookie';
+
 import { axiosAdmin } from '../../../../service/AxiosAdmin';
-import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const { Title } = Typography;
 

@@ -23,7 +23,7 @@ const MetaAssessmentController = {
   index: async (req, res) => {
     try {
       const { isDelete, teacher_id, generalDescription } = req.query;
-
+      
       if (teacher_id && generalDescription) {
         const assessments = await MetaAssessmentModel.findAll({
           where: {

@@ -1,22 +1,14 @@
-# Sử dụng một image có sẵn của Node.js với phiên bản bạn muốn
-FROM node:18.18.0
+FROM nginx:alpine
 
-# Thiết lập thư mục làm việc trong container
-WORKDIR /usr/src/app
+# Copy built files
+COPY build /usr/share/nginx/html
 
-# Sao chép file package.json và package-lock.json (nếu có) vào thư mục làm việc
-COPY package*.json ./
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Cài đặt các dependencies từ package.json
-RUN npm install
 
-# Sao chép toàn bộ mã nguồn của ứng dụng vào thư mục làm việc
-COPY . .
+# Expose port 80
+EXPOSE 80
 
-# Biên dịch ứng dụng ReactJS
-RUN npm run build
-
-EXPOSE 3000
-
-# Khởi chạy ứng dụng khi container được chạy
-CMD ["npm", "start"]
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]

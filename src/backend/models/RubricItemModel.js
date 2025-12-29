@@ -75,7 +75,7 @@ const RubricsItemModel = sequelize.define('rubricsItem', {
   timestamps: true,
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  tableName: 'rubricsItems'
+  tableName: 'rubricsitems'
 });
 RubricsItemModel.belongsTo(RubricModel, { foreignKey: 'rubric_id' });
 RubricsItemModel.belongsTo(CloModel, { foreignKey: 'clo_id' });

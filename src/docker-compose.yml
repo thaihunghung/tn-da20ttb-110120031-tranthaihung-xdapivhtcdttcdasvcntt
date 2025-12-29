@@ -13,7 +13,7 @@ services:
       - "3306:3306"
     volumes:
       - ./tvu.sql:/docker-entrypoint-initdb.d/TVU.sql
-      - ./my.txt:/etc/mysql/my.cnf  # Nếu sử dụng file .txt
+      - ./my.txt:/etc/mysql/my.txt  # Nếu sử dụng file .txt
     restart: always
     command: --log-bin-trust-function-creators=1
     networks:
@@ -31,28 +31,28 @@ services:
     networks:
       - TVU_Network  # Thêm vào mạng
 
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    ports:
-      - "1509:1509"
-    depends_on:
-      - mysql
-    environment:
-      - DATABASE_URL=mysql://AdminTVU:CongNgheThongTin-DA20TTB@mysql:3306/TVU
-    restart: always
-    networks:
-      - TVU_Network  # Thêm vào mạng
+  # backend:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "1509:1509"
+  #   depends_on:
+  #     - mysql
+  #   environment:
+  #     - DATABASE_URL=mysql://AdminTVU:CongNgheThongTin-DA20TTB@mysql:3306/TVU
+  #   restart: always
+  #   networks:
+  #     - TVU_Network  # Thêm vào mạng
     
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    networks:
-      - TVU_Network  # Thêm vào mạng
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   networks:
+  #     - TVU_Network  # Thêm vào mạng
 
 volumes:
   mysqldata:

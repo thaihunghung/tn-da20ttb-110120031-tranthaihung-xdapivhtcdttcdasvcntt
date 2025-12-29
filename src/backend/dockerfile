@@ -1,23 +1,18 @@
 FROM node:18.18.0
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Sao chép package.json và package-lock.json, rồi cài đặt dependencies
 COPY package*.json ./
-RUN npm install && npm rebuild bcrypt --build-from-source
 
-# Sao chép toàn bộ mã nguồn vào container
+RUN npm install
+
 COPY . .
 
-# Xóa file .env cũ (nếu tồn tại) và tạo file .env mới
-RUN rm -f .env && echo "JWT_SECRET=your_jwt_secret" >> .env \
-    && echo "DB_NAME=TVU" >> .env \
-    && echo "DB_USER=AdminTVU" >> .env \
-    && echo "DB_PASSWORD=CongNgheThongTin-DA20TTB" >> .env \
-    && echo "DB_HOST=mysql" >> .env \
-    && echo "DB_DIALECT=mysql" >> .env \
-    && echo "DB_PORT=3306" >> .env
+RUN npm uninstall bcrypt \
+    && npm install bcrypt --build-from-source \
+    && npm cache clean --force \
 
-EXPOSE 1509
+EXPOSE 3000
+ENV NODE_ENV=production
 
 CMD ["npm", "start"]

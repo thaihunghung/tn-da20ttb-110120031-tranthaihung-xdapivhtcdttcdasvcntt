@@ -48,7 +48,7 @@ const AssessmentItemModel = sequelize.define('AssessmentItem', {
   timestamps: true,
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  tableName: 'assessmentItems'
+  tableName: 'assessmentitems'
 });
 AssessmentItemModel.belongsTo(AssessmentModel, { foreignKey: 'assessment_id' });
 AssessmentItemModel.belongsTo(RubricsItemModel, { foreignKey: 'rubricsItem_id' });
